@@ -1,943 +1,1783 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HiShop - Trang Web Mua Sắm Ảo Thông Minh</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    /* Mượt mà khi chuyển đổi trạng thái */
-    .transition-all-custom {
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HiShop - Trang Web Mua Sắm Ảo Thông Minh</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for horizontal sections */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col items-center">
 
-  <!-- ==================== HEADER / NAV BAR ==================== -->
-  <header class="bg-white border-b border-slate-100 sticky top-0 z-40 shadow-sm transition-all duration-300">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-      
-      <!-- Logo HiShop -->
-      <a href="#" onclick="showPage('home')" class="flex items-center gap-2 shrink-0">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-orange-500 to-amber-500 flex items-center justify-center text-white shadow-md shadow-orange-500/20">
-          <span class="font-extrabold text-xl tracking-tighter">Hi</span>
-        </div>
-        <span class="font-bold text-xl bg-gradient-to-r from-orange-600 to-amber-500 bg-clip-text text-transparent hidden sm:inline-block">HiShop</span>
-      </a>
-
-      <!-- Khung Tìm Kiếm Trang Chủ -->
-      <div id="nav-search-container" class="flex-1 max-w-xl relative">
-        <div onclick="goToSearchPage()" class="w-full h-11 bg-slate-100 hover:bg-slate-200/80 rounded-2xl pl-11 pr-11 flex items-center cursor-pointer transition-all-custom border border-transparent hover:border-slate-300/50">
-          <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4"></i>
-          <span class="text-slate-400 text-sm sm:text-base select-none">Tìm kiếm mua sắm...</span>
-          <i data-lucide="camera" class="w-5 h-5 text-slate-400 hover:text-slate-600 absolute right-4 transition-colors"></i>
-        </div>
-      </div>
-
-      <!-- Giỏ Hàng -->
-      <div class="relative shrink-0">
-        <button onclick="toggleCartModal()" class="w-11 h-11 rounded-2xl bg-slate-100 hover:bg-orange-50 text-slate-600 hover:text-orange-600 flex items-center justify-center transition-all-custom relative">
-          <i data-lucide="shopping-bag" class="w-5 h-5"></i>
-          <span id="cart-badge" class="absolute -top-1.5 -right-1.5 bg-gradient-to-r from-orange-500 to-red-500 text-white text-[11px] font-bold w-5.5 h-5.5 rounded-full flex items-center justify-center border-2 border-white shadow-sm min-w-5 px-1">0</span>
-        </button>
-      </div>
-
-    </div>
-  </header>
-
-  <!-- ==================== MAIN CONTENT AREA ==================== -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
-    
-    <!-- 🏠 A. TRANG CHỦ -->
-    <section id="page-home" class="space-y-8 animate-fade-in">
-      <!-- Banner Quảng Cáo -->
-      <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-400 text-white p-6 sm:p-10 shadow-xl shadow-orange-500/10">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/20 via-transparent to-transparent pointer-events-none"></div>
-        <div class="max-w-lg space-y-4 relative z-10">
-          <span class="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold tracking-wider uppercase">Siêu Sale Cuối Tuần</span>
-          <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">MUA SẮM THẢ GA - KHÔNG LO VỀ GIÁ!</h1>
-          <p class="text-white/95 text-xs sm:text-sm max-w-md">Khám phá hàng ngàn sản phẩm công nghệ, thời trang cao cấp với ưu đãi freeship toàn quốc chỉ có tại HiShop.</p>
-          <button onclick="goToSearchPage()" class="bg-white text-orange-600 hover:bg-orange-50 px-5 py-2.5 rounded-xl font-bold text-sm shadow-md transition-all-custom hover:-translate-y-0.5">Tìm Kiếm Ngay</button>
-        </div>
-      </div>
-
-      <!-- Danh Mục Sản Phẩm Nổi Bật -->
-      <div class="space-y-4">
-        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-          <span class="w-1.5 h-6 bg-orange-500 rounded-full"></span> Danh mục nổi bật
-        </h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <!-- Item 1: Giày -->
-          <div onclick="searchProduct('Đôi giày')" class="bg-white p-4 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-500/5 cursor-pointer text-center group transition-all-custom">
-            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-orange-50 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
-              <i data-lucide="footprints" class="w-8 h-8"></i>
-            </div>
-            <span class="font-bold text-slate-700 block text-sm group-hover:text-orange-500 transition-colors">Đôi giày</span>
-            <span class="text-xs text-slate-400">Xu hướng mới nhất</span>
-          </div>
-
-          <!-- Item 2: Quần áo -->
-          <div onclick="searchProduct('Quần Áo')" class="bg-white p-4 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-500/5 cursor-pointer text-center group transition-all-custom">
-            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-amber-50 flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform">
-              <i data-lucide="shirt" class="w-8 h-8"></i>
-            </div>
-            <span class="font-bold text-slate-700 block text-sm group-hover:text-amber-500 transition-colors">Quần Áo</span>
-            <span class="text-xs text-slate-400">Thời trang sành điệu</span>
-          </div>
-
-          <!-- Item 3: Điện thoại -->
-          <div onclick="searchProduct('Điện thoại')" class="bg-white p-4 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-500/5 cursor-pointer text-center group transition-all-custom">
-            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-blue-50 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
-              <i data-lucide="smartphone" class="w-8 h-8"></i>
-            </div>
-            <span class="font-bold text-slate-700 block text-sm group-hover:text-blue-500 transition-colors">Điện thoại</span>
-            <span class="text-xs text-slate-400">Công nghệ thông minh</span>
-          </div>
-
-          <!-- Item 4: Laptop -->
-          <div onclick="searchProduct('Laptop')" class="bg-white p-4 rounded-2xl border border-slate-100 hover:border-orange-200 hover:shadow-lg hover:shadow-orange-500/5 cursor-pointer text-center group transition-all-custom">
-            <div class="w-16 h-16 mx-auto mb-3 rounded-full bg-purple-50 flex items-center justify-center text-purple-500 group-hover:scale-110 transition-transform">
-              <i data-lucide="laptop" class="w-8 h-8"></i>
-            </div>
-            <span class="font-bold text-slate-700 block text-sm group-hover:text-purple-500 transition-colors">Laptop</span>
-            <span class="text-xs text-slate-400">Hiệu năng vượt trội</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gợi ý dành cho bạn -->
-      <div class="space-y-4">
-        <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
-          <span class="w-1.5 h-6 bg-orange-500 rounded-full"></span> Hôm nay có gì mới?
-        </h2>
+    <!-- Container chính để giả lập app mobile/responsive và tối ưu chiều rộng trên máy tính -->
+    <div id="app-container" class="w-full max-w-md bg-white min-h-screen shadow-lg flex flex-col relative pb-20">
         
-        <!-- Grid layout responsive cho sản phẩm gợi ý -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-          
-          <!-- Sản phẩm 1 -->
-          <div onclick="searchProduct('Đôi giày')" class="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all-custom cursor-pointer flex flex-col h-full group">
-            <div class="aspect-square w-full bg-slate-50 relative overflow-hidden shrink-0">
-              <img src="https://admin.vuahanghieu.com/upload/product/2023/07/giay-the-thao-nam-nike-air-jordan-1-mid-se-craft-dm9652-102-mau-nau-trang-size-42-64b20647dae34-15072023093655.jpg" alt="[Hình ảnh Đôi giày]" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'">
-              <span class="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">HOT</span>
-            </div>
-            <div class="p-3 flex flex-col justify-between flex-1">
-              <h3 class="font-medium text-slate-700 text-sm line-clamp-2 mb-2">Nike Air Jordan 1 Mid SE Craft - Nâu Trắng cực phẩm</h3>
-              <div>
-                <p class="text-orange-500 font-bold text-base">3.450.000₫</p>
-                <div class="flex items-center gap-1 mt-1 text-[11px] text-slate-400">
-                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 stroke-amber-400"></i>
-                  <span>4.9</span>
-                  <span class="ml-1">• Đã bán 2.4k</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <!-- ========================================== -->
+        <!-- TRANG CHỦ (PAGE: home) -->
+        <!-- ========================================== -->
+        <div id="page-home" class="page-content flex flex-col w-full">
+            <!-- Header cố định phía trên -->
+            <header class="sticky top-0 bg-gradient-to-r from-red-500 to-orange-500 text-white z-50 px-4 py-3 shadow-md">
+                <div class="flex items-center justify-between gap-3">
+                    <!-- Logo / Brand -->
+                    <div class="flex items-center gap-1.5" onclick="goToPage('home')">
+                        <i class="fa-solid fa-bag-shopping text-2xl text-yellow-300 animate-bounce"></i>
+                        <span class="font-extrabold text-xl tracking-tight">HiShop</span>
+                    </div>
+                    
+                    <!-- Khung tìm kiếm đẹp mắt -->
+                    <div class="flex-1 relative cursor-pointer" onclick="goToPage('search')">
+                        <div class="bg-white text-gray-500 rounded-full py-1.5 pl-9 pr-8 text-sm shadow-inner flex items-center h-9">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <span class="text-gray-400 select-none">Tìm kiếm mua sắm</span>
+                            <i class="fa-solid fa-camera absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors"></i>
+                        </div>
+                    </div>
 
-          <!-- Sản phẩm 2 -->
-          <div onclick="searchProduct('Quần Áo')" class="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all-custom cursor-pointer flex flex-col h-full group">
-            <div class="aspect-square w-full bg-slate-50 relative overflow-hidden shrink-0">
-              <img src="https://cdn.hstatic.net/products/1000392326/bak93599__k__968k_-_bqd93599__k__998k__1__f1b5786919f4475aaffc0e669b2e63f9.jpg" alt="[Hình ảnh Quần Áo]" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=500'">
-            </div>
-            <div class="p-3 flex flex-col justify-between flex-1">
-              <h3 class="font-medium text-slate-700 text-sm line-clamp-2 mb-2">Set Quần Áo Thu Đông Hàn Quốc, Form Chuẩn Sang Trọng</h3>
-              <div>
-                <p class="text-orange-500 font-bold text-base">968.000₫</p>
-                <div class="flex items-center gap-1 mt-1 text-[11px] text-slate-400">
-                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 stroke-amber-400"></i>
-                  <span>4.8</span>
-                  <span class="ml-1">• Đã bán 1.1k</span>
+                    <!-- Nút Giỏ Hàng -->
+                    <button onclick="goToPage('cart')" class="relative p-2 hover:bg-white/10 rounded-full transition-colors">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span id="cart-badge-home" class="absolute -top-1 -right-1 bg-yellow-400 text-red-600 text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center border-2 border-red-500 animate-pulse">0</span>
+                    </button>
                 </div>
-              </div>
-            </div>
-          </div>
+            </header>
 
-          <!-- Sản phẩm 3 -->
-          <div onclick="searchProduct('Điện thoại')" class="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all-custom cursor-pointer flex flex-col h-full group">
-            <div class="aspect-square w-full bg-slate-50 relative overflow-hidden shrink-0">
-              <img src="https://catalog-assets-asia-southeast1.aeon-vn-prod.e.spresso.com/c3RvcmFnZS5nb29nbGVhcGlzLmNvbQ==/YWVvbnZpZXRuYW0tc3ByZXNzby1wdWJsaWM=/MjAyNQ==/U0VQVEVNQkVS/MTA4NTQyMDQgKDEp.jpg" alt="[Hình ảnh Điện thoại]" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500'">
-            </div>
-            <div class="p-3 flex flex-col justify-between flex-1">
-              <h3 class="font-medium text-slate-700 text-sm line-clamp-2 mb-2">Điện Thoại Di Động Cao Cấp Thế Hệ Mới - Trả Góp 0%</h3>
-              <div>
-                <p class="text-orange-500 font-bold text-base">21.990.000₫</p>
-                <div class="flex items-center gap-1 mt-1 text-[11px] text-slate-400">
-                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 stroke-amber-400"></i>
-                  <span>5.0</span>
-                  <span class="ml-1">• Đã bán 523</span>
+            <!-- Banner Quảng Cáo -->
+            <div class="p-4">
+                <div class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-2xl p-4 text-white relative overflow-hidden shadow-md">
+                    <div class="absolute right-[-20px] bottom-[-20px] opacity-15">
+                        <i class="fa-solid fa-gift text-9xl"></i>
+                    </div>
+                    <span class="bg-yellow-400 text-purple-900 text-xs font-bold px-2.5 py-1 rounded-full">SỰ KIỆN HOT</span>
+                    <h3 class="text-xl font-extrabold mt-2">Đại Tiệc Mua Sắm Online</h3>
+                    <p class="text-xs text-purple-100 mt-1">Giảm trực tiếp đến 50% tất cả các ngành hàng</p>
+                    <button onclick="goToPage('search')" class="mt-3 bg-white text-purple-700 font-bold text-xs px-4 py-2 rounded-lg shadow hover:bg-yellow-100 transition-all">Mua Ngay <i class="fa-solid fa-chevron-right ml-1"></i></button>
                 </div>
-              </div>
             </div>
-          </div>
 
-          <!-- Sản phẩm 4 -->
-          <div onclick="searchProduct('Laptop')" class="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all-custom cursor-pointer flex flex-col h-full group">
-            <div class="aspect-square w-full bg-slate-50 relative overflow-hidden shrink-0">
-              <img src="https://images-na.ssl-images-amazon.com/images/I/61LdecwlWYL.jpg" alt="[Hình ảnh Laptop]" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1496181130204-755241524eab?w=500'">
-            </div>
-            <div class="p-3 flex flex-col justify-between flex-1">
-              <h3 class="font-medium text-slate-700 text-sm line-clamp-2 mb-2">Laptop Siêu Mỏng Nhẹ, Cấu Hình Mạnh Mẽ, Đồ Họa Mượt Mà</h3>
-              <div>
-                <p class="text-orange-500 font-bold text-base">18.490.000₫</p>
-                <div class="flex items-center gap-1 mt-1 text-[11px] text-slate-400">
-                  <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 stroke-amber-400"></i>
-                  <span>4.7</span>
-                  <span class="ml-1">• Đã bán 312</span>
+            <!-- Các Danh Mục Nổi Bật -->
+            <div class="px-4 py-2">
+                <h4 class="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <span class="w-1.5 h-4 bg-red-500 rounded-full"></span> Danh mục mua sắm
+                </h4>
+                <div class="grid grid-cols-4 gap-3">
+                    <div onclick="goToPage('search')" class="flex flex-col items-center justify-center p-2 bg-gray-50 rounded-xl hover:bg-red-50 cursor-pointer transition-all border border-transparent hover:border-red-200">
+                        <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-500 text-lg mb-1.5">
+                            <i class="fa-solid fa-shoe-prints"></i>
+                        </div>
+                        <span class="text-xs text-center font-medium">Giày dép</span>
+                    </div>
+                    <div onclick="goToPage('search')" class="flex flex-col items-center justify-center p-2 bg-gray-50 rounded-xl hover:bg-red-50 cursor-pointer transition-all border border-transparent hover:border-red-200">
+                        <div class="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 text-lg mb-1.5">
+                            <i class="fa-solid fa-shirt"></i>
+                        </div>
+                        <span class="text-xs text-center font-medium">Thời trang</span>
+                    </div>
+                    <div onclick="goToPage('search')" class="flex flex-col items-center justify-center p-2 bg-gray-50 rounded-xl hover:bg-red-50 cursor-pointer transition-all border border-transparent hover:border-red-200">
+                        <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-500 text-lg mb-1.5">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                        </div>
+                        <span class="text-xs text-center font-medium">Điện thoại</span>
+                    </div>
+                    <div onclick="goToPage('search')" class="flex flex-col items-center justify-center p-2 bg-gray-50 rounded-xl hover:bg-red-50 cursor-pointer transition-all border border-transparent hover:border-red-200">
+                        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-500 text-lg mb-1.5">
+                            <i class="fa-solid fa-laptop"></i>
+                        </div>
+                        <span class="text-xs text-center font-medium">Máy tính</span>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
 
+            <!-- Gợi ý sản phẩm hôm nay -->
+            <div class="px-4 py-4">
+                <div class="flex items-center justify-between mb-3">
+                    <h4 class="font-bold text-gray-800 flex items-center gap-2">
+                        <span class="w-1.5 h-4 bg-red-500 rounded-full"></span> Gợi ý dành cho bạn
+                    </h4>
+                    <span class="text-xs text-red-500 font-semibold cursor-pointer" onclick="goToPage('search')">Xem tất cả <i class="fa-solid fa-chevron-right ml-0.5"></i></span>
+                </div>
+
+                <!-- Banner nhỏ bắt đầu mua sắm -->
+                <div class="bg-red-50 rounded-xl p-4 border border-red-100 text-center flex flex-col items-center">
+                    <img src="https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png" alt="Nike Pacific" class="w-28 h-28 object-contain drop-shadow-md transform hover:scale-115 transition-all">
+                    <h5 class="font-bold text-gray-800 text-base mt-2">Nike Pacific</h5>
+                    <p class="text-red-500 font-bold text-sm mt-0.5">1.750.000₫</p>
+                    <button onclick="viewProductDetail()" class="mt-3 bg-red-500 hover:bg-red-600 text-white font-semibold text-xs px-6 py-2 rounded-full shadow-md transition-colors w-full">
+                        Xem chi tiết & Mua sắm
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cam kết mua sắm an toàn -->
+            <div class="px-4 py-2 mt-2">
+                <div class="bg-gray-100 rounded-xl p-3 grid grid-cols-3 gap-2 text-center">
+                    <div class="flex flex-col items-center">
+                        <i class="fa-solid fa-shield-halved text-green-600 text-sm mb-1"></i>
+                        <span class="text-[10px] text-gray-500 font-medium">100% Chính Hãng</span>
+                    </div>
+                    <div class="flex flex-col items-center border-x border-gray-200">
+                        <i class="fa-solid fa-truck text-blue-600 text-sm mb-1"></i>
+                        <span class="text-[10px] text-gray-500 font-medium">Vận Chuyển Nhanh</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fa-solid fa-arrow-rotate-left text-orange-600 text-sm mb-1"></i>
+                        <span class="text-[10px] text-gray-500 font-medium">Đổi Trả Dễ Dàng</span>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 🔍 B. TRANG TÌM KIẾM -->
-    <section id="page-search" class="hidden max-w-2xl mx-auto animate-fade-in space-y-6">
-      
-      <!-- Thanh Trên Cùng Cố Định (Header của Trang Tìm Kiếm) -->
-      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-md space-y-3">
-        <div class="flex items-center gap-2">
-          <!-- Nút Quay Lại -->
-          <button onclick="goBackToHome()" class="w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600 flex items-center justify-center transition-all-custom shrink-0" title="Quay lại">
-            <i data-lucide="chevron-left" class="w-6 h-6"></i>
-          </button>
-          
-          <!-- Nút Trang Chủ -->
-          <button onclick="showPage('home')" class="w-10 h-10 rounded-xl hover:bg-slate-100 text-slate-600 flex items-center justify-center transition-all-custom shrink-0" title="Về trang chủ">
-            <i data-lucide="home" class="w-5 h-5"></i>
-          </button>
+        <!-- ========================================== -->
+        <!-- TRANG TÌM KIẾM (PAGE: search) -->
+        <!-- ========================================== -->
+        <div id="page-search" class="page-content flex flex-col w-full hidden">
+            <!-- Header tìm kiếm -->
+            <header class="sticky top-0 bg-white border-b border-gray-100 z-50 px-3 py-2.5 shadow-sm">
+                <div class="flex items-center gap-2">
+                    <button onclick="goToPage('home')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+                        <i class="fa-solid fa-arrow-left text-lg"></i>
+                    </button>
+                    
+                    <!-- Khung tìm kiếm viền đẹp -->
+                    <div class="flex-1 relative">
+                        <div class="bg-gray-100 border border-gray-300 rounded-full py-1.5 pl-9 pr-14 text-sm flex items-center h-10 focus-within:border-red-500 focus-within:bg-white transition-all">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                            <input id="search-input" type="text" placeholder="Tìm kiếm mua sắm" class="bg-transparent border-none outline-none w-full text-gray-800 placeholder-gray-400 font-medium" value="">
+                            <!-- Icons bên phải -->
+                            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2 text-gray-400">
+                                <i class="fa-solid fa-camera hover:text-red-500 cursor-pointer"></i>
+                                <i class="fa-solid fa-microphone hover:text-red-500 cursor-pointer"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Nút Tìm kiếm thông minh góc dưới phải -->
+                <div class="flex justify-end mt-1.5 px-1">
+                    <button onclick="handleSearchSubmit()" class="flex items-center gap-1.5 text-xs text-red-500 hover:text-red-600 font-bold py-1 px-2.5 rounded-full hover:bg-red-50 transition-colors">
+                        <i class="fa-solid fa-circle-nodes text-sm animate-spin-slow"></i>
+                        <span>Tìm kiếm thông minh</span>
+                    </button>
+                </div>
+            </header>
 
-          <!-- Khung Tìm Kiếm Nhập Liệu Viền Đẹp -->
-          <div class="flex-1 relative">
-            <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input type="text" id="search-input" onkeydown="handleSearchInput(event)" placeholder="Tìm kiếm mua sắm" class="w-full h-11 bg-slate-50 border-2 border-slate-200 focus:border-orange-500 focus:bg-white rounded-xl pl-11 pr-20 outline-none text-slate-800 transition-all duration-200 text-sm sm:text-base">
+            <!-- Nội dung tìm kiếm bên dưới -->
+            <div class="p-4 flex flex-col gap-5">
+                <!-- Lịch sử tìm kiếm -->
+                <div id="search-history-container">
+                    <div class="flex justify-between items-center mb-2.5">
+                        <span class="font-bold text-gray-800 text-sm">Lịch sử tìm kiếm</span>
+                        <button onclick="clearSearchHistory()" class="text-xs text-gray-400 hover:text-red-500 flex items-center gap-1 py-1 px-2 hover:bg-gray-100 rounded transition-colors">
+                            <i class="fa-regular fa-trash-can"></i> Xóa
+                        </button>
+                    </div>
+                    <!-- Danh sách lịch sử -->
+                    <div id="search-history-list" class="flex flex-wrap gap-2">
+                        <!-- Sẽ tự động nạp bằng JS -->
+                    </div>
+                </div>
+
+                <!-- Gợi ý tìm kiếm với 4 sản phẩm theo yêu cầu -->
+                <div>
+                    <span class="font-bold text-gray-800 text-sm block mb-3">Gợi ý tìm kiếm</span>
+                    <div class="grid grid-cols-2 gap-3.5">
+                        
+                        <!-- 1. Đôi giày -->
+                        <div onclick="selectSearchSuggestion('Đôi giày')" class="bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-red-300 hover:shadow-sm cursor-pointer transition-all flex flex-col items-center">
+                            <div class="w-full h-28 overflow-hidden rounded-lg bg-white flex items-center justify-center mb-2 relative group">
+                                <img src="https://admin.vuahanghieu.com/upload/product/2023/07/giay-the-thao-nam-nike-air-jordan-1-mid-se-craft-dm9652-102-mau-nau-trang-size-42-64b20647dae34-15072023093655.jpg" alt="Đôi giày" class="w-full h-full object-cover group-hover:scale-105 transition-all" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200'">
+                                <span class="absolute top-1 left-1 bg-red-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded">HOT</span>
+                            </div>
+                            <span class="text-xs font-semibold text-gray-700 text-center">Đôi giày</span>
+                        </div>
+
+                        <!-- 2. Quần Áo -->
+                        <div onclick="selectSearchSuggestion('Quần Áo')" class="bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-red-300 hover:shadow-sm cursor-pointer transition-all flex flex-col items-center">
+                            <div class="w-full h-28 overflow-hidden rounded-lg bg-white flex items-center justify-center mb-2 relative">
+                                <img src="https://cdn.hstatic.net/products/1000392326/bak93599__k__968k_-_bqd93599__k__998k__1__f1b5786919f4475aaffc0e669b2e63f9.jpg" alt="Quần Áo" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=200'">
+                            </div>
+                            <span class="text-xs font-semibold text-gray-700 text-center">Quần Áo</span>
+                        </div>
+
+                        <!-- 3. Điện thoại -->
+                        <div onclick="selectSearchSuggestion('Điện thoại')" class="bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-red-300 hover:shadow-sm cursor-pointer transition-all flex flex-col items-center">
+                            <div class="w-full h-28 overflow-hidden rounded-lg bg-white flex items-center justify-center mb-2 relative">
+                                <img src="https://catalog-assets-asia-southeast1.aeon-vn-prod.e.spresso.com/c3RvcmFnZS5nb29nbGVhcGlzLmNvbQ==/YWVvbnZpZXRuYW0tc3ByZXNzby1wdWJsaWM=/MjAyNQ==/U0VQVEVNQkVS/MTA4NTQyMDQgKDEp.jpg" alt="Điện thoại" class="w-full h-full object-contain" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200'">
+                            </div>
+                            <span class="text-xs font-semibold text-gray-700 text-center">Điện thoại</span>
+                        </div>
+
+                        <!-- 4. Laptop -->
+                        <div onclick="selectSearchSuggestion('Laptop')" class="bg-gray-50 rounded-xl p-3 border border-gray-100 hover:border-red-300 hover:shadow-sm cursor-pointer transition-all flex flex-col items-center">
+                            <div class="w-full h-28 overflow-hidden rounded-lg bg-white flex items-center justify-center mb-2 relative">
+                                <img src="https://images-na.ssl-images-amazon.com/images/I/61LdecwlWYL.jpg" alt="Laptop" class="w-full h-full object-contain" onerror="this.src='https://images.unsplash.com/photo-1496181130204-755241524eab?w=200'">
+                            </div>
+                            <span class="text-xs font-semibold text-gray-700 text-center">Laptop</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TRANG KẾT QUẢ TÌM KIẾM + CÔNG CỤ LỌC (PAGE: search-results) -->
+        <!-- ========================================== -->
+        <div id="page-search-results" class="page-content flex flex-col w-full hidden">
+            <!-- Header kết quả tìm kiếm -->
+            <header class="sticky top-0 bg-white border-b border-gray-100 z-40">
+                <div class="flex items-center justify-between px-3 py-2.5">
+                    <div class="flex items-center gap-2">
+                        <button onclick="goToPage('search')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-lg"></i>
+                        </button>
+                        <div>
+                            <span class="text-xs text-gray-500 block">Kết quả tìm kiếm cho</span>
+                            <span id="results-search-term" class="font-bold text-gray-800 text-base">Đôi giày</span>
+                        </div>
+                    </div>
+                    <!-- Nút Bộ Lọc nhanh -->
+                    <button onclick="toggleFilterDrawer(true)" class="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold py-1.5 px-3 rounded-full transition-colors">
+                        <i class="fa-solid fa-filter text-red-500"></i>
+                        <span>Bộ Lọc</span>
+                    </button>
+                </div>
+
+                <!-- THANH CHỨC NĂNG SẮP XẾP & LỌC -->
+                <div class="bg-gray-50 border-t border-b border-gray-200/60 px-3 py-2 flex flex-col gap-2">
+                    <!-- Nhóm Sắp Xếp Trực Tiếp (Ngang) -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto hide-scrollbar py-0.5">
+                        <span class="text-[11px] text-gray-400 font-bold whitespace-nowrap mr-1 flex items-center gap-1">
+                            <i class="fa-solid fa-sort"></i> Sắp xếp:
+                        </span>
+                        
+                        <button onclick="applySort('rel')" id="sort-rel" class="sort-btn px-3 py-1 bg-red-100 text-red-500 border border-red-200 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-1 transition-colors">
+                            <span>Liên quan</span><i class="fa-solid fa-check text-[10px]"></i>
+                        </button>
+                        
+                        <button onclick="applySort('new')" id="sort-new" class="sort-btn px-3 py-1 bg-white text-gray-600 border border-gray-200 rounded-full text-xs font-medium whitespace-nowrap flex items-center gap-1 transition-colors">
+                            <span>Mới nhất</span><i class="fa-solid fa-check text-[10px] hidden"></i>
+                        </button>
+                        
+                        <button onclick="applySort('sales')" id="sort-sales" class="sort-btn px-3 py-1 bg-white text-gray-600 border border-gray-200 rounded-full text-xs font-medium whitespace-nowrap flex items-center gap-1 transition-colors">
+                            <span>Bán chạy</span><i class="fa-solid fa-check text-[10px] hidden"></i>
+                        </button>
+                        
+                        <button onclick="applySort('rating-desc')" id="sort-rating-desc" class="sort-btn px-3 py-1 bg-white text-gray-600 border border-gray-200 rounded-full text-xs font-medium whitespace-nowrap flex items-center gap-1 transition-colors">
+                            <span>Đánh giá cao→thấp</span><i class="fa-solid fa-check text-[10px] hidden"></i>
+                        </button>
+
+                        <button onclick="applySort('rating-asc')" id="sort-rating-asc" class="sort-btn px-3 py-1 bg-white text-gray-600 border border-gray-200 rounded-full text-xs font-medium whitespace-nowrap flex items-center gap-1 transition-colors">
+                            <span>Đánh giá thấp→cao</span><i class="fa-solid fa-check text-[10px] hidden"></i>
+                        </button>
+                    </div>
+
+                    <!-- Nhóm Lọc Nhanh (Loại shop, Đánh giá, Nơi bán) -->
+                    <div class="flex flex-col gap-1.5 mt-0.5 border-t border-gray-200/50 pt-2">
+                        <!-- Loại Shop -->
+                        <div class="flex items-center gap-1 overflow-x-auto hide-scrollbar">
+                            <span class="text-[10px] text-gray-400 font-bold whitespace-nowrap mr-1">Shop:</span>
+                            <button onclick="toggleQuickFilter('shop', 'HiShop Mall')" id="qf-shop-mall" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">HiShop Mall</button>
+                            <button onclick="toggleQuickFilter('shop', 'HiShop Xử Lý')" id="qf-shop-process" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">HiShop Xử Lý</button>
+                            <button onclick="toggleQuickFilter('shop', 'Shop Yêu Thích')" id="qf-shop-favorite" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">Shop Yêu Thích</button>
+                            <button onclick="toggleQuickFilter('shop', 'Đánh Giá')" id="qf-shop-rated" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">Đánh Giá</button>
+                        </div>
+                        
+                        <!-- Đánh Giá -->
+                        <div class="flex items-center gap-1 overflow-x-auto hide-scrollbar">
+                            <span class="text-[10px] text-gray-400 font-bold whitespace-nowrap mr-1">Sao:</span>
+                            <button onclick="toggleQuickFilter('rating', '5')" id="qf-rating-5" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 flex items-center gap-1 transition-all">5 Sao <i class="fa-solid fa-star text-yellow-400"></i></button>
+                            <button onclick="toggleQuickFilter('rating', '4')" id="qf-rating-4" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 flex items-center gap-1 transition-all">≥4 Sao <i class="fa-solid fa-star text-yellow-400"></i></button>
+                            <button onclick="toggleQuickFilter('rating', '3')" id="qf-rating-3" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 flex items-center gap-1 transition-all">≥3 Sao <i class="fa-solid fa-star text-yellow-400"></i></button>
+                            <button onclick="toggleQuickFilter('rating', '2')" id="qf-rating-2" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 flex items-center gap-1 transition-all">≥2 Sao <i class="fa-solid fa-star text-yellow-400"></i></button>
+                            <button onclick="toggleQuickFilter('rating', '1')" id="qf-rating-1" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 flex items-center gap-1 transition-all">≥1 Sao <i class="fa-solid fa-star text-yellow-400"></i></button>
+                        </div>
+
+                        <!-- Nơi Bán -->
+                        <div class="flex items-center gap-1 overflow-x-auto hide-scrollbar">
+                            <span class="text-[10px] text-gray-400 font-bold whitespace-nowrap mr-1">Tỉnh thành:</span>
+                            <button onclick="toggleQuickFilter('location', 'TP.HCM')" id="qf-loc-hcm" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">TP.HCM</button>
+                            <button onclick="toggleQuickFilter('location', 'Hà Nội')" id="qf-loc-hn" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">Hà Nội</button>
+                            <button onclick="toggleQuickFilter('location', 'Đà Nẵng')" id="qf-loc-dn" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">Đà Nẵng</button>
+                            <button onclick="toggleQuickFilter('location', 'Nước ngoài')" id="qf-loc-oversea" class="qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all">Nước ngoài</button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DANH SÁCH SẢN PHẨM KẾT QUẢ -->
+            <div class="p-3 flex-1">
+                <!-- Thông báo số lượng sản phẩm lọc -->
+                <div class="text-xs text-gray-500 mb-2 flex items-center justify-between">
+                    <span>Tìm thấy <strong id="results-count" class="text-gray-800">1</strong> sản phẩm phù hợp</span>
+                    <span id="filter-reset-indicator" class="text-red-500 cursor-pointer underline hidden" onclick="resetAllFilters()">Đặt lại bộ lọc</span>
+                </div>
+
+                <div id="results-grid" class="grid grid-cols-1 gap-3">
+                    <!-- Sẽ hiển thị sản phẩm "Nike Pacific" hoặc các sản phẩm phù hợp -->
+                </div>
+            </div>
+        </div>
+
+        <!-- DRAWER BỘ LỌC CHI TIẾT (BOTTOM SHEET / SIDE DRAWER) -->
+        <div id="filter-drawer" class="fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 hidden flex justify-end">
+            <!-- Khu vực nội dung Bộ Lọc -->
+            <div class="w-4/5 max-w-sm bg-white h-full shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300">
+                <header class="p-4 border-b border-gray-100 flex items-center justify-between">
+                    <span class="font-bold text-gray-800 text-base flex items-center gap-2">
+                        <i class="fa-solid fa-filter text-red-500"></i> Bộ Lọc Tìm Kiếm Chi Tiết
+                    </span>
+                    <button onclick="toggleFilterDrawer(false)" class="p-2 hover:bg-gray-100 rounded-full text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </header>
+
+                <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-5">
+                    <!-- Nơi bán -->
+                    <div>
+                        <span class="font-bold text-sm text-gray-800 block mb-2.5">Nơi Bán</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="toggleDrawerFilter('location', 'TP.HCM')" id="dw-loc-hcm" class="dw-btn border border-gray-200 text-gray-700 text-xs py-2 rounded-lg font-medium text-center flex items-center justify-center gap-1.5 hover:border-red-500 transition-all">
+                                <span>TP.HCM</span><i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                            <button onclick="toggleDrawerFilter('location', 'Hà Nội')" id="dw-loc-hn" class="dw-btn border border-gray-200 text-gray-700 text-xs py-2 rounded-lg font-medium text-center flex items-center justify-center gap-1.5 hover:border-red-500 transition-all">
+                                <span>Hà Nội</span><i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                            <button onclick="toggleDrawerFilter('location', 'Đà Nẵng')" id="dw-loc-dn" class="dw-btn border border-gray-200 text-gray-700 text-xs py-2 rounded-lg font-medium text-center flex items-center justify-center gap-1.5 hover:border-red-500 transition-all">
+                                <span>Đà Nẵng</span><i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                            <button onclick="toggleDrawerFilter('location', 'Nước ngoài')" id="dw-loc-oversea" class="dw-btn border border-gray-200 text-gray-700 text-xs py-2 rounded-lg font-medium text-center flex items-center justify-center gap-1.5 hover:border-red-500 transition-all">
+                                <span>Nước ngoài</span><i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Đánh giá -->
+                    <div>
+                        <span class="font-bold text-sm text-gray-800 block mb-2.5">Đánh Giá của Khách Hàng</span>
+                        <div class="flex flex-col gap-2">
+                            <button onclick="toggleDrawerFilter('rating', '5')" id="dw-rating-5" class="dw-btn w-full border border-gray-200 text-gray-700 text-xs py-2 px-3 rounded-lg font-medium flex items-center justify-between hover:border-red-500 transition-all">
+                                <span class="flex items-center gap-1">5 Sao <i class="fa-solid fa-star text-yellow-400"></i></span>
+                                <i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                            <button onclick="toggleDrawerFilter('rating', '4')" id="dw-rating-4" class="dw-btn w-full border border-gray-200 text-gray-700 text-xs py-2 px-3 rounded-lg font-medium flex items-center justify-between hover:border-red-500 transition-all">
+                                <span class="flex items-center gap-1">Từ 4 Sao <i class="fa-solid fa-star text-yellow-400"></i></span>
+                                <i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                            <button onclick="toggleDrawerFilter('rating', '3')" id="dw-rating-3" class="dw-btn w-full border border-gray-200 text-gray-700 text-xs py-2 px-3 rounded-lg font-medium flex items-center justify-between hover:border-red-500 transition-all">
+                                <span class="flex items-center gap-1">Từ 3 Sao <i class="fa-solid fa-star text-yellow-400"></i></span>
+                                <i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                            <button onclick="toggleDrawerFilter('rating', '2')" id="dw-rating-2" class="dw-btn w-full border border-gray-200 text-gray-700 text-xs py-2 px-3 rounded-lg font-medium flex items-center justify-between hover:border-red-500 transition-all">
+                                <span class="flex items-center gap-1">Từ 2 Sao <i class="fa-solid fa-star text-yellow-400"></i></span>
+                                <i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                            <button onclick="toggleDrawerFilter('rating', '1')" id="dw-rating-1" class="dw-btn w-full border border-gray-200 text-gray-700 text-xs py-2 px-3 rounded-lg font-medium flex items-center justify-between hover:border-red-500 transition-all">
+                                <span class="flex items-center gap-1">Từ 1 Sao <i class="fa-solid fa-star text-yellow-400"></i></span>
+                                <i class="fa-solid fa-check text-red-500 text-[10px] hidden"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 border-t border-gray-100 grid grid-cols-2 gap-3">
+                    <button onclick="resetAllFilters(); toggleFilterDrawer(false);" class="border border-gray-300 text-gray-600 text-sm font-semibold py-2.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-all">
+                        Thiết Lập Lại
+                    </button>
+                    <button onclick="toggleFilterDrawer(false)" class="bg-red-500 text-white text-sm font-semibold py-2.5 rounded-xl hover:bg-red-600 shadow-md shadow-red-500/20 active:scale-98 transition-all">
+                        Áp Dụng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TRANG CHI TIẾT SẢN PHẨM (PAGE: product-detail) -->
+        <!-- ========================================== -->
+        <div id="page-product-detail" class="page-content flex flex-col w-full hidden">
+            <!-- Header chi tiết sản phẩm -->
+            <header class="sticky top-0 bg-white border-b border-gray-100 z-50 px-3 py-2.5 shadow-sm flex items-center justify-between">
+                <button onclick="goToPage('search-results')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div class="font-bold text-gray-800 text-base">Chi tiết sản phẩm</div>
+                <div class="flex items-center gap-1">
+                    <button onclick="shareProduct()" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors" title="Chia sẻ">
+                        <i class="fa-regular fa-share-nodes text-lg"></i>
+                    </button>
+                    <button onclick="goToPage('cart')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors relative">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span id="cart-badge-detail" class="absolute top-0 right-0 bg-yellow-400 text-red-600 text-[10px] font-bold rounded-full h-4.5 w-4.5 flex items-center justify-center border border-white">0</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Nội dung sản phẩm -->
+            <div class="flex-1 overflow-y-auto pb-10">
+                <!-- Phần hình ảnh chính (Slide kéo ngang ảo) -->
+                <div class="w-full bg-gray-100 relative h-72 flex items-center justify-center p-4">
+                    <img id="main-product-img" src="https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png" alt="Nike Pacific" class="max-w-full max-h-full object-contain transition-all duration-300">
+                    <div class="absolute bottom-3 right-3 bg-black/60 text-white text-[10px] px-2 py-1 rounded-full font-bold">1 / 2</div>
+                </div>
+
+                <!-- Danh sách ảnh phụ nhỏ kéo ngang (Chọn ảnh phụ đổi màu viền ảnh lớn) -->
+                <div class="px-4 py-3 bg-white border-b border-gray-100">
+                    <div class="flex items-center gap-3 overflow-x-auto hide-scrollbar py-1">
+                        
+                        <!-- Ảnh chính gốc -->
+                        <div onclick="selectDetailThumbnail(0, 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png')" id="thumbnail-0" class="thumbnail-item w-14 h-14 rounded-lg bg-gray-50 border-2 border-red-500 flex-shrink-0 p-1 flex items-center justify-center cursor-pointer transition-all">
+                            <img src="https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png" class="object-contain max-h-full max-w-full">
+                        </div>
+
+                        <!-- Ảnh thứ 2 - Màu Đen / Phụ họa -->
+                        <div onclick="selectDetailThumbnail(1, 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png')" id="thumbnail-1" class="thumbnail-item w-14 h-14 rounded-lg bg-gray-50 border border-gray-200 flex-shrink-0 p-1 flex items-center justify-center cursor-pointer transition-all">
+                            <!-- Chỉnh sửa nhẹ để tượng trưng đổi màu bằng filter css khi nhấn -->
+                            <img src="https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png" class="object-contain max-h-full max-w-full hue-rotate-180">
+                        </div>
+
+                        <!-- Ảnh thứ 3 -->
+                        <div onclick="selectDetailThumbnail(2, 'https://admin.vuahanghieu.com/upload/product/2023/07/giay-the-thao-nam-nike-air-jordan-1-mid-se-craft-dm9652-102-mau-nau-trang-size-42-64b20647dae34-15072023093655.jpg')" id="thumbnail-2" class="thumbnail-item w-14 h-14 rounded-lg bg-gray-50 border border-gray-200 flex-shrink-0 p-1 flex items-center justify-center cursor-pointer transition-all">
+                            <img src="https://admin.vuahanghieu.com/upload/product/2023/07/giay-the-thao-nam-nike-air-jordan-1-mid-se-craft-dm9652-102-mau-nau-trang-size-42-64b20647dae34-15072023093655.jpg" class="object-cover max-h-full max-w-full rounded">
+                        </div>
+
+                    </div>
+                    <p class="text-[10px] text-gray-400 mt-1"><i class="fa-solid fa-hand-pointer animate-pulse mr-1"></i>Chọn ảnh nhỏ để đổi biến thể màu / góc chụp</p>
+                </div>
+
+                <!-- Thông tin chính của sản phẩm -->
+                <div class="p-4 bg-white border-b border-gray-100 flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-red-500 font-extrabold text-2xl tracking-tight">1.750.000₫</span>
+                        <!-- Nút yêu thích trái tim -->
+                        <button onclick="toggleFavorite()" id="favorite-btn" class="p-2.5 rounded-full bg-gray-50 hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors">
+                            <i id="favorite-icon" class="fa-regular fa-heart text-xl"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="text-lg font-bold text-gray-800 leading-snug">Nike Pacific · Giày Thể Thao Cao Cấp 2026</h1>
+                    
+                    <!-- Đánh giá, đã bán -->
+                    <div class="flex items-center gap-4 text-xs text-gray-500 pt-1.5 border-t border-gray-50 mt-1">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-gray-800 font-bold">5.0</span>
+                            <div class="flex text-yellow-400 gap-0.5 text-[11px]">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <span class="w-px h-3.5 bg-gray-200"></span>
+                        <div>Đã bán: <strong class="text-gray-800 font-bold">1k</strong></div>
+                        <span class="w-px h-3.5 bg-gray-200"></span>
+                        <div class="flex items-center gap-1"><i class="fa-solid fa-truck text-green-500"></i> <span class="text-green-600 font-semibold">2 - 3 ngày</span></div>
+                    </div>
+
+                    <div class="text-xs text-gray-500 flex items-center justify-between mt-1">
+                        <span>Nơi bán: <strong>TP. Hồ Chí Minh</strong></span>
+                        <span>Kho: <strong id="stock-count">99</strong> sản phẩm có sẵn</span>
+                    </div>
+                </div>
+
+                <!-- Tùy chọn Số lượng mua (- / +) -->
+                <div class="p-4 bg-white border-b border-gray-100 flex items-center justify-between">
+                    <span class="font-bold text-sm text-gray-800">Số lượng mua</span>
+                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                        <button onclick="changeDetailQty(-1)" class="px-3 py-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold transition-colors">-</button>
+                        <span id="detail-qty" class="px-5 py-1.5 font-bold text-sm text-gray-800 select-none">1</span>
+                        <button onclick="changeDetailQty(1)" class="px-3 py-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold transition-colors">+</button>
+                    </div>
+                </div>
+
+                <!-- Mô tả & Đánh giá cụ thể -->
+                <div class="p-4 bg-white mt-2 flex flex-col gap-4">
+                    <div>
+                        <span class="font-bold text-sm text-gray-800 block mb-1.5 border-b border-gray-50 pb-1.5">Mô tả Sản phẩm</span>
+                        <p class="text-xs text-gray-600 leading-relaxed">
+                            Mẫu giày Nike Pacific mang phong cách thể thao hiện đại, sở hữu bộ đệm trợ lực êm ái cùng công nghệ thoáng khí hoàn hảo. Thích hợp cho cả chạy bộ chuyên nghiệp lẫn phối đồ dạo phố. Thiết kế đón đầu xu hướng thời trang năm 2026.
+                        </p>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2.5 border-b border-gray-50 pb-1.5">
+                            <span class="font-bold text-sm text-gray-800">Đánh giá Sản phẩm (5.0★ · 120 Đánh giá)</span>
+                            <span class="text-xs text-red-500 font-semibold cursor-pointer">Xem tất cả</span>
+                        </div>
+                        <div class="flex flex-col gap-3">
+                            <div class="border-b border-gray-50 pb-2.5">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <div class="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center text-red-500 font-bold text-xs">M</div>
+                                    <div>
+                                        <div class="text-xs font-bold">Minh Thư</div>
+                                        <div class="flex text-yellow-400 text-[9px] gap-0.5"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                                    </div>
+                                </div>
+                                <p class="text-[11px] text-gray-600">Giày siêu êm luôn ạ, đúng mẫu mã, giao hàng nhanh trong 2 ngày là nhận được rồi, sẽ ủng hộ tiếp!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer chứa nút Thêm vào giỏ hàng -->
+            <footer class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-3 flex gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <button onclick="addToCart()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold text-sm py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-red-500/10 active:scale-98 transition-all">
+                    <i class="fa-solid fa-cart-plus"></i> Thêm vào Giỏ hàng
+                </button>
+            </footer>
+        </div>
+
+        <!-- THÔNG BÁO THÊM GIỎ HÀNG THÀNH CÔNG (Toast custom) -->
+        <div id="toast-success" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/85 text-white py-4 px-6 rounded-2xl flex flex-col items-center justify-center gap-2 z-50 shadow-2xl transition-all duration-300 scale-90 opacity-0 pointer-events-none">
+            <div class="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center text-white text-2xl animate-bounce">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <span class="text-sm font-bold text-center">Đã thêm giỏ hàng thành công!</span>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TRANG GIỎ HÀNG (PAGE: cart) -->
+        <!-- ========================================== -->
+        <div id="page-cart" class="page-content flex flex-col w-full hidden">
+            <!-- Header giỏ hàng -->
+            <header class="sticky top-0 bg-white border-b border-gray-100 z-50 px-3 py-2.5 shadow-sm flex items-center justify-between">
+                <button onclick="goToPage('product-detail')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div class="font-bold text-gray-800 text-base">Giỏ hàng</div>
+                <div class="w-9 h-9"></div> <!-- Placeholder cân bằng -->
+            </header>
+
+            <!-- Danh sách vật phẩm trong giỏ hàng -->
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+                <div id="cart-empty-state" class="hidden flex flex-col items-center justify-center py-10 text-gray-400">
+                    <i class="fa-solid fa-basket-shopping text-6xl mb-3 text-gray-300"></i>
+                    <p class="text-sm font-medium">Giỏ hàng của bạn đang trống</p>
+                    <button onclick="goToPage('home')" class="mt-4 bg-red-500 text-white font-bold text-xs px-5 py-2.5 rounded-lg">Tiếp tục mua sắm</button>
+                </div>
+
+                <div id="cart-items-list" class="flex flex-col gap-3">
+                    <!-- Nạp động bằng JS -->
+                </div>
+            </div>
+
+            <!-- Footer Thanh Toán -->
+            <footer class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-3 flex flex-col gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <div class="flex items-center justify-between text-sm px-1">
+                    <span class="text-gray-500 font-medium">Tổng tiền thanh toán:</span>
+                    <span id="cart-total" class="text-red-500 font-extrabold text-lg">1.750.000₫</span>
+                </div>
+                <button onclick="checkout()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold text-sm py-3 rounded-xl flex items-center justify-center gap-1.5 shadow-md shadow-red-500/10 active:scale-98 transition-all">
+                    <span>Mua hàng</span> <i class="fa-solid fa-chevron-right text-xs"></i>
+                </button>
+            </footer>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TRANG THANH TOÁN & LIÊN KẾT (PAGE: checkout) -->
+        <!-- ========================================== -->
+        <div id="page-checkout" class="page-content flex flex-col w-full hidden">
+            <!-- Header thanh toán -->
+            <header class="sticky top-0 bg-white border-b border-gray-100 z-50 px-3 py-2.5 shadow-sm flex items-center justify-between">
+                <button onclick="goToPage('cart')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div class="font-bold text-gray-800 text-base">Thanh Toán Đơn Hàng</div>
+                <div class="w-9 h-9"></div>
+            </header>
+
+            <!-- Nội dung thanh toán -->
+            <div class="flex-1 overflow-y-auto p-4 pb-12 flex flex-col gap-4">
+                <!-- Địa chỉ mặc định -->
+                <div class="bg-white border border-gray-100 p-3.5 rounded-xl shadow-sm flex gap-3 items-start">
+                    <i class="fa-solid fa-location-dot text-red-500 text-lg mt-0.5"></i>
+                    <div class="flex-1 text-xs">
+                        <div class="flex justify-between font-bold text-gray-800 mb-1">
+                            <span>Địa chỉ nhận hàng</span>
+                            <span class="text-red-500 font-semibold cursor-pointer">Thay đổi</span>
+                        </div>
+                        <p class="text-gray-700 font-semibold mb-0.5">Nguyễn Văn A · 0901234567</p>
+                        <p class="text-gray-500">123 Đường Lê Lợi, Phường Bến Thành, Quận 1, TP. Hồ Chí Minh</p>
+                    </div>
+                </div>
+
+                <!-- Danh sách sản phẩm thanh toán -->
+                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-sm">
+                    <span class="font-bold text-xs text-gray-400 block mb-3 uppercase tracking-wider">Thông tin sản phẩm</span>
+                    <div id="checkout-product-item" class="flex gap-3 items-center">
+                        <!-- Tự nạp bằng JS -->
+                    </div>
+                </div>
+
+                <!-- Phương thức thanh toán -->
+                <div class="bg-white border border-gray-100 p-4 rounded-xl shadow-sm flex flex-col gap-3">
+                    <div class="flex justify-between items-center border-b border-gray-50 pb-2.5">
+                        <span class="font-bold text-sm text-gray-800">Phương thức thanh toán</span>
+                        <!-- Nút Xem tất cả để chuyển đổi/quản lý liên kết ngân hàng -->
+                        <button onclick="goToPage('payment-methods')" class="text-xs text-red-500 font-bold flex items-center gap-1 hover:underline">
+                            <span>Xem tất cả</span> <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <!-- Hiển thị ngân hàng / ví mặc định đang chọn -->
+                    <div class="flex items-center justify-between bg-red-50/50 p-3 rounded-xl border border-red-100">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-red-500 text-white flex items-center justify-center text-lg font-black shadow-inner">
+                                HP
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold text-gray-800 block">Ví Điện Tử HiPay</span>
+                                <span id="hipay-balance-text" class="text-[11px] text-gray-500">Số dư khả dụng: 2.500.000₫</span>
+                            </div>
+                        </div>
+                        <span class="text-xs text-red-500 font-bold bg-white px-2.5 py-1 rounded-md border border-red-200">Đã chọn</span>
+                    </div>
+
+                    <!-- Ưu đãi phí vận chuyển -->
+                    <div class="flex items-center justify-between border-t border-gray-50 pt-2.5 text-xs text-gray-600">
+                        <span class="flex items-center gap-1.5 font-medium"><i class="fa-solid fa-circle-check text-green-500"></i> Ưu đãi phí vận chuyển</span>
+                        <span class="text-red-500 font-bold">Miễn phí vận chuyển -30k</span>
+                    </div>
+                </div>
+
+                <!-- Chi tiết hóa đơn -->
+                <div class="bg-gray-50 p-4 rounded-xl flex flex-col gap-2.5 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Tổng tiền hàng:</span>
+                        <span id="checkout-subtotal" class="text-gray-800 font-semibold">1.750.000₫</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-500">Phí vận chuyển:</span>
+                        <span class="text-gray-800 font-semibold">30.000₫</span>
+                    </div>
+                    <div class="flex justify-between text-green-600">
+                        <span>Giảm giá vận chuyển:</span>
+                        <span>-30.000₫</span>
+                    </div>
+                    <div class="flex justify-between border-t border-gray-200 pt-2.5 text-sm">
+                        <span class="font-bold text-gray-800">Tổng thanh toán:</span>
+                        <span id="checkout-total" class="text-red-500 font-extrabold">1.750.000₫</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút đặt hàng -->
+            <footer class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 p-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                <button onclick="placeOrder()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold text-sm py-3.5 rounded-xl shadow-lg shadow-red-500/20 active:scale-98 transition-all">
+                    Đặt hàng ngay
+                </button>
+            </footer>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TRANG PHƯƠNG THỨC THANH TOÁN (PAGE: payment-methods) -->
+        <!-- ========================================== -->
+        <div id="page-payment-methods" class="page-content flex flex-col w-full hidden">
+            <!-- Header trang quản lý ví & ngân hàng -->
+            <header class="sticky top-0 bg-white border-b border-gray-100 z-50 px-3 py-2.5 shadow-sm flex items-center justify-between">
+                <button onclick="goToPage('checkout')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div class="font-bold text-gray-800 text-base">Phương thức thanh toán</div>
+                <div class="w-9 h-9"></div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+                
+                <!-- VÍ ĐIỆN TỬ HIPAY -->
+                <div>
+                    <span class="font-bold text-xs text-gray-400 block mb-2.5 uppercase tracking-wider">Ví Điện Tử HiPay</span>
+                    <div class="bg-gradient-to-br from-red-500 to-orange-500 text-white p-4 rounded-2xl shadow-md flex flex-col gap-4 relative overflow-hidden">
+                        <div class="absolute right-[-10px] bottom-[-10px] opacity-10">
+                            <i class="fa-solid fa-wallet text-9xl"></i>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-xs text-red-100 font-medium">Số dư Ví HiPay (₫)</span>
+                                <h3 id="hipay-balance-large" class="text-2xl font-black tracking-wide mt-1">2.500.000₫</h3>
+                            </div>
+                            <button onclick="showTopupModal()" class="bg-white text-red-500 font-bold text-xs px-4 py-2 rounded-xl shadow hover:bg-yellow-100 transition-colors">
+                                <i class="fa-solid fa-circle-plus mr-1"></i> Nạp tiền
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center border-t border-white/20 pt-3 text-[11px] text-red-100">
+                            <span>Tài khoản chính chủ</span>
+                            <span>Trạng thái: Hoạt động <i class="fa-solid fa-circle-check text-yellow-300 ml-0.5"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NGÂN HÀNG LIÊN KẾT VỚI VÍ HIPAY -->
+                <div>
+                    <span class="font-bold text-xs text-gray-400 block mb-2.5 uppercase tracking-wider">Ngân hàng liên kết Ví HiPay</span>
+                    
+                    <div class="flex flex-col gap-2.5" id="linked-banks-list">
+                        <!-- Sẽ sinh ra danh sách ngân hàng tự động kèm tích đỏ -->
+                    </div>
+
+                    <!-- Nút Thêm ngân hàng liên kết -->
+                    <button onclick="goToPage('add-bank')" class="w-full mt-4 border-2 border-dashed border-gray-300 hover:border-red-400 text-gray-600 hover:text-red-500 font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-1.5 transition-colors">
+                        <i class="fa-solid fa-plus text-sm"></i>
+                        <span>Thêm ngân hàng liên kết</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TRANG THÊM NGÂN HÀNG LIÊN KẾT (PAGE: add-bank) -->
+        <!-- ========================================== -->
+        <div id="page-add-bank" class="page-content flex flex-col w-full hidden">
+            <!-- Header thêm ngân hàng -->
+            <header class="sticky top-0 bg-white border-b border-gray-100 z-50 px-3 py-2.5 shadow-sm flex items-center justify-between">
+                <button onclick="goToPage('payment-methods')" class="p-2 hover:bg-gray-100 rounded-full text-gray-600 transition-colors">
+                    <i class="fa-solid fa-arrow-left text-lg"></i>
+                </button>
+                <div class="font-bold text-gray-800 text-base">Thêm Ngân hàng liên kết</div>
+                <div class="w-9 h-9"></div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-5">
+                <!-- Hướng dẫn đăng ký, liên kết -->
+                <div class="bg-red-50 border border-red-100 p-3.5 rounded-xl flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-red-500 text-base mt-0.5"></i>
+                    <div class="text-xs text-gray-700 flex flex-col gap-1">
+                        <p class="font-bold">Hướng dẫn liên kết an toàn:</p>
+                        <p>1. Đăng ký tài khoản và liên kết với ví điện tử HiPay.</p>
+                        <p>2. Liên kết tài khoản với ví để thực hiện thanh toán tự động, nhanh chóng, bảo mật tuyệt đối.</p>
+                    </div>
+                </div>
+
+                <!-- Danh sách ngân hàng phổ biến -->
+                <div>
+                    <span class="font-bold text-xs text-gray-400 block mb-3 uppercase tracking-wider">Chọn ngân hàng của bạn</span>
+                    <div class="grid grid-cols-2 gap-2.5" id="bank-selection-list">
+                        <!-- Nạp động bằng danh sách ngân hàng -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL NẠP TIỀN VÍ HIPAY -->
+        <div id="topup-modal" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 transition-opacity duration-300 hidden">
+            <div class="bg-white rounded-2xl w-full max-w-sm p-5 shadow-2xl flex flex-col gap-4">
+                <div class="flex justify-between items-center border-b border-gray-50 pb-2">
+                    <span class="font-bold text-gray-800 text-base">Nạp tiền vào ví HiPay</span>
+                    <button onclick="hideTopupModal()" class="p-1 hover:bg-gray-100 rounded-full text-gray-400 transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="text-xs font-bold text-gray-500">Số tiền muốn nạp (₫)</label>
+                    <input id="topup-amount" type="number" value="500000" class="border border-gray-300 rounded-xl px-3.5 py-2 text-base font-bold text-gray-800 outline-none focus:border-red-500" placeholder="Nhập số tiền">
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setTopupAmount(200000)" class="border border-gray-200 hover:border-red-500 rounded-lg py-1.5 text-xs font-bold text-gray-600 hover:text-red-500">200k</button>
+                    <button onclick="setTopupAmount(500000)" class="border border-gray-200 hover:border-red-500 rounded-lg py-1.5 text-xs font-bold text-gray-600 hover:text-red-500">500k</button>
+                    <button onclick="setTopupAmount(1000000)" class="border border-gray-200 hover:border-red-500 rounded-lg py-1.5 text-xs font-bold text-gray-600 hover:text-red-500">1 Triệu</button>
+                </div>
+
+                <button onclick="confirmTopup()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl shadow-md shadow-red-500/10 transition-all">
+                    Xác nhận nạp tiền
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- ĐƠN HÀNG THÀNH CÔNG POPUP (SUCCESS SCREEN) -->
+        <!-- ========================================== -->
+        <div id="order-success-screen" class="absolute inset-0 bg-white z-50 flex flex-col items-center justify-center p-6 text-center hidden">
+            <div class="w-20 h-20 rounded-full bg-green-100 text-green-500 flex items-center justify-center text-4xl mb-4 animate-bounce">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 class="text-xl font-black text-gray-800 mb-1.5">Đặt Hàng Thành Công!</h2>
+            <p class="text-xs text-gray-500 px-4 leading-relaxed mb-6">Mã đơn hàng <strong class="text-gray-800">HISHOP-6799-M</strong> đã được tiếp nhận và xử lý hoàn toàn tự động.</p>
             
-            <!-- Nhóm Icon Camera & Micro -->
-            <div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-slate-400">
-              <button onclick="triggerVoiceSearch()" class="hover:text-orange-500 p-1 transition-colors" title="Tìm kiếm giọng nói">
-                <i data-lucide="mic" class="w-4 h-4"></i>
-              </button>
-              <button onclick="triggerCameraSearch()" class="hover:text-orange-500 p-1 transition-colors" title="Tìm kiếm bằng camera">
-                <i data-lucide="camera" class="w-4 h-4"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tìm kiếm thông minh -->
-        <div class="flex justify-end">
-          <div onclick="triggerSmartSearch()" class="flex items-center gap-1.5 text-xs text-orange-500 hover:text-orange-600 font-semibold cursor-pointer py-1 px-2.5 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-            <span>Tìm kiếm thông minh</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Lịch sử tìm kiếm -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
-        <div class="flex items-center justify-between">
-          <h3 class="font-bold text-slate-800 text-sm sm:text-base">Lịch sử tìm kiếm</h3>
-          <button onclick="clearSearchHistory()" class="text-slate-400 hover:text-red-500 text-xs flex items-center gap-1 transition-colors">
-            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-            <span>Xóa lịch sử</span>
-          </button>
-        </div>
-        <div id="search-history-container" class="flex flex-wrap gap-2">
-          <!-- Sẽ hiển thị các từ khóa cũ tại đây -->
-          <p class="text-xs text-slate-400 italic">Chưa có lịch sử tìm kiếm.</p>
-        </div>
-      </div>
-
-      <!-- Gợi ý tìm kiếm -->
-      <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-4">
-        <h3 class="font-bold text-slate-800 text-sm sm:text-base">Gợi ý tìm kiếm</h3>
-        
-        <!-- Grid 4 sản phẩm gợi ý -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          
-          <!-- Gợi ý 1: Đôi giày -->
-          <div onclick="searchProduct('Đôi giày')" class="group cursor-pointer bg-slate-50 hover:bg-orange-50 border border-transparent hover:border-orange-100 p-2 rounded-xl text-center transition-all duration-200">
-            <div class="aspect-square rounded-lg overflow-hidden bg-white mb-2 shadow-sm">
-              <img src="https://admin.vuahanghieu.com/upload/product/2023/07/giay-the-thao-nam-nike-air-jordan-1-mid-se-craft-dm9652-102-mau-nau-trang-size-42-64b20647dae34-15072023093655.jpg" alt="[Hình ảnh Đôi giày]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200'">
-            </div>
-            <span class="text-xs font-bold text-slate-700 group-hover:text-orange-600 transition-colors">Đôi giày</span>
-          </div>
-
-          <!-- Gợi ý 2: Quần Áo -->
-          <div onclick="searchProduct('Quần Áo')" class="group cursor-pointer bg-slate-50 hover:bg-orange-50 border border-transparent hover:border-orange-100 p-2 rounded-xl text-center transition-all duration-200">
-            <div class="aspect-square rounded-lg overflow-hidden bg-white mb-2 shadow-sm">
-              <img src="https://cdn.hstatic.net/products/1000392326/bak93599__k__968k_-_bqd93599__k__998k__1__f1b5786919f4475aaffc0e669b2e63f9.jpg" alt="[Hình ảnh Quần Áo]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.src='https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=200'">
-            </div>
-            <span class="text-xs font-bold text-slate-700 group-hover:text-orange-600 transition-colors">Quần Áo</span>
-          </div>
-
-          <!-- Gợi ý 3: Điện thoại -->
-          <div onclick="searchProduct('Điện thoại')" class="group cursor-pointer bg-slate-50 hover:bg-orange-50 border border-transparent hover:border-orange-100 p-2 rounded-xl text-center transition-all duration-200">
-            <div class="aspect-square rounded-lg overflow-hidden bg-white mb-2 shadow-sm">
-              <img src="https://catalog-assets-asia-southeast1.aeon-vn-prod.e.spresso.com/c3RvcmFnZS5nb29nbGVhcGlzLmNvbQ==/YWVvbnZpZXRuYW0tc3ByZXNzby1wdWJsaWM=/MjAyNQ==/U0VQVEVNQkVS/MTA4NTQyMDQgKDEp.jpg" alt="[Hình ảnh Điện thoại]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.src='https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200'">
-            </div>
-            <span class="text-xs font-bold text-slate-700 group-hover:text-orange-600 transition-colors">Điện thoại</span>
-          </div>
-
-          <!-- Gợi ý 4: Laptop -->
-          <div onclick="searchProduct('Laptop')" class="group cursor-pointer bg-slate-50 hover:bg-orange-50 border border-transparent hover:border-orange-100 p-2 rounded-xl text-center transition-all duration-200">
-            <div class="aspect-square rounded-lg overflow-hidden bg-white mb-2 shadow-sm">
-              <img src="https://images-na.ssl-images-amazon.com/images/I/61LdecwlWYL.jpg" alt="[Hình ảnh Laptop]" class="w-full h-full object-cover group-hover:scale-105 transition-transform" onerror="this.src='https://images.unsplash.com/photo-1496181130204-755241524eab?w=200'">
-            </div>
-            <span class="text-xs font-bold text-slate-700 group-hover:text-orange-600 transition-colors">Laptop</span>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- 👟 C. KẾT QUẢ TÌM KIẾM – SẢN PHẨM "ĐÔI GIÀY" -->
-    <section id="page-search-results" class="hidden animate-fade-in space-y-6">
-      
-      <!-- Header Thông Báo Kết Quả -->
-      <div class="flex items-center justify-between bg-white px-5 py-4 rounded-2xl border border-slate-100 shadow-sm">
-        <div class="flex items-center gap-3">
-          <button onclick="goBackToSearch()" class="w-9 h-9 rounded-xl hover:bg-slate-100 text-slate-600 flex items-center justify-center transition-colors">
-            <i data-lucide="arrow-left" class="w-5 h-5"></i>
-          </button>
-          <div>
-            <h2 class="font-bold text-slate-800 text-sm sm:text-base">Kết quả cho: "<span id="display-search-term" class="text-orange-500">Đôi giày</span>"</h2>
-            <p class="text-xs text-slate-400">Tìm thấy <span id="results-count" class="font-semibold text-slate-600">2</span> kết quả tương thích</p>
-          </div>
-        </div>
-        <button onclick="goToSearchPage()" class="text-xs text-orange-500 font-semibold hover:underline">Thay đổi</button>
-      </div>
-
-      <!-- Vùng hiển thị lỗi khi không tìm thấy hoặc hiển thị các kết quả khác -->
-      <div id="no-results-view" class="hidden py-12 text-center space-y-4 bg-white rounded-3xl border border-slate-100">
-        <div class="w-20 h-20 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto">
-          <i data-lucide="package-open" class="w-10 h-10"></i>
-        </div>
-        <div class="space-y-1">
-          <p class="font-bold text-slate-700 text-lg">Hệ thống đang cập nhật</p>
-          <p class="text-slate-400 text-sm max-w-sm mx-auto px-4">Hiện tại chỉ danh mục "Đôi giày", "Quần Áo", "Điện thoại" và "Laptop" được thiết lập sẵn kết quả mẫu đúng chuẩn.</p>
-        </div>
-        <button onclick="searchProduct('Đôi giày')" class="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-md">Thử từ khóa "Đôi giày"</button>
-      </div>
-
-      <!-- Danh Sách Sản Phẩm Kết Quả (Mặc định hiển thị Đôi Giày) -->
-      <div id="results-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Sản phẩm 1 -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all-custom flex flex-col sm:flex-row h-full group">
-          <!-- Hình ảnh -->
-          <div class="sm:w-1/2 aspect-square sm:aspect-auto bg-slate-50 relative overflow-hidden flex items-center justify-center p-4">
-            <img src="https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png" alt="[Hình ảnh Nike Pacific]" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'">
-            <span class="absolute top-4 left-4 bg-orange-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Mới</span>
-          </div>
-          <!-- Chi tiết sản phẩm -->
-          <div class="p-5 sm:w-1/2 flex flex-col justify-between space-y-4">
-            <div class="space-y-2">
-              <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase">Giày Sneaker Nam</span>
-              <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug hover:text-orange-500 transition-colors">Nike Pacific</h3>
-              
-              <!-- Đánh giá và số lượng bán -->
-              <div class="flex items-center gap-2">
-                <div class="flex items-center gap-0.5 text-amber-400">
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                </div>
-                <span class="text-xs text-slate-400 font-medium">(Đánh giá 5.0)</span>
-                <span class="text-xs text-slate-300">|</span>
-                <span class="text-xs text-slate-500 font-bold">Đã bán 1k</span>
-              </div>
-
-              <!-- Giá tiền -->
-              <div class="pt-1">
-                <span class="text-2xl font-black text-orange-500">1.750.000₫</span>
-                <span class="text-xs text-slate-400 line-through ml-2">2.500.000₫</span>
-              </div>
+            <div class="bg-gray-50 p-4 rounded-xl w-full flex flex-col gap-2 text-xs text-left mb-6">
+                <div class="flex justify-between"><span class="text-gray-400">Sản phẩm:</span><span class="font-bold text-gray-700">Nike Pacific x <span id="success-qty">1</span></span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Thanh toán:</span><span class="font-bold text-gray-700">Ví HiPay</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Tổng cộng:</span><span class="font-bold text-red-500" id="success-total">1.750.000₫</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Dự kiến nhận:</span><span class="font-bold text-green-600">Trong 2 - 3 ngày tới</span></div>
             </div>
 
-            <!-- Thuộc tính vận chuyển & địa điểm -->
-            <div class="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-600">
-              <div class="flex items-center gap-2">
-                <div class="w-5 h-5 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                  <i data-lucide="truck" class="w-3.5 h-3.5"></i>
-                </div>
-                <span>Thời gian giao hàng: <strong class="text-slate-800 font-semibold">2 - 3 ngày</strong></span>
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="w-5 h-5 rounded bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
-                </div>
-                <span>Giao từ: <strong class="text-slate-800 font-semibold">TP. Hồ Chí Minh</strong></span>
-              </div>
-            </div>
-
-            <!-- Nút mua hàng -->
-            <div class="pt-2">
-              <button onclick="addToCart('Nike Pacific', '1.750.000₫', 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png')" class="w-full bg-slate-900 hover:bg-orange-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all-custom shadow-sm hover:shadow-orange-500/10">
-                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                <span>Thêm vào giỏ hàng</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sản phẩm 2 (Giống hệt sản phẩm 1 theo yêu cầu) -->
-        <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all-custom flex flex-col sm:flex-row h-full group">
-          <!-- Hình ảnh -->
-          <div class="sm:w-1/2 aspect-square sm:aspect-auto bg-slate-50 relative overflow-hidden flex items-center justify-center p-4">
-            <img src="https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png" alt="[Hình ảnh Nike Pacific]" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'">
-            <span class="absolute top-4 left-4 bg-orange-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Mới</span>
-          </div>
-          <!-- Chi tiết sản phẩm -->
-          <div class="p-5 sm:w-1/2 flex flex-col justify-between space-y-4">
-            <div class="space-y-2">
-              <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase">Giày Sneaker Nam</span>
-              <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug hover:text-orange-500 transition-colors">Nike Pacific</h3>
-              
-              <!-- Đánh giá và số lượng bán -->
-              <div class="flex items-center gap-2">
-                <div class="flex items-center gap-0.5 text-amber-400">
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
-                </div>
-                <span class="text-xs text-slate-400 font-medium">(Đánh giá 5.0)</span>
-                <span class="text-xs text-slate-300">|</span>
-                <span class="text-xs text-slate-500 font-bold">Đã bán 1k</span>
-              </div>
-
-              <!-- Giá tiền -->
-              <div class="pt-1">
-                <span class="text-2xl font-black text-orange-500">1.750.000₫</span>
-                <span class="text-xs text-slate-400 line-through ml-2">2.500.000₫</span>
-              </div>
-            </div>
-
-            <!-- Thuộc tính vận chuyển & địa điểm -->
-            <div class="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-600">
-              <div class="flex items-center gap-2">
-                <div class="w-5 h-5 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                  <i data-lucide="truck" class="w-3.5 h-3.5"></i>
-                </div>
-                <span>Thời gian giao hàng: <strong class="text-slate-800 font-semibold">2 - 3 ngày</strong></span>
-              </div>
-              <div class="flex items-center gap-2">
-                <div class="w-5 h-5 rounded bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                  <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
-                </div>
-                <span>Giao từ: <strong class="text-slate-800 font-semibold">TP. Hồ Chí Minh</strong></span>
-              </div>
-            </div>
-
-            <!-- Nút mua hàng -->
-            <div class="pt-2">
-              <button onclick="addToCart('Nike Pacific', '1.750.000₫', 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png')" class="w-full bg-slate-900 hover:bg-orange-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all-custom shadow-sm hover:shadow-orange-500/10">
-                <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                <span>Thêm vào giỏ hàng</span>
-              </button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ==================== FOOTER ==================== -->
-  <footer class="bg-white border-t border-slate-100 py-6 mt-12 text-slate-500">
-    <div class="max-w-6xl mx-auto px-4 text-center space-y-2">
-      <p class="font-semibold text-slate-800">© 2026 HiShop Shopping Mall. Tất cả quyền được bảo lưu.</p>
-      <p class="text-xs text-slate-400">Thiết kế chuẩn thích ứng cho mọi thiết bị di động, tablet, laptop & desktop.</p>
-    </div>
-  </footer>
-
-  <!-- ==================== NOTIFICATION / ALERT MODAL ==================== -->
-  <div id="toast-notif" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-lg flex items-center gap-3 border border-slate-800">
-      <div class="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-white shrink-0">
-        <i data-lucide="check" class="w-4 h-4"></i>
-      </div>
-      <p id="toast-text" class="text-sm font-semibold">Đã thêm vào giỏ hàng!</p>
-    </div>
-  </div>
-
-  <!-- ==================== GIỎ HÀNG MODAL ==================== -->
-  <div id="cart-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm transition-opacity duration-300">
-    <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-white shadow-2xl flex flex-col animate-slide-in">
-      
-      <!-- Cart Header -->
-      <div class="p-5 border-b border-slate-100 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i data-lucide="shopping-bag" class="text-orange-500 w-5 h-5"></i>
-          <h3 class="font-extrabold text-slate-800 text-lg">Giỏ hàng của bạn</h3>
-        </div>
-        <button onclick="toggleCartModal()" class="w-9 h-9 rounded-full hover:bg-slate-100 flex items-center justify-center transition-colors">
-          <i data-lucide="x" class="w-5 h-5 text-slate-500"></i>
-        </button>
-      </div>
-
-      <!-- Cart Items List -->
-      <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4">
-        <!-- Rỗng mặc định -->
-        <div class="text-center py-12 space-y-3">
-          <div class="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto">
-            <i data-lucide="shopping-basket" class="w-8 h-8"></i>
-          </div>
-          <p class="text-slate-400 text-sm">Chưa có sản phẩm nào trong giỏ.</p>
-        </div>
-      </div>
-
-      <!-- Cart Footer -->
-      <div class="p-5 border-t border-slate-100 bg-slate-50 space-y-4">
-        <div class="flex items-center justify-between text-slate-700 font-bold">
-          <span>Tổng thanh toán:</span>
-          <span id="cart-total-price" class="text-xl text-orange-500">0₫</span>
-        </div>
-        <button onclick="checkoutCart()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md shadow-orange-500/10 text-center">
-          Tiến hành đặt hàng
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
-  <script>
-    // State quản lý ứng dụng
-    let currentPage = 'home';
-    let prevPage = 'home';
-    let cart = [];
-    let searchHistory = ['Đôi giày', 'Quần Áo', 'Điện thoại'];
-
-    // Dữ liệu mẫu kết quả tìm kiếm cho các từ khóa
-    const presetResults = {
-      'đôi giày': [
-        {
-          name: 'Nike Pacific',
-          price: '1.750.000₫',
-          priceNum: 1750000,
-          image: 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png',
-          subCategory: 'Giày Sneaker Nam',
-          rating: '5.0',
-          sales: '1k sản phẩm',
-          deliveryTime: '2 - 3 ngày',
-          deliveryFrom: 'TP. Hồ Chí Minh'
-        },
-        {
-          name: 'Nike Pacific',
-          price: '1.750.000₫',
-          priceNum: 1750000,
-          image: 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png',
-          subCategory: 'Giày Sneaker Nam',
-          rating: '5.0',
-          sales: '1k sản phẩm',
-          deliveryTime: '2 - 3 ngày',
-          deliveryFrom: 'TP. Hồ Chí Minh'
-        }
-      ],
-      'quần áo': [
-        {
-          name: 'Set Quần Áo Thu Đông',
-          price: '968.000₫',
-          priceNum: 968000,
-          image: 'https://cdn.hstatic.net/products/1000392326/bak93599__k__968k_-_bqd93599__k__998k__1__f1b5786919f4475aaffc0e669b2e63f9.jpg',
-          subCategory: 'Thời trang Hàn Quốc',
-          rating: '4.8',
-          sales: '1.1k sản phẩm',
-          deliveryTime: '1 - 2 ngày',
-          deliveryFrom: 'Hà Nội'
-        }
-      ],
-      'điện thoại': [
-        {
-          name: 'Smartphone AEON NewGen',
-          price: '21.990.000₫',
-          priceNum: 21990000,
-          image: 'https://catalog-assets-asia-southeast1.aeon-vn-prod.e.spresso.com/c3RvcmFnZS5nb29nbGVhcGlzLmNvbQ==/YWVvbnZpZXRuYW0tc3ByZXNzby1wdWJsaWM=/MjAyNQ==/U0VQVEVNQkVS/MTA4NTQyMDQgKDEp.jpg',
-          subCategory: 'Thiết bị di động',
-          rating: '5.0',
-          sales: '523 sản phẩm',
-          deliveryTime: '3 - 4 ngày',
-          deliveryFrom: 'Bình Dương'
-        }
-      ],
-      'laptop': [
-        {
-          name: 'Laptop Workstation UltraBook',
-          price: '18.490.000₫',
-          priceNum: 18490000,
-          image: 'https://images-na.ssl-images-amazon.com/images/I/61LdecwlWYL.jpg',
-          subCategory: 'Máy tính xách tay',
-          rating: '4.7',
-          sales: '312 sản phẩm',
-          deliveryTime: '2 - 4 ngày',
-          deliveryFrom: 'Đà Nẵng'
-        }
-      ]
-    };
-
-    // Khởi tạo icons của Lucide khi trang tải xong
-    window.addEventListener('DOMContentLoaded', () => {
-      lucide.createIcons();
-      renderSearchHistory();
-    });
-
-    // Hàm chuyển đổi giữa các view (Trang)
-    function showPage(pageId) {
-      prevPage = currentPage;
-      currentPage = pageId;
-
-      // Ẩn tất cả các page
-      document.getElementById('page-home').classList.add('hidden');
-      document.getElementById('page-search').classList.add('hidden');
-      document.getElementById('page-search-results').classList.add('hidden');
-
-      // Hiển thị page được chọn
-      document.getElementById(`page-${pageId}`).classList.remove('hidden');
-
-      // Tự động cuộn lên đầu trang
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-
-      // Cập nhật lại thanh tìm kiếm trên Header: Nếu ở trang tìm kiếm thì tạm thời ẩn đi để tránh rối mắt
-      const navSearch = document.getElementById('nav-search-container');
-      if (pageId === 'search') {
-        navSearch.classList.add('opacity-0', 'pointer-events-none');
-      } else {
-        navSearch.classList.remove('opacity-0', 'pointer-events-none');
-      }
-    }
-
-    // Nhấp vào khung tìm kiếm đầu trang -> Đi tới trang tìm kiếm
-    function goToSearchPage() {
-      showPage('search');
-      // Auto focus vào input tìm kiếm
-      setTimeout(() => {
-        const input = document.getElementById('search-input');
-        input.focus();
-        input.select();
-      }, 100);
-    }
-
-    // Nhấn nút quay lại trên trang tìm kiếm
-    function goBackToHome() {
-      showPage('home');
-    }
-
-    // Nhấn nút quay lại trên trang kết quả tìm kiếm
-    function goBackToSearch() {
-      showPage('search');
-    }
-
-    // Nhập text tìm kiếm và nhấn Enter
-    function handleSearchInput(e) {
-      if (e.key === 'Enter') {
-        const term = e.target.value.trim();
-        if (term) {
-          searchProduct(term);
-        }
-      }
-    }
-
-    // Xử lý hành động tìm kiếm một từ khóa cụ thể
-    function searchProduct(term) {
-      if (!term) return;
-
-      // Lưu vào lịch sử tìm kiếm nếu chưa có
-      if (!searchHistory.includes(term)) {
-        searchHistory.unshift(term);
-        // Giới hạn tối đa 6 từ khóa trong lịch sử
-        if (searchHistory.length > 6) searchHistory.pop();
-        renderSearchHistory();
-      }
-
-      // Cập nhật text trong thanh input & hiển thị kết quả
-      document.getElementById('search-input').value = term;
-      document.getElementById('display-search-term').innerText = term;
-
-      const normTerm = term.toLowerCase().trim();
-      const resultsGrid = document.getElementById('results-grid');
-      const noResultsView = document.getElementById('no-results-view');
-      const resultsCountText = document.getElementById('results-count');
-
-      // Xóa trống danh sách hiện tại trước khi hiển thị mới
-      resultsGrid.innerHTML = '';
-
-      if (presetResults[normTerm]) {
-        // Có dữ liệu mẫu
-        noResultsView.classList.add('hidden');
-        resultsGrid.classList.remove('hidden');
-        resultsCountText.innerText = presetResults[normTerm].length;
-
-        presetResults[normTerm].forEach(prod => {
-          resultsGrid.innerHTML += `
-            <div class="bg-white rounded-3xl overflow-hidden border border-slate-100 hover:shadow-xl transition-all-custom flex flex-col sm:flex-row h-full group">
-              <!-- Hình ảnh -->
-              <div class="sm:w-1/2 aspect-square sm:aspect-auto bg-slate-50 relative overflow-hidden flex items-center justify-center p-4">
-                <img src="${prod.image}" alt="[Hình ảnh ${prod.name}]" class="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'">
-                <span class="absolute top-4 left-4 bg-orange-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">Mới</span>
-              </div>
-              <!-- Chi tiết sản phẩm -->
-              <div class="p-5 sm:w-1/2 flex flex-col justify-between space-y-4">
-                <div class="space-y-2">
-                  <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase">${prod.subCategory}</span>
-                  <h3 class="font-extrabold text-slate-800 text-lg sm:text-xl leading-snug hover:text-orange-500 transition-colors">${prod.name}</h3>
-                  
-                  <!-- Đánh giá và số lượng bán -->
-                  <div class="flex items-center gap-2">
-                    <div class="flex items-center gap-0.5 text-amber-400">
-                      <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
-                      <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
-                      <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
-                      <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
-                      <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
-                    </div>
-                    <span class="text-xs text-slate-400 font-medium">(Đánh giá ${prod.rating})</span>
-                    <span class="text-xs text-slate-300">|</span>
-                    <span class="text-xs text-slate-500 font-bold">Đã bán ${prod.sales}</span>
-                  </div>
-
-                  <!-- Giá tiền -->
-                  <div class="pt-1">
-                    <span class="text-2xl font-black text-orange-500">${prod.price}</span>
-                  </div>
-                </div>
-
-                <!-- Thuộc tính vận chuyển & địa điểm -->
-                <div class="space-y-2 pt-2 border-t border-slate-100 text-xs text-slate-600">
-                  <div class="flex items-center gap-2">
-                    <div class="w-5 h-5 rounded bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                      <i data-lucide="truck" class="w-3.5 h-3.5"></i>
-                    </div>
-                    <span>Thời gian giao hàng: <strong class="text-slate-800 font-semibold">${prod.deliveryTime}</strong></span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="w-5 h-5 rounded bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                      <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
-                    </div>
-                    <span>Giao từ: <strong class="text-slate-800 font-semibold">${prod.deliveryFrom}</strong></span>
-                  </div>
-                </div>
-
-                <!-- Nút mua hàng -->
-                <div class="pt-2">
-                  <button onclick="addToCart('${prod.name}', '${prod.price}', '${prod.image}')" class="w-full bg-slate-900 hover:bg-orange-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all-custom shadow-sm hover:shadow-orange-500/10">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                    <span>Thêm vào giỏ hàng</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-      } else {
-        // Không tìm thấy sản phẩm mẫu nào khác
-        noResultsView.classList.remove('hidden');
-        resultsGrid.classList.add('hidden');
-        resultsCountText.innerText = 0;
-      }
-
-      showPage('search-results');
-      lucide.createIcons();
-    }
-
-    // Render lịch sử tìm kiếm lên giao diện
-    function renderSearchHistory() {
-      const container = document.getElementById('search-history-container');
-      if (searchHistory.length === 0) {
-        container.innerHTML = '<p class="text-xs text-slate-400 italic">Chưa có lịch sử tìm kiếm.</p>';
-        return;
-      }
-
-      container.innerHTML = searchHistory.map(term => `
-        <div onclick="searchProduct('${term}')" class="flex items-center gap-1.5 bg-slate-100 hover:bg-orange-50 hover:text-orange-600 text-slate-600 px-3 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all duration-150">
-          <i data-lucide="clock" class="w-3 h-3 text-slate-400"></i>
-          <span>${term}</span>
-        </div>
-      `).join('');
-      
-      lucide.createIcons();
-    }
-
-    // Xóa lịch sử tìm kiếm
-    function clearSearchHistory() {
-      searchHistory = [];
-      renderSearchHistory();
-      showToast('Đã xóa toàn bộ lịch sử tìm kiếm!');
-    }
-
-    // Giả lập tính năng Tìm kiếm thông minh
-    function triggerSmartSearch() {
-      showToast('Tính năng "Tìm kiếm thông minh AI" đang phân tích hành vi mua sắm của bạn!');
-      setTimeout(() => {
-        searchProduct('Đôi giày');
-      }, 1000);
-    }
-
-    // Giả lập tìm kiếm bằng Camera
-    function triggerCameraSearch() {
-      showToast('Vui lòng cấp quyền truy cập Camera để quét sản phẩm!');
-    }
-
-    // Giả lập tìm kiếm bằng Micro
-    function triggerVoiceSearch() {
-      showToast('Đang lắng nghe... Hãy nói từ khóa sản phẩm cần tìm!');
-    }
-
-    // Giỏ hàng: Bật/Tắt Modal
-    function toggleCartModal() {
-      const modal = document.getElementById('cart-modal');
-      if (modal.classList.contains('hidden')) {
-        modal.classList.remove('hidden');
-        // Kích hoạt animation slide-in bằng CSS class hoặc tương tự
-      } else {
-        modal.classList.add('hidden');
-      }
-    }
-
-    // Thêm một mặt hàng vào Giỏ hàng
-    function addToCart(name, price, image) {
-      // Tìm xem đã tồn tại chưa
-      const existing = cart.find(item => item.name === name);
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        cart.push({ name, price, image, quantity: 1 });
-      }
-
-      updateCartUI();
-      showToast(`Đã thêm "${name}" vào giỏ hàng thành công!`);
-    }
-
-    // Xóa mặt hàng khỏi Giỏ hàng
-    function removeFromCart(name) {
-      cart = cart.filter(item => item.name !== name);
-      updateCartUI();
-      showToast('Đã xóa sản phẩm khỏi giỏ hàng.');
-    }
-
-    // Thay đổi số lượng mặt hàng
-    function changeQty(name, amount) {
-      const item = cart.find(item => item.name === name);
-      if (item) {
-        item.quantity += amount;
-        if (item.quantity <= 0) {
-          removeFromCart(name);
-          return;
-        }
-      }
-      updateCartUI();
-    }
-
-    // Cập nhật giao diện Giỏ hàng
-    function updateCartUI() {
-      const badge = document.getElementById('cart-badge');
-      const container = document.getElementById('cart-items-container');
-      const totalText = document.getElementById('cart-total-price');
-
-      // Cập nhật số lượng huy hiệu trên icon Giỏ hàng
-      const totalItems = cart.reduce((acc, curr) => acc + curr.quantity, 0);
-      badge.innerText = totalItems;
-
-      if (cart.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-12 space-y-3">
-            <div class="w-16 h-16 bg-slate-50 text-slate-300 rounded-full flex items-center justify-center mx-auto">
-              <i data-lucide="shopping-basket" class="w-8 h-8"></i>
-            </div>
-            <p class="text-slate-400 text-sm">Chưa có sản phẩm nào trong giỏ.</p>
-          </div>
-        `;
-        totalText.innerText = '0₫';
-        lucide.createIcons();
-        return;
-      }
-
-      // Render danh sách sản phẩm trong giỏ hàng
-      let html = '';
-      let totalPrice = 0;
-
-      cart.forEach(item => {
-        // Chuyển đổi định dạng giá sang số để nhân số lượng
-        const priceNum = parseInt(item.price.replace(/\./g, '').replace('₫', ''));
-        const subTotal = priceNum * item.quantity;
-        totalPrice += subTotal;
-
-        html += `
-          <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl bg-white border border-slate-100">
-            <div class="flex-1 space-y-1">
-              <h4 class="font-bold text-slate-800 text-sm line-clamp-1">${item.name}</h4>
-              <p class="text-xs text-orange-500 font-semibold">${item.price}</p>
-              
-              <!-- Tăng giảm số lượng -->
-              <div class="flex items-center gap-2 mt-1">
-                <button onclick="changeQty('${item.name}', -1)" class="w-6 h-6 rounded bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors">
-                  <i data-lucide="minus" class="w-3 h-3"></i>
-                </button>
-                <span class="text-xs font-bold text-slate-700 min-w-[20px] text-center">${item.quantity}</span>
-                <button onclick="changeQty('${item.name}', 1)" class="w-6 h-6 rounded bg-white border border-slate-200 flex items-center justify-center text-slate-600 hover:bg-slate-100 transition-colors">
-                  <i data-lucide="plus" class="w-3 h-3"></i>
-                </button>
-              </div>
-            </div>
-            <!-- Xóa mặt hàng -->
-            <button onclick="removeFromCart('${item.name}')" class="text-slate-400 hover:text-red-500 p-1.5 transition-colors">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            <button onclick="restartShopping()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-xl shadow-md shadow-red-500/15">
+                Tiếp tục mua sắm
             </button>
-          </div>
-        `;
-      });
+        </div>
 
-      container.innerHTML = html;
-      totalText.innerText = formatCurrency(totalPrice);
-      lucide.createIcons();
-    }
+        <!-- BOTTOM NAV BAR (Chỉ hiển thị khi đang ở Home/Search/Results) -->
+        <nav id="bottom-nav" class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 flex justify-around py-2.5 z-40 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.02)]">
+            <button onclick="goToPage('home')" id="nav-home" class="flex flex-col items-center text-red-500 transition-colors">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[9px] font-bold mt-0.5">Trang chủ</span>
+            </button>
+            <button onclick="goToPage('search')" id="nav-search" class="flex flex-col items-center text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                <span class="text-[9px] font-bold mt-0.5">Tìm kiếm</span>
+            </button>
+            <button onclick="goToPage('cart')" id="nav-cart" class="flex flex-col items-center text-gray-400 hover:text-red-500 transition-colors relative">
+                <i class="fa-solid fa-cart-shopping text-lg"></i>
+                <span class="text-[9px] font-bold mt-0.5">Giỏ hàng</span>
+                <span id="cart-badge-nav" class="absolute top-[-4px] right-[4px] bg-yellow-400 text-red-600 text-[9px] font-bold rounded-full h-4 w-4 flex items-center justify-center border border-white">0</span>
+            </button>
+            <button onclick="goToPage('payment-methods')" id="nav-payment" class="flex flex-col items-center text-gray-400 hover:text-red-500 transition-colors">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span class="text-[9px] font-bold mt-0.5">Ví HiPay</span>
+            </button>
+        </nav>
 
-    // Format tiền tệ
-    function formatCurrency(num) {
-      return num.toLocaleString('vi-VN') + '₫';
-    }
+    </div>
 
-    // Trình diễn thông báo Toast nổi
-    function showToast(text) {
-      const toast = document.getElementById('toast-notif');
-      const toastText = document.getElementById('toast-text');
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT - LOGIC XỬ LÝ TOÀN BỘ TRANG -->
+    <!-- ========================================== -->
+    <script>
+        // TRẠNG THÁI TOÀN CỤC CỦA HI SHOP
+        const state = {
+            currentTab: 'home',
+            cart: [
+                {
+                    id: 'nike-pacific',
+                    name: 'Nike Pacific',
+                    price: 1750000,
+                    qty: 1,
+                    img: 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png',
+                    checked: true
+                }
+            ],
+            history: ['Đôi giày', 'Quần Áo', 'Điện thoại', 'Laptop'],
+            currentDetailQty: 1,
+            selectedColorThumbnail: 0,
+            hipayBalance: 2500000,
+            
+            // Các giá trị của bộ lọc tìm kiếm đang kích hoạt
+            filters: {
+                shop: null, // HiShop Mall, HiShop Xử Lý, Shop Yêu Thích, Đánh Giá
+                rating: null, // 5, 4, 3, 2, 1 (đại diện cho sao)
+                location: 'TP.HCM', // TP.HCM, Hà Nội, Đà Nẵng, Nước ngoài
+                sort: 'rel' // rel, new, sales, rating-desc, rating-asc
+            },
 
-      toastText.innerText = text;
-      toast.classList.remove('opacity-0', 'translate-y-20', 'pointer-events-none');
-      toast.classList.add('opacity-100', 'translate-y-0');
+            // Danh sách cơ sở dữ liệu ảo của 4 sản phẩm theo đề bài
+            productsDb: [
+                {
+                    id: 'nike-pacific',
+                    name: 'Nike Pacific',
+                    price: 1750000,
+                    rating: 5,
+                    sales: 1000, // 1k
+                    deliveryTime: '2 - 3 ngày',
+                    location: 'TP.HCM',
+                    shopType: 'HiShop Mall',
+                    img: 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png',
+                    tags: ['Đôi giày', 'giày', 'nike']
+                },
+                {
+                    id: 'clothes',
+                    name: 'Combo Quần Áo Thu Đông Cao Cấp',
+                    price: 968000,
+                    rating: 4,
+                    sales: 450,
+                    deliveryTime: '3 - 5 ngày',
+                    location: 'Hà Nội',
+                    shopType: 'Shop Yêu Thích',
+                    img: 'https://cdn.hstatic.net/products/1000392326/bak93599__k__968k_-_bqd93599__k__998k__1__f1b5786919f4475aaffc0e669b2e63f9.jpg',
+                    tags: ['Quần Áo', 'quần', 'áo', 'thời trang']
+                },
+                {
+                    id: 'phone',
+                    name: 'Điện Thoại HiPhone 15 Pro Max',
+                    price: 28990000,
+                    rating: 5,
+                    sales: 890,
+                    deliveryTime: '1 - 2 ngày',
+                    location: 'TP.HCM',
+                    shopType: 'HiShop Mall',
+                    img: 'https://catalog-assets-asia-southeast1.aeon-vn-prod.e.spresso.com/c3RvcmFnZS5nb29nbGVhcGlzLmNvbQ==/YWVvbnZpZXRuYW0tc3ByZXNzby1wdWJsaWM=/MjAyNQ==/U0VQVEVNQkVS/MTA4NTQyMDQgKDEp.jpg',
+                    tags: ['Điện thoại', 'điện thoại', 'iphone', 'smartphone']
+                },
+                {
+                    id: 'laptop',
+                    name: 'Laptop Gaming Legion Master Extreme',
+                    price: 34500000,
+                    rating: 4.8,
+                    sales: 230,
+                    deliveryTime: '4 - 6 ngày',
+                    location: 'Đà Nẵng',
+                    shopType: 'HiShop Xử Lý',
+                    img: 'https://images-na.ssl-images-amazon.com/images/I/61LdecwlWYL.jpg',
+                    tags: ['Laptop', 'laptop', 'máy tính', 'pc']
+                }
+            ],
 
-      setTimeout(() => {
-        toast.classList.remove('opacity-100', 'translate-y-0');
-        toast.classList.add('opacity-0', 'translate-y-20', 'pointer-events-none');
-      }, 2500);
-    }
+            // Các ngân hàng để người dùng liên kết
+            banks: [
+                { id: 'vcb', name: 'Vietcombank', code: 'VCB', img: '🏦', color: 'bg-green-600', linked: true },
+                { id: 'tcb', name: 'Techcombank', code: 'TCB', img: '🏦', color: 'bg-red-600', linked: false },
+                { id: 'mb', name: 'MB Bank', code: 'MBB', img: '🏦', color: 'bg-blue-800', linked: false },
+                { id: 'bidv', name: 'BIDV', code: 'BIDV', img: '🏦', color: 'bg-blue-600', linked: false },
+                { id: 'acb', name: 'ACB Bank', code: 'ACB', img: '🏦', color: 'bg-blue-500', linked: false }
+            ]
+        };
 
-    // Giả lập đặt hàng
-    function checkoutCart() {
-      if (cart.length === 0) {
-        showToast('Giỏ hàng trống! Hãy thêm sản phẩm trước khi thanh toán.');
-        return;
-      }
-      showToast('🛒 Đặt hàng thành công! Đơn hàng của bạn đang được xử lý.');
-      cart = [];
-      updateCartUI();
-      toggleCartModal();
-    }
-  </script>
+        // KHI TRANG TẢI XONG
+        window.onload = function() {
+            renderSearchHistory();
+            renderLinkedBanks();
+            renderBankSelection();
+            updateCartBadges();
+            
+            // Xử lý nút Enter cho ô tìm kiếm
+            document.getElementById('search-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSearchSubmit();
+                }
+            });
+        };
+
+        // CHUYỂN TRANG MƯỢT MÀ
+        function goToPage(pageId) {
+            // Ẩn tất cả các trang
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(p => p.classList.add('hidden'));
+
+            // Hiện trang được chọn
+            const targetPage = document.getElementById(`page-${pageId}`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                state.currentTab = pageId;
+            }
+
+            // Đồng bộ thanh Nav dưới cùng
+            const bottomNav = document.getElementById('bottom-nav');
+            if (['home', 'search', 'search-results'].includes(pageId)) {
+                bottomNav.classList.remove('hidden');
+            } else {
+                bottomNav.classList.add('hidden');
+            }
+
+            // Cập nhật trạng thái active trên Nav
+            const navButtons = ['home', 'search', 'cart', 'payment'];
+            navButtons.forEach(btn => {
+                const el = document.getElementById(`nav-${btn}`);
+                if (el) {
+                    if (btn === pageId || (btn === 'search' && pageId === 'search-results')) {
+                        el.classList.add('text-red-500');
+                        el.classList.remove('text-gray-400');
+                    } else {
+                        el.classList.remove('text-red-500');
+                        el.classList.add('text-gray-400');
+                    }
+                }
+            });
+
+            // Nếu vào trang giỏ hàng thì vẽ lại giỏ hàng
+            if (pageId === 'cart') {
+                renderCartList();
+            }
+
+            // Nếu vào trang thanh toán thì cập nhật tổng quan
+            if (pageId === 'checkout') {
+                renderCheckoutSummary();
+            }
+
+            // Cuộn về đầu trang
+            document.getElementById('app-container').scrollTop = 0;
+        }
+
+        // ==========================================
+        // CÁC CHỨC NĂNG TRANG TÌM KIẾM & BỘ LỌC
+        // ==========================================
+
+        // Vẽ lại Lịch sử tìm kiếm
+        function renderSearchHistory() {
+            const listContainer = document.getElementById('search-history-list');
+            listContainer.innerHTML = '';
+
+            if (state.history.length === 0) {
+                listContainer.innerHTML = `<span class="text-xs text-gray-400 italic">Không có lịch sử tìm kiếm</span>`;
+                return;
+            }
+
+            state.history.forEach(item => {
+                const tag = document.createElement('button');
+                tag.className = "text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-red-50 hover:text-red-500 px-3.5 py-1.5 rounded-full transition-all";
+                tag.textContent = item;
+                tag.onclick = () => selectSearchSuggestion(item);
+                listContainer.appendChild(tag);
+            });
+        }
+
+        // Xóa sạch lịch sử tìm kiếm
+        function clearSearchHistory() {
+            state.history = [];
+            renderSearchHistory();
+        }
+
+        // Chọn gợi ý tìm kiếm / lịch sử tìm kiếm
+        function selectSearchSuggestion(term) {
+            document.getElementById('search-input').value = term;
+            executeSearch(term);
+        }
+
+        // Gửi lệnh tìm kiếm
+        function handleSearchSubmit() {
+            const term = document.getElementById('search-input').value.trim() || "Đôi giày";
+            if (!state.history.includes(term)) {
+                state.history.unshift(term);
+                if (state.history.length > 8) state.history.pop();
+            }
+            renderSearchHistory();
+            executeSearch(term);
+        }
+
+        // Thực thi việc Tìm kiếm và Lọc
+        function executeSearch(term) {
+            document.getElementById('results-search-term').textContent = term;
+            goToPage('search-results');
+            renderProductResults(term);
+        }
+
+        // Lọc và Sắp xếp kết quả tìm kiếm
+        function renderProductResults(term) {
+            const resultsGrid = document.getElementById('results-grid');
+            resultsGrid.innerHTML = '';
+
+            // 1. Lọc sản phẩm theo keyword
+            let matchedProducts = state.productsDb.filter(prod => {
+                const termLower = term.toLowerCase();
+                return prod.name.toLowerCase().includes(termLower) || 
+                       prod.tags.some(tag => tag.toLowerCase().includes(termLower));
+            });
+
+            // Nếu người dùng gõ từ khóa không khớp, hiển thị toàn bộ hoặc gợi ý đôi giày làm mẫu
+            if (matchedProducts.length === 0) {
+                matchedProducts = state.productsDb; // Hiện hết để người dùng dễ thao tác mua sắm
+            }
+
+            // 2. Lọc theo Loại shop (Nếu chọn)
+            if (state.filters.shop) {
+                matchedProducts = matchedProducts.filter(prod => prod.shopType === state.filters.shop);
+            }
+
+            // 3. Lọc theo Đánh giá
+            if (state.filters.rating) {
+                const minRating = parseFloat(state.filters.rating);
+                matchedProducts = matchedProducts.filter(prod => prod.rating >= minRating);
+            }
+
+            // 4. Lọc theo Nơi bán
+            if (state.filters.location) {
+                matchedProducts = matchedProducts.filter(prod => prod.location === state.filters.location);
+            }
+
+            // 5. Áp dụng sắp xếp
+            if (state.filters.sort === 'rel') {
+                // Giữ nguyên hoặc mặc định
+            } else if (state.filters.sort === 'new') {
+                // Sắp xếp ID đảo ngược làm ví dụ mới nhất
+                matchedProducts.sort((a, b) => b.id.localeCompare(a.id));
+            } else if (state.filters.sort === 'sales') {
+                matchedProducts.sort((a, b) => b.sales - a.sales);
+            } else if (state.filters.sort === 'rating-desc') {
+                matchedProducts.sort((a, b) => b.rating - a.rating);
+            } else if (state.filters.sort === 'rating-asc') {
+                matchedProducts.sort((a, b) => a.rating - b.rating);
+            }
+
+            // Cập nhật số lượng
+            document.getElementById('results-count').textContent = matchedProducts.length;
+
+            // Hiển thị chỉ báo Đặt lại nếu bộ lọc đang bị chỉnh sửa khác mặc định
+            if (state.filters.shop || state.filters.rating || state.filters.location !== 'TP.HCM' || state.filters.sort !== 'rel') {
+                document.getElementById('filter-reset-indicator').classList.remove('hidden');
+            } else {
+                document.getElementById('filter-reset-indicator').classList.add('hidden');
+            }
+
+            // Vẽ danh sách
+            if (matchedProducts.length === 0) {
+                resultsGrid.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-10 text-gray-400 text-center">
+                        <i class="fa-solid fa-hourglass-empty text-5xl mb-3 text-gray-300"></i>
+                        <p class="text-sm font-bold">Không tìm thấy sản phẩm!</p>
+                        <p class="text-[11px] mt-1 text-gray-400">Vui lòng thử đặt lại bộ lọc hoặc tìm từ khóa khác</p>
+                    </div>
+                `;
+                return;
+            }
+
+            matchedProducts.forEach(prod => {
+                const isNike = prod.id === 'nike-pacific';
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl p-3 border border-gray-100 hover:border-red-300 shadow-sm hover:shadow transition-all flex gap-3 cursor-pointer";
+                card.onclick = () => {
+                    if (isNike) {
+                        viewProductDetail();
+                    } else {
+                        // Demo mở sản phẩm khác nhưng cập nhật hình ảnh chi tiết mẫu
+                        viewProductDetailGeneric(prod);
+                    }
+                };
+
+                // Nhãn cửa hàng nổi bật
+                let shopBadge = `<span class="bg-red-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded mr-1">${prod.shopType}</span>`;
+                if (prod.shopType === 'Shop Yêu Thích') {
+                    shopBadge = `<span class="bg-orange-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded mr-1">Yêu Thích</span>`;
+                } else if (prod.shopType === 'HiShop Xử Lý') {
+                    shopBadge = `<span class="bg-blue-500 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded mr-1">HiShop Xử Lý</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="w-28 h-28 bg-gray-50 rounded-xl overflow-hidden flex items-center justify-center p-1.5 flex-shrink-0">
+                        <img src="${prod.img}" alt="${prod.name}" class="max-h-full max-w-full object-contain">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <div class="line-clamp-2 text-xs font-bold text-gray-800 leading-tight mb-1">
+                                ${shopBadge}${prod.name}
+                            </div>
+                            <div class="flex items-center gap-1.5 text-xs">
+                                <span class="text-red-500 font-extrabold text-sm">${prod.price.toLocaleString('vi-VN')}₫</span>
+                            </div>
+                        </div>
+                        <div class="text-[11px] text-gray-500 flex flex-col gap-0.5 border-t border-gray-50 pt-1">
+                            <div class="flex items-center justify-between">
+                                <span class="flex items-center gap-1"><i class="fa-solid fa-star text-yellow-400 text-[10px]"></i> <strong class="text-gray-700">${prod.rating}</strong> | Đã bán ${prod.sales >= 1000 ? '1k+' : prod.sales}</span>
+                                <span class="text-gray-400 text-[10px]"><i class="fa-solid fa-location-dot"></i> ${prod.location}</span>
+                            </div>
+                            <div class="text-[10px] text-green-600 font-semibold flex items-center gap-1 mt-0.5">
+                                <i class="fa-solid fa-truck-fast"></i> Giao nhanh: ${prod.deliveryTime}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                resultsGrid.appendChild(card);
+            });
+
+            // Đồng bộ trạng thái UI của nút Sắp xếp & Lọc
+            syncFilterUI();
+        }
+
+        // Đồng bộ trạng thái active của Sắp Xếp & Bộ Lọc Nhanh lên giao diện
+        function syncFilterUI() {
+            // 1. Nhóm Sắp Xếp
+            const sortTypes = ['rel', 'new', 'sales', 'rating-desc', 'rating-asc'];
+            sortTypes.forEach(type => {
+                const btn = document.getElementById(`sort-${type}`);
+                if (btn) {
+                    if (state.filters.sort === type) {
+                        btn.className = "sort-btn px-3 py-1 bg-red-100 text-red-500 border border-red-200 rounded-full text-xs font-bold whitespace-nowrap flex items-center gap-1 transition-colors";
+                        btn.querySelector('i').classList.remove('hidden');
+                    } else {
+                        btn.className = "sort-btn px-3 py-1 bg-white text-gray-600 border border-gray-200 rounded-full text-xs font-medium whitespace-nowrap flex items-center gap-1 transition-colors";
+                        btn.querySelector('i').classList.add('hidden');
+                    }
+                }
+            });
+
+            // 2. Nhóm Lọc Nhanh (Shop Type)
+            const shopFilters = {
+                'HiShop Mall': 'qf-shop-mall',
+                'HiShop Xử Lý': 'qf-shop-process',
+                'Shop Yêu Thích': 'qf-shop-favorite',
+                'Đánh Giá': 'qf-shop-rated'
+            };
+            Object.keys(shopFilters).forEach(key => {
+                const el = document.getElementById(shopFilters[key]);
+                if (el) {
+                    if (state.filters.shop === key) {
+                        el.className = "qf-btn text-[11px] font-bold bg-red-500 border border-red-500 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-white transition-all";
+                    } else {
+                        el.className = "qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all";
+                    }
+                }
+            });
+
+            // 3. Nhóm Lọc Nhanh (Rating)
+            for (let r = 1; r <= 5; r++) {
+                const el = document.getElementById(`qf-rating-${r}`);
+                if (el) {
+                    if (state.filters.rating === String(r)) {
+                        el.className = "qf-btn text-[11px] font-bold bg-red-500 border border-red-500 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-white flex items-center gap-1 transition-all";
+                    } else {
+                        el.className = "qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 flex items-center gap-1 transition-all";
+                    }
+                }
+            }
+
+            // 4. Nhóm Lọc Nhanh (Location)
+            const locFilters = {
+                'TP.HCM': 'qf-loc-hcm',
+                'Hà Nội': 'qf-loc-hn',
+                'Đà Nẵng': 'qf-loc-dn',
+                'Nước ngoài': 'qf-loc-oversea'
+            };
+            Object.keys(locFilters).forEach(key => {
+                const el = document.getElementById(locFilters[key]);
+                if (el) {
+                    if (state.filters.location === key) {
+                        el.className = "qf-btn text-[11px] font-bold bg-red-500 border border-red-500 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-white transition-all";
+                    } else {
+                        el.className = "qf-btn text-[11px] font-medium bg-white border border-gray-200 rounded-lg px-2.5 py-0.5 whitespace-nowrap text-gray-600 transition-all";
+                    }
+                }
+            });
+
+            // 5. Cập nhật giao diện trong Drawer Lọc Chi Tiết (Tích Đỏ + Viền Đỏ)
+            // Đánh Giá trong Drawer
+            for (let r = 1; r <= 5; r++) {
+                const dwEl = document.getElementById(`dw-rating-${r}`);
+                if (dwEl) {
+                    if (state.filters.rating === String(r)) {
+                        dwEl.className = "dw-btn w-full border-2 border-red-500 text-red-500 bg-red-50/20 text-xs py-2 px-3 rounded-lg font-bold flex items-center justify-between transition-all";
+                        dwEl.querySelector('.fa-check').classList.remove('hidden');
+                    } else {
+                        dwEl.className = "dw-btn w-full border border-gray-200 text-gray-700 text-xs py-2 px-3 rounded-lg font-medium flex items-center justify-between hover:border-red-500 transition-all";
+                        dwEl.querySelector('.fa-check').classList.add('hidden');
+                    }
+                }
+            }
+
+            // Nơi bán trong Drawer
+            const dwLocFilters = {
+                'TP.HCM': 'dw-loc-hcm',
+                'Hà Nội': 'dw-loc-hn',
+                'Đà Nẵng': 'dw-loc-dn',
+                'Nước ngoài': 'dw-loc-oversea'
+            };
+            Object.keys(dwLocFilters).forEach(key => {
+                const dwEl = document.getElementById(dwLocFilters[key]);
+                if (dwEl) {
+                    if (state.filters.location === key) {
+                        dwEl.className = "dw-btn border-2 border-red-500 text-red-500 bg-red-50/20 text-xs py-2 rounded-lg font-bold text-center flex items-center justify-center gap-1.5 transition-all";
+                        dwEl.querySelector('.fa-check').classList.remove('hidden');
+                    } else {
+                        dwEl.className = "dw-btn border border-gray-200 text-gray-700 text-xs py-2 rounded-lg font-medium text-center flex items-center justify-center gap-1.5 hover:border-red-500 transition-all";
+                        dwEl.querySelector('.fa-check').classList.add('hidden');
+                    }
+                }
+            });
+        }
+
+        // Sắp xếp trực tiếp
+        function applySort(sortType) {
+            state.filters.sort = sortType;
+            const term = document.getElementById('results-search-term').textContent;
+            renderProductResults(term);
+        }
+
+        // Đổi trạng thái Lọc nhanh
+        function toggleQuickFilter(type, value) {
+            if (state.filters[type] === value) {
+                // Nếu click lại cái đang chọn thì bỏ chọn (trừ Location để luôn có mặc định hoặc reset)
+                state.filters[type] = (type === 'location') ? 'TP.HCM' : null;
+            } else {
+                state.filters[type] = value;
+            }
+            const term = document.getElementById('results-search-term').textContent;
+            renderProductResults(term);
+        }
+
+        // Đổi trạng thái trong Drawer lọc chi tiết
+        function toggleDrawerFilter(type, value) {
+            state.filters[type] = (state.filters[type] === value) ? null : value;
+            syncFilterUI();
+        }
+
+        // Bật/Tắt Drawer lọc chi tiết
+        function toggleFilterDrawer(isOpen) {
+            const drawer = document.getElementById('filter-drawer');
+            const drawerContent = drawer.querySelector('.transform');
+            if (isOpen) {
+                drawer.classList.remove('hidden');
+                setTimeout(() => {
+                    drawerContent.classList.remove('translate-x-full');
+                }, 10);
+            } else {
+                drawerContent.classList.add('translate-x-full');
+                setTimeout(() => {
+                    drawer.classList.add('hidden');
+                    // Áp dụng bộ lọc sau khi đóng
+                    const term = document.getElementById('results-search-term').textContent;
+                    renderProductResults(term);
+                }, 300);
+            }
+        }
+
+        // Thiết lập lại tất cả bộ lọc về mặc định
+        function resetAllFilters() {
+            state.filters = {
+                shop: null,
+                rating: null,
+                location: 'TP.HCM',
+                sort: 'rel'
+            };
+            const term = document.getElementById('results-search-term').textContent;
+            renderProductResults(term);
+        }
+
+
+        // ==========================================
+        // CHI TIẾT SẢN PHẨM & CÁC CHỌN LỰA
+        // ==========================================
+
+        // Xem chi tiết đôi giày Nike Pacific
+        function viewProductDetail() {
+            state.currentDetailQty = 1;
+            document.getElementById('detail-qty').textContent = state.currentDetailQty;
+            
+            // Khôi phục hình ảnh gốc
+            document.getElementById('main-product-img').src = "https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png";
+            document.getElementById('main-product-img').className = "max-w-full max-h-full object-contain transition-all duration-300";
+            
+            // Đặt lại các Thumbnail viền đỏ
+            selectDetailThumbnail(0, 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png');
+            
+            goToPage('product-detail');
+        }
+
+        // Xem chi tiết một sản phẩm bất kỳ (tượng trưng hóa thông tin giày cho đồng bộ)
+        function viewProductDetailGeneric(prod) {
+            // Với các sản phẩm demo khác, cập nhật ảnh chính và nhảy vào trang chi tiết cho sinh động
+            viewProductDetail();
+            document.getElementById('main-product-img').src = prod.img;
+            document.getElementById('thumbnail-0').querySelector('img').src = prod.img;
+            document.getElementById('thumbnail-1').querySelector('img').src = prod.img;
+            // Thay đổi tiêu đề tạm
+            document.querySelector('#page-product-detail h1').textContent = prod.name;
+            document.querySelector('#page-product-detail .text-red-500.font-extrabold').textContent = prod.price.toLocaleString('vi-VN') + '₫';
+        }
+
+        // Chọn hình ảnh phụ đổi biến thể
+        function selectDetailThumbnail(index, imgSrc) {
+            state.selectedColorThumbnail = index;
+            
+            // Reset toàn bộ viền
+            document.querySelectorAll('.thumbnail-item').forEach(el => {
+                el.className = "thumbnail-item w-14 h-14 rounded-lg bg-gray-50 border border-gray-200 flex-shrink-0 p-1 flex items-center justify-center cursor-pointer transition-all";
+            });
+
+            // Đặt viền đỏ cho thumbnail được chọn
+            const activeThumbnail = document.getElementById(`thumbnail-${index}`);
+            if (activeThumbnail) {
+                activeThumbnail.className = "thumbnail-item w-14 h-14 rounded-lg bg-gray-50 border-2 border-red-500 flex-shrink-0 p-1 flex items-center justify-center cursor-pointer transition-all";
+            }
+
+            // Đổi màu / đổi hình ảnh chính sang màu đỏ viền khi nhấn vào ảnh nhỏ đặc biệt
+            const mainImg = document.getElementById('main-product-img');
+            mainImg.src = imgSrc;
+
+            // Nếu người dùng chọn ảnh màu xanh biển biến thể (index 1), thêm hiệu ứng đỏ đặc biệt/viền để thể hiện màu sắc thay đổi
+            if (index === 1) {
+                mainImg.className = "max-w-full max-h-full object-contain transition-all duration-300 border-4 border-red-500/80 rounded-2xl hue-rotate-180";
+            } else {
+                mainImg.className = "max-w-full max-h-full object-contain transition-all duration-300";
+            }
+        }
+
+        // Thay đổi số lượng mua (- / +)
+        function changeDetailQty(amount) {
+            state.currentDetailQty += amount;
+            if (state.currentDetailQty < 1) state.currentDetailQty = 1;
+            if (state.currentDetailQty > 99) state.currentDetailQty = 99;
+            document.getElementById('detail-qty').textContent = state.currentDetailQty;
+        }
+
+        // Chia sẻ sản phẩm ảo
+        function shareProduct() {
+            // Copy link tượng trưng
+            const dummyUrl = 'https://hishop2026.com/product/nike-pacific';
+            const textarea = document.createElement('textarea');
+            textarea.value = dummyUrl;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            // Báo Toast nhẹ cho người dùng
+            showNotification("Đã sao chép liên kết chia sẻ!");
+        }
+
+        // Yêu thích sản phẩm (đổi tim)
+        function toggleFavorite() {
+            const icon = document.getElementById('favorite-icon');
+            const btn = document.getElementById('favorite-btn');
+            if (icon.classList.contains('fa-regular')) {
+                icon.className = "fa-solid fa-heart text-red-500 animate-ping";
+                setTimeout(() => {
+                    icon.className = "fa-solid fa-heart text-red-500 text-xl";
+                }, 150);
+                btn.className = "p-2.5 rounded-full bg-red-50 text-red-500 transition-colors";
+                showNotification("Đã thêm vào danh sách Yêu thích!");
+            } else {
+                icon.className = "fa-regular fa-heart text-xl";
+                btn.className = "p-2.5 rounded-full bg-gray-50 text-gray-400 transition-colors";
+                showNotification("Đã xóa khỏi danh sách Yêu thích");
+            }
+        }
+
+        // THÊM SẢN PHẨM VÀO GIỎ HÀNG
+        function addToCart() {
+            const activeProduct = {
+                id: 'nike-pacific',
+                name: 'Nike Pacific',
+                price: 1750000,
+                qty: state.currentDetailQty,
+                img: 'https://static.nike.com/a/images/t_web_pdp_936_v2/f_auto,u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1c5d7465-4a44-4aea-8cba-35b566e0a96a/NIKE+PACIFIC.png',
+                checked: true
+            };
+
+            // Tìm trong giỏ xem có chưa
+            const existingIndex = state.cart.findIndex(item => item.id === activeProduct.id);
+            if (existingIndex > -1) {
+                state.cart[existingIndex].qty += activeProduct.qty;
+            } else {
+                state.cart.push(activeProduct);
+            }
+
+            // Cập nhật số lượng hiển thị
+            updateCartBadges();
+
+            // Hiển thị Toast đẹp tích xanh thành công theo yêu cầu đề bài
+            const toast = document.getElementById('toast-success');
+            toast.classList.remove('scale-90', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('scale-100', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('scale-90', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('scale-100', 'opacity-100');
+                // Tự chuyển sang giỏ hàng sau khi thêm
+                goToPage('cart');
+            }, 1500);
+        }
+
+        // Cập nhật số lượng giỏ hàng trên toàn bộ các Badge
+        function updateCartBadges() {
+            const totalQty = state.cart.reduce((sum, item) => sum + item.qty, 0);
+            
+            // Các Badge hiển thị
+            document.getElementById('cart-badge-home').textContent = totalQty;
+            document.getElementById('cart-badge-detail').textContent = totalQty;
+            document.getElementById('cart-badge-nav').textContent = totalQty;
+        }
+
+        // Hiện thông báo hệ thống nhỏ gọn
+        function showNotification(message) {
+            const notifyDiv = document.createElement('div');
+            notifyDiv.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs font-bold px-4 py-2.5 rounded-full z-50 shadow-md flex items-center gap-1.5 animate-bounce";
+            notifyDiv.innerHTML = `<i class="fa-solid fa-circle-info text-yellow-400"></i> ${message}`;
+            document.body.appendChild(notifyDiv);
+            setTimeout(() => {
+                notifyDiv.remove();
+            }, 2500);
+        }
+
+
+        // ==========================================
+        // TRANG GIỎ HÀNG CHUYÊN NGHIỆP
+        // ==========================================
+
+        function renderCartList() {
+            const listContainer = document.getElementById('cart-items-list');
+            const emptyState = document.getElementById('cart-empty-state');
+            
+            listContainer.innerHTML = '';
+
+            if (state.cart.length === 0) {
+                emptyState.classList.remove('hidden');
+                document.getElementById('cart-total').textContent = '0₫';
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+
+            state.cart.forEach((item, index) => {
+                const row = document.createElement('div');
+                row.className = "bg-white border border-gray-100 p-3 rounded-xl shadow-sm flex items-center gap-3";
+                
+                row.innerHTML = `
+                    <!-- Checkbox chọn mua -->
+                    <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleCartItemChecked(${index})" class="accent-red-500 w-4 h-4 rounded cursor-pointer">
+                    
+                    <!-- Hình ảnh sản phẩm -->
+                    <div class="w-16 h-16 bg-gray-50 rounded-lg p-1 flex items-center justify-center flex-shrink-0 border border-gray-100">
+                        <img src="${item.img}" alt="${item.name}" class="max-h-full max-w-full object-contain">
+                    </div>
+
+                    <!-- Thông tin -->
+                    <div class="flex-1">
+                        <span class="text-xs font-bold text-gray-800 block line-clamp-1">${item.name}</span>
+                        <span class="text-xs text-red-500 font-extrabold mt-0.5 block">${item.price.toLocaleString('vi-VN')}₫</span>
+                        
+                        <!-- Chỉnh số lượng -->
+                        <div class="flex items-center justify-between mt-2">
+                            <div class="flex items-center border border-gray-200 rounded overflow-hidden scale-90 origin-left">
+                                <button onclick="changeCartItemQty(${index}, -1)" class="px-2.5 py-0.5 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold">-</button>
+                                <span class="px-3 py-0.5 text-xs font-bold text-gray-800">${item.qty}</span>
+                                <button onclick="changeCartItemQty(${index}, 1)" class="px-2.5 py-0.5 bg-gray-50 hover:bg-gray-100 text-gray-600 font-bold">+</button>
+                            </div>
+                            <button onclick="removeCartItem(${index})" class="text-gray-400 hover:text-red-500 text-xs py-1 px-2 hover:bg-red-50 rounded transition-colors">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                listContainer.appendChild(row);
+            });
+
+            calculateCartTotal();
+        }
+
+        function toggleCartItemChecked(index) {
+            state.cart[index].checked = !state.cart[index].checked;
+            calculateCartTotal();
+        }
+
+        function changeCartItemQty(index, amount) {
+            state.cart[index].qty += amount;
+            if (state.cart[index].qty < 1) state.cart[index].qty = 1;
+            renderCartList();
+            updateCartBadges();
+        }
+
+        function removeCartItem(index) {
+            state.cart.splice(index, 1);
+            renderCartList();
+            updateCartBadges();
+        }
+
+        function calculateCartTotal() {
+            let total = 0;
+            state.cart.forEach(item => {
+                if (item.checked) {
+                    total += item.price * item.qty;
+                }
+            });
+            document.getElementById('cart-total').textContent = total.toLocaleString('vi-VN') + '₫';
+        }
+
+        // Tiến hành checkout
+        function checkout() {
+            const activeItems = state.cart.filter(i => i.checked);
+            if (activeItems.length === 0) {
+                showNotification("Vui lòng tích chọn sản phẩm muốn thanh toán!");
+                return;
+            }
+            goToPage('checkout');
+        }
+
+
+        // ==========================================
+        // TRANG THANH TOÁN (CHECKOUT)
+        // ==========================================
+
+        function renderCheckoutSummary() {
+            const activeItems = state.cart.filter(i => i.checked);
+            const container = document.getElementById('checkout-product-item');
+            
+            if (activeItems.length === 0) return;
+
+            // Render sản phẩm đầu tiên hoặc toàn bộ
+            const primaryItem = activeItems[0];
+            const sumQty = activeItems.reduce((acc, current) => acc + current.qty, 0);
+            const totalCost = activeItems.reduce((acc, current) => acc + (current.price * current.qty), 0);
+
+            container.innerHTML = `
+                <div class="w-14 h-14 bg-gray-50 rounded-lg p-1 flex items-center justify-center border border-gray-100 flex-shrink-0">
+                    <img src="${primaryItem.img}" class="max-h-full max-w-full object-contain">
+                </div>
+                <div class="flex-1">
+                    <span class="text-xs font-bold text-gray-800 block line-clamp-1">${primaryItem.name} ${activeItems.length > 1 ? 'và sản phẩm khác' : ''}</span>
+                    <span class="text-[11px] text-gray-400 mt-0.5 block">Số lượng: ${sumQty} sản phẩm</span>
+                    <span class="text-xs text-red-500 font-bold block mt-1">${totalCost.toLocaleString('vi-VN')}₫</span>
+                </div>
+            `;
+
+            // Cập nhật hóa đơn số tiền
+            document.getElementById('checkout-subtotal').textContent = totalCost.toLocaleString('vi-VN') + '₫';
+            document.getElementById('checkout-total').textContent = totalCost.toLocaleString('vi-VN') + '₫';
+
+            // Đồng bộ số dư hiển thị
+            document.getElementById('hipay-balance-text').textContent = `Số dư khả dụng: ${state.hipayBalance.toLocaleString('vi-VN')}₫`;
+            document.getElementById('hipay-balance-large').textContent = `${state.hipayBalance.toLocaleString('vi-VN')}₫`;
+        }
+
+        // Đặt hàng thành công
+        function placeOrder() {
+            const activeItems = state.cart.filter(i => i.checked);
+            const sumQty = activeItems.reduce((acc, current) => acc + current.qty, 0);
+            const totalCost = activeItems.reduce((acc, current) => acc + (current.price * current.qty), 0);
+
+            // Kiểm tra số dư Ví HiPay
+            if (state.hipayBalance < totalCost) {
+                showNotification("Số dư Ví HiPay không đủ! Vui lòng nạp thêm tiền.");
+                // Chuyển nhanh qua trang Ví để nạp tiền
+                setTimeout(() => {
+                    goToPage('payment-methods');
+                }, 1000);
+                return;
+            }
+
+            // Trừ tiền ví ảo
+            state.hipayBalance -= totalCost;
+            
+            // Xóa sản phẩm đã mua khỏi giỏ hàng
+            state.cart = state.cart.filter(i => !i.checked);
+            updateCartBadges();
+
+            // Hiển thị popup thành công hoàn toàn tự động
+            document.getElementById('success-qty').textContent = sumQty;
+            document.getElementById('success-total').textContent = totalCost.toLocaleString('vi-VN') + '₫';
+            
+            const successScreen = document.getElementById('order-success-screen');
+            successScreen.classList.remove('hidden');
+        }
+
+        function restartShopping() {
+            document.getElementById('order-success-screen').classList.add('hidden');
+            goToPage('home');
+        }
+
+
+        // ==========================================
+        // VÍ HIPAY & LIÊN KẾT NGÂN HÀNG
+        // ==========================================
+
+        // Danh sách Ngân hàng liên kết với Ví HiPay (có tích đỏ theo yêu cầu)
+        function renderLinkedBanks() {
+            const container = document.getElementById('linked-banks-list');
+            container.innerHTML = '';
+
+            const linkedBanks = state.banks.filter(b => b.linked);
+
+            if (linkedBanks.length === 0) {
+                container.innerHTML = `<span class="text-xs text-gray-400 italic block py-2 text-center bg-gray-50 rounded-xl">Chưa có ngân hàng liên kết</span>`;
+                return;
+            }
+
+            linkedBanks.forEach((bank, index) => {
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between p-3.5 bg-white border border-gray-200 rounded-xl hover:border-red-500 cursor-pointer transition-all";
+                item.onclick = () => selectActiveBank(bank.id);
+
+                // Dấu tích đỏ nếu được chọn (Giả lập mặc định chọn ngân hàng liên kết đầu tiên)
+                const isSelected = index === 0; 
+                const tickRed = isSelected ? `<i class="fa-solid fa-circle-check text-red-500 text-lg"></i>` : `<span class="w-5 h-5 rounded-full border border-gray-300"></span>`;
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg ${bank.color} text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                            ${bank.code}
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-gray-800 block">${bank.name}</span>
+                            <span class="text-[10px] text-gray-400 block">Tài khoản **** 6789</span>
+                        </div>
+                    </div>
+                    <div>
+                        ${tickRed}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // Chọn ngân hàng thanh toán mặc định
+        function selectActiveBank(bankId) {
+            showNotification(`Đã liên kết và đặt mặc định ngân hàng thành công!`);
+        }
+
+        // Danh sách Ngân hàng để Thêm mới
+        function renderBankSelection() {
+            const container = document.getElementById('bank-selection-list');
+            container.innerHTML = '';
+
+            state.banks.forEach(bank => {
+                const btn = document.createElement('button');
+                btn.className = `flex flex-col items-center justify-center p-3 rounded-xl border border-gray-200 hover:border-red-500 bg-white transition-all hover:bg-red-50/10 ${bank.linked ? 'opacity-50' : ''}`;
+                btn.disabled = bank.linked;
+                btn.onclick = () => processLinkNewBank(bank.id);
+
+                btn.innerHTML = `
+                    <div class="w-10 h-10 rounded-full ${bank.color} text-white flex items-center justify-center text-sm font-bold mb-2 shadow">
+                        ${bank.code}
+                    </div>
+                    <span class="text-[11px] font-bold text-gray-800 block">${bank.name}</span>
+                    <span class="text-[9px] text-gray-400 mt-0.5 block">${bank.linked ? 'Đã liên kết' : 'Nhấn để liên kết'}</span>
+                `;
+                container.appendChild(btn);
+            });
+        }
+
+        // Thực hiện liên kết ngân hàng mới
+        function processLinkNewBank(bankId) {
+            const bankIdx = state.banks.findIndex(b => b.id === bankId);
+            if (bankIdx > -1) {
+                state.banks[bankIdx].linked = true;
+                
+                // Hiển thị thông báo thành công
+                showNotification(`Đã đăng ký tài khoản và liên kết ${state.banks[bankIdx].name} thành công!`);
+                
+                // Vẽ lại
+                renderLinkedBanks();
+                renderBankSelection();
+
+                // Quay về danh sách phương thức thanh toán
+                setTimeout(() => {
+                    goToPage('payment-methods');
+                }, 1000);
+            }
+        }
+
+        // Bật popup Nạp Tiền
+        function showTopupModal() {
+            document.getElementById('topup-modal').classList.remove('hidden');
+        }
+
+        function hideTopupModal() {
+            document.getElementById('topup-modal').classList.add('hidden');
+        }
+
+        function setTopupAmount(amount) {
+            document.getElementById('topup-amount').value = amount;
+        }
+
+        function confirmTopup() {
+            const amount = parseInt(document.getElementById('topup-amount').value);
+            if (isNaN(amount) || amount <= 0) {
+                showNotification("Vui lòng nhập số tiền hợp lệ!");
+                return;
+            }
+
+            state.hipayBalance += amount;
+            
+            // Vẽ lại ví
+            document.getElementById('hipay-balance-large').textContent = `${state.hipayBalance.toLocaleString('vi-VN')}₫`;
+            document.getElementById('hipay-balance-text').textContent = `Số dư khả dụng: ${state.hipayBalance.toLocaleString('vi-VN')}₫`;
+            
+            hideTopupModal();
+            showNotification(`Đã nạp thành công +${amount.toLocaleString('vi-VN')}₫ vào ví HiPay!`);
+        }
+    </script>
 </body>
 </html>
