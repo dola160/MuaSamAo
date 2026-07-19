@@ -1,1286 +1,1314 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HiSHOP - Thiên Đường Mua Sắm Ảo</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#fff5f5',
-                            100: '#ffe3e3',
-                            500: '#ee1d23',
-                            600: '#d11116',
-                            700: '#b30a0e',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-        /* Ẩn thanh cuộn nhưng vẫn cho phép cuộn */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HiSHOP - Siêu Thị Mua Sắm Ảo 1000 Sản Phẩm</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    /* Smooth transitions */
+    .page-transition {
+      transition: all 0.3s ease-in-out;
+    }
+    /* Hide scrollbar for Carousel */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
 
-    <!-- CONTAINER CHÍNH (Giới hạn chiều rộng để hiển thị đẹp mắt cả trên Desktop và Mobile) -->
-    <div id="app-container" class="max-w-md mx-auto w-full min-h-screen bg-white shadow-xl flex flex-col relative pb-20">
+  <!-- APP CONTAINER -->
+  <div id="app" class="max-w-md mx-auto bg-white min-h-screen shadow-2xl flex flex-col relative pb-20">
+    
+    <!-- ==================== HEADER (DÙNG CHUNG / THAY ĐỔI THEO TRANG) ==================== -->
+    <header id="main-header" class="sticky top-0 z-40 bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-md p-3">
+      <!-- Mặc định: Thanh tìm kiếm trang chủ -->
+      <div id="header-home" class="flex items-center justify-between gap-3">
+        <!-- Logo / Thương hiệu -->
+        <div class="flex items-center gap-1.5" onclick="navigateTo('home')">
+          <span class="font-extrabold text-2xl tracking-wider cursor-pointer flex items-center">
+            <svg class="w-7 h-7 mr-1 fill-white inline-block" viewBox="0 0 24 24"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>Hi<span class="text-yellow-300">SHOP</span>
+          </span>
+        </div>
         
-        <!-- ==========================================
-             PHẦN 1: TRANG CHỦ (PAGE: HOME)
-             ========================================== -->
-        <div id="page-home" class="page-content flex flex-col w-full">
-            <!-- Header Trang Chủ -->
-            <header class="sticky top-0 bg-white border-b border-gray-100 px-4 py-3 z-30 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-white font-extrabold text-lg shadow-sm">H</div>
-                    <span class="font-extrabold text-xl tracking-tight text-gray-900">Hi<span class="text-brand-500">SHOP</span></span>
-                </div>
-                
-                <!-- Nút Giỏ Hàng -->
-                <button onclick="toggleCartModal()" class="relative p-2 text-gray-700 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                    <span class="cart-badge absolute -top-1 -right-1 bg-brand-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white shadow-sm">0</span>
-                </button>
-            </header>
-
-            <!-- Khung tìm kiếm trang chủ (Nhấp vào sẽ chuyển sang trang tìm kiếm) -->
-            <div class="px-4 py-3 bg-white">
-                <div onclick="navigateTo('search')" class="flex items-center justify-between w-full border-2 border-gray-100 hover:border-brand-500/30 bg-gray-50/80 rounded-2xl px-4 py-3.5 cursor-pointer transition-all duration-300">
-                    <div class="flex items-center gap-3 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                        <span class="text-gray-400 text-sm font-medium">Tìm kiếm mua sắm</span>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                </div>
-            </div>
-
-            <!-- Banner & Ưu đãi nhỏ -->
-            <div class="px-4 py-2">
-                <div class="relative rounded-3xl overflow-hidden bg-gradient-to-r from-red-500 to-rose-600 text-white p-6 shadow-md">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-8 -mt-8"></div>
-                    <span class="text-[10px] font-bold uppercase tracking-wider bg-white/20 px-2.5 py-1 rounded-full">Siêu Sale 7.7</span>
-                    <h2 class="text-2xl font-extrabold mt-2 leading-tight">Mua Sắm Ảo<br>Trải Nghiệm Thật!</h2>
-                    <p class="text-xs text-white/80 mt-1">Giảm ngay 50k cho đơn hàng đầu tiên</p>
-                </div>
-            </div>
-
-            <!-- Danh sách ngành hàng demo -->
-            <div class="px-4 mt-4">
-                <h3 class="text-sm font-bold text-gray-800 mb-3">Danh Mục Nổi Bật</h3>
-                <div class="grid grid-cols-4 gap-3 text-center">
-                    <div onclick="searchByKeyword('Điện thoại')" class="flex flex-col items-center cursor-pointer">
-                        <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center mb-1.5 hover:scale-105 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-                        </div>
-                        <span class="text-[11px] font-medium text-gray-600">Điện tử</span>
-                    </div>
-                    <div onclick="searchByKeyword('Thời trang')" class="flex flex-col items-center cursor-pointer">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center mb-1.5 hover:scale-105 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
-                        </div>
-                        <span class="text-[11px] font-medium text-gray-600">Thời trang</span>
-                    </div>
-                    <div onclick="searchByKeyword('Giày thể thao')" class="flex flex-col items-center cursor-pointer">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-500 flex items-center justify-center mb-1.5 hover:scale-105 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.8 22H5.2c-1.8 0-3.2-1.4-3.2-3.2v-1.6c0-1.8 1.4-3.2 3.2-3.2h13.6c1.8 0 3.2 1.4 3.2 3.2v1.6c0 1.8-1.4 3.2-3.2 3.2Z"/><path d="M12 14v-4"/><path d="M16 14V8"/><path d="M8 14V6"/><path d="M21 2v4a2 2 0 0 1-2 2h-1.5"/></svg>
-                        </div>
-                        <span class="text-[11px] font-medium text-gray-600">Giày dép</span>
-                    </div>
-                    <div onclick="searchByKeyword('Đồ gia dụng')" class="flex flex-col items-center cursor-pointer">
-                        <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-500 flex items-center justify-center mb-1.5 hover:scale-105 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 12-8.5 8.5a2.12 2.12 0 1 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m21 3-9 9"/><path d="m14 14-2.5-2.5"/><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M12 9V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4"/></svg></svg>
-                        </div>
-                        <span class="text-[11px] font-medium text-gray-600">Gia dụng</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Gợi ý dành cho bạn -->
-            <div class="px-4 mt-6">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-sm font-bold text-gray-800">Khám Phá Hot Deal</h3>
-                    <span class="text-xs text-brand-500 font-semibold cursor-pointer">Xem tất cả</span>
-                </div>
-                <!-- Grid sản phẩm trang chủ -->
-                <div id="home-product-grid" class="grid grid-cols-2 gap-3">
-                    <!-- Javascript will render products here -->
-                </div>
-            </div>
+        <!-- Khung tìm kiếm ở Trang chủ -->
+        <div onclick="navigateTo('search-suggest')" class="flex-1 bg-white/20 backdrop-blur-md rounded-full py-1.5 px-3 flex items-center justify-between cursor-pointer border border-white/30 hover:bg-white/30 transition-all duration-200">
+          <div class="flex items-center gap-2">
+            <!-- Icon Kính lúp -->
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <span class="text-white/90 text-sm font-medium">Tìm kiếm mua sắm</span>
+          </div>
+          <!-- Icon Camera -->
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
         </div>
 
+        <!-- Giỏ hàng góc trên bên phải -->
+        <button onclick="toggleCartModal(true)" class="relative p-2 rounded-full hover:bg-white/10 active:scale-95 transition-transform">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          <span id="cart-badge" class="absolute -top-1 -right-1 bg-yellow-400 text-red-900 font-bold text-xs rounded-full h-5 w-5 flex items-center justify-center border-2 border-red-500 scale-90">0</span>
+        </button>
+      </div>
+    </header>
 
-        <!-- ==========================================
-             PHẦN 1.2 & 1.3: TRANG TÌM KIẾM (PAGE: SEARCH)
-             ========================================== -->
-        <div id="page-search" class="page-content hidden flex-col w-full">
-            <!-- Header Trang Tìm Kiếm -->
-            <header class="sticky top-0 bg-white border-b border-gray-100 px-4 py-3 z-30 flex items-center gap-3">
-                <button onclick="navigateBack()" class="p-2 -ml-2 text-gray-700 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                </button>
-                <div class="flex-1 relative">
-                    <input id="search-input" type="text" placeholder="Tìm kiếm mua sắm" onkeydown="handleSearchInput(event)" class="w-full bg-gray-50 border border-gray-200 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-2xl pl-4 pr-24 py-2.5 text-sm outline-none transition-all duration-200">
-                    <div class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-2 text-gray-400">
-                        <button class="p-1 hover:text-brand-500" title="Camera AI">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                        </button>
-                        <button class="p-1 hover:text-brand-500" title="Micro">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Trạng thái Tìm kiếm thông minh -->
-            <div class="px-4 py-2 bg-gray-50 flex items-center justify-end">
-                <div class="flex items-center gap-1.5 text-brand-500 text-xs font-semibold">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="animate-pulse"><path d="M12 2v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="M2 12h2"/><path d="m6.3 17.7-1.4 1.4"/><path d="M12 20v2"/><path d="m19.1 19.1-1.4-1.4"/><path d="M22 12h-2"/><path d="m17.7 6.3 1.4-1.4"/></svg>
-                    <span>Tìm kiếm thông minh</span>
-                </div>
-            </div>
-
-            <!-- GỢI Ý TÌM KIẾM (5 Sản phẩm hot) -->
-            <div class="px-4 py-4">
-                <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-400 mb-3">Sản phẩm gợi ý hôm nay</h3>
-                <div id="search-suggestions-list" class="flex flex-col gap-3">
-                    <!-- Sẽ hiển thị 5 sản phẩm gợi ý đặc biệt -->
-                </div>
-            </div>
-
-            <!-- Lịch sử tìm kiếm gần đây -->
-            <div class="px-4 py-2 border-t border-gray-100">
-                <div class="flex items-center justify-between mb-3">
-                    <h3 class="text-xs font-extrabold uppercase tracking-wider text-gray-400">Tìm kiếm gần đây</h3>
-                    <button onclick="clearRecentSearches()" class="text-xs text-gray-400 hover:text-brand-500">Xóa hết</button>
-                </div>
-                <div id="recent-searches" class="flex flex-wrap gap-2">
-                    <!-- Lịch sử tìm kiếm sẽ thêm tại đây -->
-                </div>
-            </div>
+    <!-- ==================== TRANG 1: TRANG CHỦ ==================== -->
+    <main id="page-home" class="flex-1 p-3 page-transition">
+      <!-- Banner Quảng Cáo -->
+      <div class="mb-4 rounded-2xl overflow-hidden shadow-sm relative h-36 bg-gradient-to-r from-rose-500 to-orange-500 text-white flex items-center justify-between p-6">
+        <div class="z-10">
+          <span class="bg-yellow-400 text-red-600 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">SIÊU ƯU ĐÃI</span>
+          <h2 class="text-xl font-bold mt-1">Lễ Hội Mua Sắm</h2>
+          <p class="text-xs text-white/90 mt-0.5">Giảm cực sốc lên đến 50% hôm nay</p>
         </div>
-
-
-        <!-- ==========================================
-             PHẦN 2: TRANG KẾT QUẢ TÌM KIẾM (PAGE: RESULTS)
-             ========================================== -->
-        <div id="page-results" class="page-content hidden flex-col w-full">
-            <!-- Header Trang Kết Quả -->
-            <header class="sticky top-0 bg-white border-b border-gray-100 px-4 py-3 z-30 flex flex-col gap-2 shadow-sm">
-                <div class="flex items-center gap-3">
-                    <button onclick="navigateTo('search')" class="p-2 -ml-2 text-gray-700 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-all duration-200">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    </button>
-                    <!-- Cho phép nhập lại cụm từ, giữ icon Camera AI -->
-                    <div class="flex-1 relative">
-                        <input id="results-search-input" type="text" placeholder="Tìm kiếm mua sắm" onkeydown="handleSearchInput(event)" class="w-full bg-gray-50 border border-gray-200 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-2xl pl-4 pr-12 py-2 text-sm outline-none transition-all duration-200">
-                        <div class="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400">
-                            <button class="p-1 hover:text-brand-500" title="Camera AI">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Thanh Sắp Xếp Nâng Cao -->
-                <div class="flex items-center gap-2 mt-1 border-t border-gray-50 pt-2">
-                    <div class="flex items-center gap-1 text-gray-400 text-xs font-bold shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><circle cx="12" cy="4" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="14" cy="20" r="2"/></svg>
-                        <span>Sắp xếp:</span>
-                    </div>
-                    
-                    <div class="flex-1 flex gap-1.5 overflow-x-auto no-scrollbar py-1">
-                        <!-- Các tùy chọn sắp xếp: Liên quan, Mới nhất, Bán chạy, Giá Cao-Thấp, Giá Thấp-Cao -->
-                        <button id="sort-relevance" onclick="changeSort('relevance')" class="sort-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 border border-gray-100 text-gray-600 transition-all duration-200 flex items-center gap-1 shrink-0">
-                            Liên quan
-                        </button>
-                        <button id="sort-newest" onclick="changeSort('newest')" class="sort-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 border border-gray-100 text-gray-600 transition-all duration-200 flex items-center gap-1 shrink-0">
-                            Mới nhất
-                        </button>
-                        <button id="sort-sales" onclick="changeSort('sales')" class="sort-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 border border-gray-100 text-gray-600 transition-all duration-200 flex items-center gap-1 shrink-0">
-                            Bán chạy
-                        </button>
-                        <button id="sort-priceDesc" onclick="changeSort('priceDesc')" class="sort-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 border border-gray-100 text-gray-600 transition-all duration-200 flex items-center gap-1 shrink-0">
-                            Giá ↓
-                        </button>
-                        <button id="sort-priceAsc" onclick="changeSort('priceAsc')" class="sort-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 border border-gray-100 text-gray-600 transition-all duration-200 flex items-center gap-1 shrink-0">
-                            Giá ↑
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Thống kê kết quả tìm kiếm -->
-            <div class="px-4 py-3 bg-gray-50 flex items-center justify-between">
-                <span id="results-count-text" class="text-xs text-gray-500 font-medium">Tìm thấy 0 sản phẩm</span>
-            </div>
-
-            <!-- Danh sách sản phẩm kết quả -->
-            <div id="results-product-list" class="p-4 grid grid-cols-2 gap-3">
-                <!-- Javascript will render results here -->
-            </div>
+        <div class="opacity-20 absolute right-0 bottom-0 scale-150">
+          <svg class="w-32 h-32 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
         </div>
+      </div>
 
-
-        <!-- ==========================================
-             PHẦN 3: TRANG CHI TIẾT SẢN PHẨM (PAGE: DETAIL)
-             ========================================== -->
-        <div id="page-detail" class="page-content hidden flex-col w-full">
-            <!-- Header Chi Tiết -->
-            <header class="sticky top-0 bg-white/90 backdrop-blur-md border-b border-gray-100 px-4 py-3 z-30 flex items-center justify-between gap-3 shadow-sm">
-                <button onclick="navigateBack()" class="p-2 -ml-2 text-gray-700 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                </button>
-                <span class="font-bold text-sm text-gray-700 max-w-[180px] truncate">Chi tiết sản phẩm</span>
-                <!-- Giỏ hàng góc trên phải -->
-                <button onclick="toggleCartModal()" class="relative p-2 text-gray-700 hover:text-brand-500 hover:bg-gray-100 rounded-full transition-all duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                    <span class="cart-badge absolute -top-1 -right-1 bg-brand-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white shadow-sm">0</span>
-                </button>
-            </header>
-
-            <!-- KHỐI HÌNH ẢNH SẢN PHẨM (Slider thông minh) -->
-            <div class="relative bg-white border-b border-gray-100">
-                <!-- Khu vực ảnh lớn trượt ngang mượt mà -->
-                <div id="detail-slider-container" class="w-full aspect-square overflow-x-auto snap-x snap-mandatory flex scroll-smooth no-scrollbar" onscroll="handleDetailImageScroll(this)">
-                    <!-- Các Slide hình ảnh sẽ được cập nhật động bằng Javascript -->
-                </div>
-                
-                <!-- Chỉ số trang ảnh -->
-                <div class="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full font-bold">
-                    <span id="detail-img-indicator">1/3</span>
-                </div>
-            </div>
-
-            <!-- Danh sách ảnh nhỏ (Thumbnails) di chuyển theo bên dưới -->
-            <div class="px-4 py-3 bg-white">
-                <div id="detail-thumbnails-container" class="flex gap-2.5 overflow-x-auto no-scrollbar py-1">
-                    <!-- Danh sách ảnh nhỏ sẽ render tại đây, ảnh được chọn có viền đỏ nổi bật -->
-                </div>
-            </div>
-
-            <!-- THÔNG TIN SẢN PHẨM -->
-            <div class="p-4 bg-white border-t border-gray-50 flex flex-col gap-2">
-                <div class="flex items-start justify-between gap-3">
-                    <div>
-                        <!-- Số tiền & Giá cũ ảo -->
-                        <div class="flex items-baseline gap-2">
-                            <span id="detail-price" class="text-2xl font-extrabold text-brand-500">0đ</span>
-                            <span id="detail-old-price" class="text-sm text-gray-400 line-through">0đ</span>
-                        </div>
-                    </div>
-                    <!-- Nút Thả tim -->
-                    <button id="like-btn" onclick="toggleLike()" class="p-2 bg-rose-50 text-gray-400 hover:text-brand-500 rounded-full transition-all duration-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon transition-colors"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                    </button>
-                </div>
-
-                <h1 id="detail-title" class="text-lg font-bold text-gray-900 leading-snug">Tên sản phẩm</h1>
-                
-                <!-- Đánh giá, Lượt bán, Vận chuyển -->
-                <div class="flex items-center gap-3 text-xs text-gray-500 font-semibold mt-1">
-                    <div class="flex items-center gap-1 bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" class="text-amber-400"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                        <span id="detail-rating">4.8</span>
-                    </div>
-                    <span class="w-[1px] h-3 bg-gray-200"></span>
-                    <span id="detail-sales">Đã bán 0</span>
-                    <span class="w-[1px] h-3 bg-gray-200"></span>
-                    <span id="detail-shipping" class="text-emerald-600 font-bold">Giao nhanh trong 2 ngày</span>
-                </div>
-            </div>
-
-            <!-- THÔNG TIN MÔ TẢ ĐẦY ĐỦ -->
-            <div class="p-4 bg-white border-t border-gray-100">
-                <h3 class="text-sm font-bold text-gray-800 mb-2.5">Mô tả sản phẩm</h3>
-                <div id="detail-description" class="text-xs text-gray-600 leading-relaxed space-y-2">
-                    <!-- Mô tả sản phẩm render tại đây -->
-                </div>
-            </div>
-
-            <!-- CHỌN MUA (Phân loại & Số lượng) -->
-            <div class="p-4 bg-white border-t border-gray-100 flex flex-col gap-4">
-                <!-- Mục Phân loại nếu có lựa chọn khác nhau -->
-                <div>
-                    <h4 id="detail-variants-title" class="text-xs font-bold text-gray-800 mb-2">Màu sắc / Phân loại</h4>
-                    <div id="detail-variants" class="flex flex-wrap gap-2">
-                        <!-- Variants render động -->
-                    </div>
-                </div>
-
-                <!-- Chọn Số lượng -->
-                <div class="flex items-center justify-between border-t border-gray-50 pt-3">
-                    <span class="text-xs font-bold text-gray-800">Số lượng</span>
-                    <div class="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-gray-50">
-                        <button onclick="adjustQuantity(-1)" class="w-9 h-9 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-100 transition-colors">-</button>
-                        <span id="detail-quantity" class="w-12 text-center text-sm font-extrabold text-gray-800 bg-white border-x border-gray-200 py-1.5">1</span>
-                        <button onclick="adjustQuantity(1)" class="w-9 h-9 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-100 transition-colors">+</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Cụm nút Hành động chân trang -->
-            <div class="p-4 bg-white border-t border-gray-100 sticky bottom-0 z-20 flex gap-3 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
-                <!-- Nút X thoát -->
-                <button onclick="navigateBack()" class="flex items-center justify-center border border-gray-200 text-gray-600 hover:bg-gray-100 p-3.5 rounded-2xl transition-all" title="Quay lại">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><line x1="19" x2="5" y1="12" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-                </button>
-                
-                <!-- Thêm vào giỏ hàng với hiệu ứng Đang tải -->
-                <button id="add-to-cart-btn" onclick="addToCartWithLoading()" class="flex-1 bg-brand-500 hover:bg-brand-600 active:scale-[0.98] text-white font-extrabold text-sm py-3.5 px-6 rounded-2xl shadow-md shadow-brand-500/20 transition-all flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus-circle"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="12" y1="12" y2="12"/></svg>
-                    <span>Thêm vào Giỏ hàng</span>
-                </button>
-            </div>
+      <!-- Danh mục nhanh -->
+      <div class="grid grid-cols-4 gap-2 mb-5">
+        <div onclick="searchByCategory('Điện thoại')" class="flex flex-col items-center p-2 bg-rose-50 rounded-xl cursor-pointer hover:bg-rose-100 transition-colors">
+          <div class="w-10 h-10 bg-rose-500/10 rounded-full flex items-center justify-center text-rose-500 mb-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+          </div>
+          <span class="text-[11px] font-medium text-slate-600">Điện thoại</span>
         </div>
-
-
-        <!-- ==========================================
-             PHẦN PHỤ TRỢ: MODAL MỞ RỘNG ẢNH (ZOOM VIEW)
-             ========================================== -->
-        <div id="image-zoom-modal" class="fixed inset-0 bg-black/95 z-50 hidden flex-col justify-between p-4">
-            <!-- Header Modal -->
-            <div class="flex items-center justify-between text-white w-full">
-                <span class="text-xs font-semibold text-white/70">Mở rộng hình ảnh</span>
-                <!-- Nút X thoát -->
-                <button onclick="closeZoomModal()" class="p-2 hover:bg-white/10 rounded-full transition-colors text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
-                </button>
-            </div>
-
-            <!-- Vùng hiển thị ảnh phóng to -->
-            <div class="flex-1 flex items-center justify-center w-full">
-                <img id="zoomed-image" src="" alt="Sản phẩm zoom" class="max-w-full max-h-[75vh] object-contain rounded-lg">
-            </div>
-
-            <!-- Footer chứa chú thích ảnh -->
-            <div class="py-4 text-center text-white/80 text-xs font-semibold">
-                Sử dụng ngón tay để thu phóng ảnh lớn
-            </div>
+        <div onclick="searchByCategory('Laptop')" class="flex flex-col items-center p-2 bg-blue-50 rounded-xl cursor-pointer hover:bg-blue-100 transition-colors">
+          <div class="w-10 h-10 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-500 mb-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          </div>
+          <span class="text-[11px] font-medium text-slate-600">Laptop</span>
         </div>
-
-
-        <!-- ==========================================
-             PHẦN PHỤ TRỢ: CHI TIẾT GIỎ HÀNG (CART MODAL)
-             ========================================== -->
-        <div id="cart-modal" class="fixed inset-0 bg-black/50 z-40 hidden flex items-end justify-center transition-opacity duration-300">
-            <div class="bg-white w-full max-w-md rounded-t-3xl max-h-[85vh] flex flex-col shadow-2xl transition-transform duration-300 translate-y-full" id="cart-content-container">
-                <!-- Header Giỏ Hàng -->
-                <div class="flex items-center justify-between p-4 border-b border-gray-100">
-                    <div class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-brand-500"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                        <span class="font-extrabold text-base text-gray-900">Giỏ hàng của bạn</span>
-                    </div>
-                    <button onclick="toggleCartModal()" class="p-1.5 hover:bg-gray-100 rounded-full transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>
-                    </button>
-                </div>
-
-                <!-- Danh sách sản phẩm trong giỏ -->
-                <div id="cart-items" class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
-                    <!-- Sẽ render các dòng sản phẩm trong giỏ hàng -->
-                </div>
-
-                <!-- Tính tổng và Nút thanh toán -->
-                <div class="p-4 border-t border-gray-100 bg-gray-50 flex flex-col gap-3">
-                    <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-gray-500">Tạm tính:</span>
-                        <span id="cart-total-price" class="text-lg font-extrabold text-brand-500">0đ</span>
-                    </div>
-                    <button onclick="checkoutCart()" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-extrabold py-3.5 rounded-2xl shadow-md transition-all active:scale-[0.98]">
-                        Tiến Hành Thanh Toán
-                    </button>
-                </div>
-            </div>
+        <div onclick="searchByCategory('Thời trang')" class="flex flex-col items-center p-2 bg-amber-50 rounded-xl cursor-pointer hover:bg-amber-100 transition-colors">
+          <div class="w-10 h-10 bg-amber-500/10 rounded-full flex items-center justify-center text-amber-500 mb-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+          </div>
+          <span class="text-[11px] font-medium text-slate-600">Thời trang</span>
         </div>
-
-
-        <!-- ==========================================
-             PHẦN PHỤ TRỢ: THÔNG BÁO TOAST THỜI GIAN THỰC
-             ========================================== -->
-        <div id="toast-notification" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 bg-gray-900 text-white px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 opacity-0 pointer-events-none transition-all duration-300 max-w-xs w-[85%]">
-            <span id="toast-icon" class="text-emerald-400"></span>
-            <span id="toast-message" class="text-xs font-bold leading-relaxed">Thông báo!</span>
+        <div onclick="searchByCategory('Gia dụng')" class="flex flex-col items-center p-2 bg-emerald-50 rounded-xl cursor-pointer hover:bg-emerald-100 transition-colors">
+          <div class="w-10 h-10 bg-emerald-500/10 rounded-full flex items-center justify-center text-emerald-500 mb-1">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+          </div>
+          <span class="text-[11px] font-medium text-slate-600">Gia dụng</span>
         </div>
+      </div>
+
+      <!-- Tiêu đề Sản Phẩm Nổi Bật -->
+      <div class="flex items-center justify-between mb-3 border-l-4 border-rose-500 pl-2">
+        <h3 class="text-base font-bold text-slate-800">Sản Phẩm Nổi Bật</h3>
+        <span class="text-xs text-rose-500 font-semibold flex items-center gap-0.5 cursor-pointer" onclick="navigateTo('search-suggest')">
+          Xem tất cả
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </span>
+      </div>
+
+      <!-- Grid danh sách sản phẩm nổi bật -->
+      <div id="home-featured-products" class="grid grid-cols-2 gap-3">
+        <!-- JS render 20 sản phẩm nổi bật tại đây -->
+      </div>
+    </main>
 
 
-        <!-- THANH ĐIỀU HƯỚNG CHÂN TRANG (Mặc định hiển thị, cố định dưới cùng) -->
-        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 max-w-md w-full bg-white/90 backdrop-blur-md border-t border-gray-100 py-2.5 px-6 flex justify-around items-center z-30 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
-            <button onclick="navigateTo('home')" class="nav-tab flex flex-col items-center gap-1 text-brand-500 font-bold transition-all" id="nav-home">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></nav-tab-icon>
-                <span class="text-[10px]">Trang chủ</span>
+    <!-- ==================== TRANG 2: KHUNG TÌM KIẾM MỚI (CHUYỂN TỪ TRANG CHỦ) ==================== -->
+    <div id="page-search-suggest" class="hidden flex-1 flex flex-col page-transition bg-white">
+      
+      <!-- HEADER RIÊNG BIỆT CHO TRANG TÌM KIẾM CHỦ -->
+      <div class="sticky top-0 z-40 bg-white border-b p-3 flex items-center gap-2">
+        <button onclick="navigateTo('home')" class="p-2 -ml-1 text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+          <!-- Icon Quay lại -->
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <!-- Khung tìm kiếm nâng cao -->
+        <div class="flex-1 bg-slate-100 rounded-full py-1.5 px-3.5 flex items-center justify-between border border-slate-200">
+          <div class="flex items-center gap-2 flex-1 mr-2">
+            <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            <input type="text" id="search-input-field" placeholder="Tìm kiếm mua sắm" class="bg-transparent text-sm text-slate-800 outline-none w-full" onkeyup="handleSearchKeyUp(event)">
+          </div>
+          <div class="flex items-center gap-2.5">
+            <!-- Icon Camera AI -->
+            <button onclick="showAIFeature('Camera AI')" class="text-rose-500 hover:scale-110 transition-transform" title="Tìm bằng Camera AI">
+              <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
             </button>
-            <button onclick="navigateTo('search')" class="nav-tab flex flex-col items-center gap-1 text-gray-400 font-bold transition-all" id="nav-search">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <span class="text-[10px]">Tìm kiếm</span>
+            <!-- Icon Micro -->
+            <button onclick="showAIFeature('Micro Voice')" class="text-blue-500 hover:scale-110 transition-transform" title="Tìm bằng giọng nói">
+              <svg class="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>
             </button>
-            <button onclick="toggleCartModal()" class="nav-tab flex flex-col items-center gap-1 text-gray-400 font-bold transition-all relative">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                <span class="cart-badge absolute -top-1 right-2 bg-brand-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
-                <span class="text-[10px]">Giỏ hàng</span>
-            </button>
-        </nav>
+          </div>
+        </div>
+      </div>
 
+      <!-- Góc dưới bên phải khung: Tìm kiếm thông minh -->
+      <div class="px-4 pt-2 text-right">
+        <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
+          <svg class="w-3 h-3 text-rose-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"></path></svg>
+          Tìm kiếm thông minh AI
+        </span>
+      </div>
+
+      <div class="p-4 flex-1">
+        <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Gợi ý tìm kiếm thịnh hành</h4>
+        <!-- Danh sách gợi ý tìm kiếm: Hình ảnh sản phẩm + Tên sản phẩm -->
+        <div id="suggested-search-list" class="space-y-3 max-h-[70vh] overflow-y-auto pr-1">
+          <!-- JS render các sản phẩm gợi ý tại đây -->
+        </div>
+      </div>
     </div>
 
-    <!-- ==========================================
-         HỆ THỐNG KỊCH BẢN (JAVASCRIPT) XỬ LÝ TOÀN BỘ LOGIC
-         ========================================== -->
-    <script>
-        // CƠ SỞ DỮ LIỆU SẢN PHẨM PHONG PHÚ (Mô phỏng Shop Thực Tế)
-        const PRODUCTS = [
-            {
-                id: 1,
-                name: "Điện thoại thông minh HiPhone Pro Max 15",
-                category: "Điện thoại",
-                price: 29990000,
-                oldPrice: 34990000,
-                rating: 4.9,
-                sales: 1250,
-                shippingDays: 2,
-                images: [
-                    "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1574755393849-623942496936?auto=format&fit=crop&q=80&w=600"
-                ],
-                variants: ["Titan tự nhiên", "Xanh Titan", "Đen Titan"],
-                description: [
-                    "Sử dụng chip Hi-Bionic đỉnh cao tốc độ xử lý siêu cấp.",
-                    "Hệ thống camera zoom siêu quang học chụp đêm không vỡ nét.",
-                    "Khung Titan siêu nhẹ siêu bền chuẩn hàng không vũ trụ.",
-                    "Sản phẩm được bảo hành chính hãng 12 tháng tại các trung tâm bảo hành HiSHOP trên toàn quốc."
-                ]
-            },
-            {
-                id: 2,
-                name: "Giày Thể Thao Cao Cấp HiRun Ultralight",
-                category: "Giày thể thao",
-                price: 1850000,
-                oldPrice: 2500000,
-                rating: 4.8,
-                sales: 840,
-                shippingDays: 3,
-                images: [
-                    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=600"
-                ],
-                variants: ["Đỏ rực rỡ", "Trắng tối giản", "Đen huyền bí"],
-                description: [
-                    "Đế xốp siêu êm đàn hồi tối ưu lực chạy.",
-                    "Vải dệt nguyên khối thoáng khí không lo hầm bí chân.",
-                    "Trọng lượng siêu nhẹ chỉ 200g nâng niu từng bước chân.",
-                    "Được thiết kế đặc biệt nâng đỡ bàn chân, chống lật cổ chân khi vận động cường độ cao."
-                ]
-            },
-            {
-                id: 3,
-                name: "Nồi Chiên Không Dầu Thông Minh HiCook 6.5L",
-                category: "Đồ gia dụng",
-                price: 1450000,
-                oldPrice: 2100000,
-                rating: 4.7,
-                sales: 430,
-                shippingDays: 1,
-                images: [
-                    "https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1584269600464-37b1b58a9fe7?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1547394765-185e1e68f34e?auto=format&fit=crop&q=80&w=600"
-                ],
-                variants: ["Đen nhám sang trọng", "Trắng kem ấm áp"],
-                description: [
-                    "Công nghệ khí nóng đối lưu tuần hoàn 360 độ giúp chín vàng giòn rụm không cần dầu.",
-                    "Dung tích lớn 6.5 Lít thoải mái nướng gà nguyên con.",
-                    "Hẹn giờ cảm ứng thông minh tự động ngắt cực kỳ an toàn.",
-                    "Lòng nồi chống dính Teflon thế hệ mới, dễ dàng tháo rời vệ sinh nhanh chóng."
-                ]
-            },
-            {
-                id: 4,
-                name: "Áo Khoác Hoodie Thời Trang Nam Nữ HiStyle",
-                category: "Thời trang",
-                price: 350000,
-                oldPrice: 550000,
-                rating: 4.6,
-                sales: 2100,
-                shippingDays: 3,
-                images: [
-                    "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=600"
-                ],
-                variants: ["Xám năng động", "Hồng cá tính", "Be thanh lịch"],
-                description: [
-                    "Chất liệu nỉ bông Hàn Quốc mềm mịn dày dặn giữ ấm tốt.",
-                    "Kiểu dáng unisex thời trang dễ kết hợp trang phục.",
-                    "Đường may tinh tế chắc chắn không phai màu xù lông.",
-                    "Có túi bụng tiện dụng đựng vừa ví và điện thoại thông minh."
-                ]
-            },
-            {
-                id: 5,
-                name: "Tai Nghe Không Dây Chống Ồn HiSound Pro",
-                category: "Điện thoại",
-                price: 1250000,
-                oldPrice: 1990000,
-                rating: 4.9,
-                sales: 1650,
-                shippingDays: 2,
-                images: [
-                    "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1487215078519-e21cc028cb29?auto=format&fit=crop&q=80&w=600"
-                ],
-                variants: ["Trắng ngọc trai", "Đen sâu thẳm"],
-                description: [
-                    "Công nghệ chống ồn chủ động ANC tiên tiến nhất, tách biệt khỏi thế giới ồn ào xung quanh.",
-                    "Thời lượng pin siêu trâu tới 30 giờ phát nhạc liên tục cùng hộp sạc.",
-                    "Chất âm vòm Hi-Fi sống động cảm xúc như rạp hát.",
-                    "Chuẩn Bluetooth 5.3 kết nối siêu tốc không có độ trễ."
-                ]
-            },
-            {
-                id: 6,
-                name: "Đồng Hồ Thông Minh HiWatch Ultra S",
-                category: "Điện thoại",
-                price: 3890000,
-                oldPrice: 4990000,
-                rating: 4.8,
-                sales: 520,
-                shippingDays: 2,
-                images: [
-                    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?auto=format&fit=crop&q=80&w=600",
-                    "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&q=80&w=600"
-                ],
-                variants: ["Cam năng động", "Đen lịch lãm"],
-                description: [
-                    "Màn hình AMOLED tràn viền siêu sáng hiển thị xuất sắc dưới ánh nắng gay gắt.",
-                    "Cảm biến đo nhịp tim, nồng độ oxy trong máu SpO2 thông minh.",
-                    "Hỗ trợ hơn 100 chế độ tập luyện thể thao chuyên nghiệp.",
-                    "Tính năng đàm thoại qua Bluetooth trực tiếp trên mặt đồng hồ."
-                ]
-            }
-        ];
 
-        // KHỞI TẠO BIẾN TRẠNG THÁI TOÀN CỤC
-        let currentScreen = 'home';
-        let navigationHistory = ['home'];
-        let activeProduct = PRODUCTS[0];
-        let currentVariant = "";
-        let buyQuantity = 1;
-        let cart = [];
-        let activeSort = 'relevance'; // relevance, newest, sales, priceDesc, priceAsc
-        let currentSearchQuery = "";
-        let recentSearches = JSON.parse(localStorage.getItem('recent_searches')) || ["Điện thoại", "Tai nghe", "Giày"];
-        let likedProducts = JSON.parse(localStorage.getItem('liked_products')) || [];
+    <!-- ==================== TRANG 3: TRANG KẾT QUẢ TÌM KIẾM (ĐỦ TỚI 1000 SẢN PHẨM) ==================== -->
+    <div id="page-search-results" class="hidden flex-1 flex flex-col page-transition">
+      <!-- HEADER TRANG KẾT QUẢ TÌM KIẾM -->
+      <div class="sticky top-0 z-40 bg-white border-b shadow-sm">
+        <div class="p-3 flex items-center gap-2">
+          <!-- Nút Quay lại -->
+          <button onclick="navigateTo('home')" class="p-2 -ml-1 text-slate-600 hover:bg-slate-100 rounded-full transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+          </button>
+          
+          <!-- Thanh nhập lại tìm kiếm -->
+          <div class="flex-1 bg-slate-100 rounded-full py-1.5 px-3.5 flex items-center justify-between border border-slate-200">
+            <input type="text" id="results-search-field" placeholder="Nhập từ khóa cần tìm..." class="bg-transparent text-sm text-slate-800 outline-none w-full" onkeyup="handleResultsKeyUp(event)">
+            <!-- Icon Camera AI -->
+            <button onclick="showAIFeature('Camera AI')" class="text-rose-500 hover:scale-105 active:scale-95 transition-transform ml-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            </button>
+          </div>
+        </div>
 
-        // Định dạng tiền tệ VND tiện dụng
-        function formatVND(num) {
-            return num.toLocaleString('vi-VN') + 'đ';
+        <!-- THANH SẮP XẾP SẢN PHẨM -->
+        <div class="bg-slate-50 border-t px-3 py-2 flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-slate-700">
+            <!-- Icon Sắp xếp -->
+            <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path></svg>
+            <span class="text-xs font-bold text-slate-600">Sắp xếp theo:</span>
+          </div>
+          <!-- Tên bộ lọc đang hiển thị -->
+          <div class="relative">
+            <button onclick="toggleSortDropdown()" class="bg-white px-3 py-1 border rounded-lg text-xs font-semibold text-rose-500 flex items-center gap-1 shadow-sm active:scale-95 transition-transform">
+              <span id="current-sort-label">Liên quan</span>
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+
+            <!-- Dropdown lựa chọn -->
+            <div id="sort-dropdown" class="hidden absolute right-0 mt-1 w-52 bg-white border rounded-xl shadow-lg z-50 py-1 divide-y divide-slate-100">
+              <button onclick="applySort('relevant')" class="sort-option w-full px-4 py-2 text-left text-xs text-rose-600 font-semibold flex items-center justify-between hover:bg-slate-50">
+                <span>Liên quan</span>
+                <span class="tick-icon text-red-600 font-bold">&#10003;</span>
+              </button>
+              <button onclick="applySort('latest')" class="sort-option w-full px-4 py-2 text-left text-xs text-slate-700 flex items-center justify-between hover:bg-slate-50">
+                <span>Mới nhất</span>
+                <span class="tick-icon text-red-600 font-bold hidden">&#10003;</span>
+              </button>
+              <button onclick="applySort('bestseller')" class="sort-option w-full px-4 py-2 text-left text-xs text-slate-700 flex items-center justify-between hover:bg-slate-50">
+                <span>Bán chạy</span>
+                <span class="tick-icon text-red-600 font-bold hidden">&#10003;</span>
+              </button>
+              <button onclick="applySort('price-desc')" class="sort-option w-full px-4 py-2 text-left text-xs text-slate-700 flex items-center justify-between hover:bg-slate-50">
+                <span>Giá: Cao đến Thấp</span>
+                <span class="tick-icon text-red-600 font-bold hidden">&#10003;</span>
+              </button>
+              <button onclick="applySort('price-asc')" class="sort-option w-full px-4 py-2 text-left text-xs text-slate-700 flex items-center justify-between hover:bg-slate-50">
+                <span>Giá: Thấp đến Cao</span>
+                <span class="tick-icon text-red-600 font-bold hidden">&#10003;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KẾT QUẢ HIỂN THỊ (Sẽ tải cuộn vô hạn mượt mà) -->
+      <div id="search-results-container" class="flex-1 p-3 overflow-y-auto max-h-[75vh]">
+        <div id="results-info" class="text-xs text-slate-500 mb-3 font-semibold"></div>
+        <div id="results-grid" class="grid grid-cols-2 gap-3">
+          <!-- JS render sản phẩm tìm kiếm tại đây -->
+        </div>
+
+        <!-- Hiệu ứng tải trang cuộn vô hạn (Infinite Scroll Indicator) -->
+        <div id="infinite-scroll-loader" class="hidden py-4 text-center flex items-center justify-center gap-2">
+          <svg class="animate-spin h-5 w-5 text-rose-500" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <span class="text-xs text-slate-500 font-semibold">Đang tải thêm sản phẩm mới...</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== TRANG 4: TRANG CHI TIẾT SẢN PHẨM ==================== -->
+    <div id="page-detail" class="hidden flex-1 flex flex-col page-transition">
+      <!-- HEADER CHI TIẾT -->
+      <div class="sticky top-0 z-40 bg-white border-b p-3 flex items-center justify-between gap-2 shadow-sm">
+        <button onclick="goBackFromDetail()" class="p-2 -ml-1 text-slate-600 hover:bg-slate-100 rounded-full transition-colors flex items-center justify-center">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"></path></svg>
+        </button>
+        <span class="font-bold text-slate-800 text-sm truncate max-w-[200px]">Chi tiết sản phẩm</span>
+        <!-- Giỏ hàng góc trên bên phải -->
+        <button onclick="toggleCartModal(true)" class="relative p-2 rounded-full hover:bg-slate-100 active:scale-95 transition-transform flex items-center justify-center">
+          <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          <span id="detail-cart-badge" class="absolute -top-1 -right-1 bg-rose-500 text-white font-bold text-[10px] rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">0</span>
+        </button>
+      </div>
+
+      <!-- NỘI DUNG CHI TIẾT SẢN PHẨM -->
+      <div class="flex-1 overflow-y-auto pb-10">
+        <!-- Khối hình ảnh sản phẩm chính -->
+        <div class="relative bg-slate-50 group">
+          <!-- Trượt ngang ảnh lớn -->
+          <div id="detail-image-carousel" class="flex overflow-x-auto snap-x snap-mandatory no-scrollbar scroll-smooth h-80" onscroll="syncActiveThumbnail()">
+            <!-- JS render 5 slide ảnh lớn -->
+          </div>
+
+          <!-- Chỉ số slide ảnh hiện tại -->
+          <div class="absolute bottom-3 right-3 bg-black/60 text-white text-[11px] font-bold px-2 py-0.5 rounded-full z-10">
+            <span id="carousel-indicator-current">1</span>/<span id="carousel-indicator-total">5</span>
+          </div>
+        </div>
+
+        <!-- Danh sách hình ảnh nhỏ (Thumbnails) bên dưới -->
+        <div class="px-3 py-2 bg-white flex items-center gap-2 overflow-x-auto border-b">
+          <div id="detail-thumbnails" class="flex gap-2">
+            <!-- JS render các hình ảnh nhỏ kèm nút phóng to -->
+          </div>
+        </div>
+
+        <!-- THÔNG TIN CHI TIẾT SẢN PHẨM -->
+        <div class="p-4 bg-white border-b">
+          <div class="flex items-start justify-between gap-3">
+            <div class="space-y-1 flex-1">
+              <!-- Giá tiền & lượt bán -->
+              <div class="flex items-baseline gap-2">
+                <span id="detail-price" class="text-2xl font-black text-rose-600"></span>
+                <span id="detail-sold" class="text-xs text-slate-400 font-medium"></span>
+              </div>
+              <h1 id="detail-title" class="text-base font-bold text-slate-800 leading-snug"></h1>
+            </div>
+
+            <!-- Nút Thả tim / Yêu thích -->
+            <button onclick="toggleFavorite()" id="favorite-btn" class="p-2.5 rounded-full bg-slate-100 hover:bg-rose-50 hover:text-rose-500 text-slate-400 active:scale-95 transition-all flex-shrink-0">
+              <svg class="w-6 h-6 fill-current transition-colors" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </button>
+          </div>
+
+          <!-- Đánh giá sao & Vận chuyển -->
+          <div class="flex items-center gap-4 mt-3 pt-3 border-t border-slate-100 text-xs">
+            <div class="flex items-center gap-1">
+              <span class="text-amber-500 font-bold flex items-center">
+                <svg class="w-4 h-4 fill-amber-400 inline" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span id="detail-rating-score" class="ml-1 text-slate-700">4.9</span>
+              </span>
+              <span class="text-slate-400">(98 Đánh giá)</span>
+            </div>
+            <div class="text-emerald-600 font-semibold flex items-center gap-1">
+              <!-- Xe giao hàng -->
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path></svg>
+              <span id="detail-delivery"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MÔ TẢ CHI TIẾT -->
+        <div class="p-4 bg-white mt-2">
+          <h3 class="text-sm font-bold text-slate-800 border-l-4 border-rose-500 pl-2 mb-3">Mô tả sản phẩm</h3>
+          <p id="detail-description" class="text-xs text-slate-600 leading-relaxed space-y-2 whitespace-pre-line"></p>
+        </div>
+      </div>
+
+      <!-- THANH THAO TÁC MUA HÀNG (DƯỚI CÙNG) -->
+      <div class="bg-white border-t p-3 flex gap-2 items-center sticky bottom-0 z-40 shadow-inner">
+        <button onclick="openAddToCartSheet()" class="flex-1 bg-gradient-to-r from-rose-500 to-red-600 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-rose-100 hover:brightness-105 active:scale-[0.98] transition-all flex items-center justify-center gap-1.5">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          Thêm vào Giỏ hàng
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ==================== DIALOG 1: LIGHTBOX XEM ẢNH LỚN TOÀN MÀN HÌNH ==================== -->
+    <div id="lightbox-modal" class="hidden fixed inset-0 bg-black/95 z-50 flex flex-col justify-between items-center p-4">
+      <div class="w-full flex justify-end">
+        <button onclick="closeLightbox()" class="bg-white/10 text-white hover:bg-white/20 p-2.5 rounded-full transition-colors">
+          <!-- Icon X -->
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="flex-1 flex items-center justify-center w-full max-w-md">
+        <img id="lightbox-image" class="max-w-full max-h-[80vh] object-contain rounded-lg" src="" alt="Hình ảnh sản phẩm mở rộng" onerror="handleImgError(this)">
+      </div>
+      <div class="text-white/80 text-xs font-semibold pb-4 text-center">
+        Hình ảnh độ phân giải cao tại HiSHOP
+      </div>
+    </div>
+
+
+    <!-- ==================== DIALOG 2: BOTTOM SHEET THÊM VÀO GIỎ HÀNG ==================== -->
+    <div id="cart-sheet-backdrop" class="hidden fixed inset-0 bg-black/60 z-50 transition-opacity duration-300 opacity-0" onclick="closeAddToCartSheet()"></div>
+    <div id="cart-sheet" class="hidden fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white rounded-t-3xl shadow-2xl z-50 transform translate-y-full transition-transform duration-300">
+      <div class="p-4 flex flex-col max-h-[85vh]">
+        <!-- Header sheet -->
+        <div class="flex justify-between items-start border-b pb-3">
+          <div class="flex gap-3">
+            <img id="sheet-prod-img" class="w-20 h-20 object-cover rounded-xl border" src="" alt="Thumbnail" onerror="handleImgError(this)">
+            <div>
+              <p id="sheet-prod-price" class="text-lg font-black text-rose-600"></p>
+              <p id="sheet-prod-title" class="text-xs text-slate-600 font-bold line-clamp-1 pr-4 mt-0.5"></p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Số lượng tồn kho: 99+</p>
+            </div>
+          </div>
+          <!-- Nút đóng -->
+          <button onclick="closeAddToCartSheet()" class="p-1.5 hover:bg-slate-100 rounded-full text-slate-500 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+
+        <!-- Scrollable options -->
+        <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1">
+          <!-- Mục Phân Loại -->
+          <div id="sheet-classify-wrapper">
+            <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Phân loại</h5>
+            <div id="sheet-classify-options" class="flex flex-wrap gap-2">
+              <!-- JS render -->
+            </div>
+          </div>
+
+          <!-- Mục Size -->
+          <div id="sheet-size-wrapper">
+            <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Kích thước (Size)</h5>
+            <div id="sheet-size-options" class="flex flex-wrap gap-2">
+              <!-- JS render -->
+            </div>
+          </div>
+
+          <!-- Mục Màu sắc -->
+          <div id="sheet-color-wrapper">
+            <h5 class="text-xs font-bold text-slate-700 uppercase tracking-wide mb-2">Màu sắc</h5>
+            <div id="sheet-color-options" class="flex flex-wrap gap-2">
+              <!-- JS render -->
+            </div>
+          </div>
+
+          <!-- Chọn Số lượng -->
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100">
+            <span class="text-xs font-bold text-slate-700 uppercase tracking-wide">Số lượng</span>
+            <div class="flex items-center border rounded-lg bg-slate-50">
+              <button onclick="adjustQuantity(-1)" class="w-8 h-8 flex items-center justify-center font-bold text-slate-600 hover:bg-slate-100 rounded-l-lg transition-colors">-</button>
+              <span id="sheet-quantity" class="w-10 text-center font-bold text-xs text-slate-800">1</span>
+              <button onclick="adjustQuantity(1)" class="w-8 h-8 flex items-center justify-center font-bold text-slate-600 hover:bg-slate-100 rounded-r-lg transition-colors">+</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nút thêm thực tế -->
+        <div class="pt-3 border-t">
+          <button onclick="submitAddToCart()" id="sheet-add-btn" class="w-full bg-gradient-to-r from-red-500 to-rose-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-1.5">
+            Xác nhận thêm
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ==================== DIALOG 3: MODAL GIỎ HÀNG CỦA TÔI ==================== -->
+    <div id="cart-modal-backdrop" class="hidden fixed inset-0 bg-black/60 z-50" onclick="toggleCartModal(false)"></div>
+    <div id="cart-modal" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-sm bg-white rounded-2xl shadow-2xl z-50 overflow-hidden flex flex-col max-h-[70vh]">
+      <div class="bg-gradient-to-r from-red-500 to-rose-600 text-white p-4 flex items-center justify-between">
+        <h3 class="font-bold flex items-center gap-1.5 text-sm">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          Giỏ Hàng Của Bạn
+        </h3>
+        <button onclick="toggleCartModal(false)" class="p-1 hover:bg-white/10 rounded-full transition-colors">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div id="cart-items-list" class="flex-1 overflow-y-auto p-4 space-y-3">
+        <!-- JS render các item trong giỏ hàng -->
+      </div>
+
+      <div class="bg-slate-50 p-4 border-t space-y-3">
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-semibold text-slate-500">Tổng cộng:</span>
+          <span id="cart-total-price" class="text-lg font-black text-rose-600">0đ</span>
+        </div>
+        <button onclick="checkoutCart()" class="w-full bg-rose-500 text-white py-2.5 rounded-xl text-xs font-bold shadow-md hover:bg-rose-600 active:scale-95 transition-all">
+          Tiến hành thanh toán ảo
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ==================== THANH ĐIỀU HƯỚNG DƯỚI CÙNG (BOTTOM NAVIGATION) ==================== -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-100 py-2 px-6 flex justify-around items-center z-40 shadow-lg">
+      <button onclick="navigateTo('home')" class="nav-item flex flex-col items-center gap-0.5 text-rose-500 transition-colors">
+        <svg class="w-5.5 h-5.5" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+        <span class="text-[10px] font-bold">Trang chủ</span>
+      </button>
+
+      <button onclick="navigateTo('search-suggest')" class="nav-item flex flex-col items-center gap-0.5 text-slate-400 hover:text-rose-500 transition-colors">
+        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <span class="text-[10px] font-bold">Tìm kiếm</span>
+      </button>
+
+      <button onclick="toggleCartModal(true)" class="nav-item flex flex-col items-center gap-0.5 text-slate-400 hover:text-rose-500 transition-colors relative">
+        <svg class="w-5.5 h-5.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        <span class="text-[10px] font-bold">Giỏ hàng</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- JS LOGIC TOÀN TRANG -->
+  <script>
+    // ==================== KHỞI TẠO MOCK DATA 1000 SẢN PHẨM ====================
+    const categories = ["Điện thoại", "Laptop", "Thời trang", "Gia dụng", "Mỹ phẩm", "Thể thao", "Phụ kiện", "Giày dép"];
+    const productNamesPrefixes = {
+      "Điện thoại": ["iPhone 15 Pro", "Samsung Galaxy S24 Ultra", "Xiaomi Redmi Note 13", "Oppo Reno 11 Pro", "Realme 12 Pro", "Google Pixel 8 Pro", "Sony Xperia 1 V", "Vivo V30 Pro"],
+      "Laptop": ["MacBook Air M3", "Dell XPS 13 Plus", "Asus Zenbook 14 OLED", "HP Pavilion 15", "Lenovo ThinkPad X1", "Acer Swift Go", "MSI Prestige 16", "Gigabyte Aero 14"],
+      "Thời trang": ["Áo Khoác Bomber Unisex", "Quần Jean Baggy Nam Nữ", "Đầm Suông Nữ Dự Tiệc", "Áo Thun Cotton Basic", "Chân Váy Chữ A", "Quần Tây Âu Cao Cấp", "Áo Hoodie Form Rộng", "Set Blazer Công Sở"],
+      "Gia dụng": ["Nồi Chiên Không Dầu", "Máy Hút Bụi Cầm Tay", "Nồi Cơm Điện Cao Tần", "Máy Lọc Không Khí", "Robot Hút Bụi", "Ấm Siêu Tốc Thủy Tinh", "Máy Ép Trái Cây", "Lò Vi Sóng Điện Tử"],
+      "Mỹ phẩm": ["Kem Chống Nắng Centella", "Nước Tẩy Trang Bioderma", "Serum Phục Hồi B5", "Son Kem Lì Romand", "Sữa Rửa Mặt CeraVe", "Mặt Nạ Tràm Trà", "Kem Dưỡng Ẩm Neutrogena", "Xịt Khoáng Khóa Nền"],
+      "Thể thao": ["Vợt Cầu Lông Carbon", "Thảm Tập Yoga TPE", "Bóng Đá Size 5", "Giày Chạy Bộ Thể Thao", "Kính Bơi Chống Mờ", "Bộ Đồ Tập Gym Nữ", "Bình Nước Giữ Nhiệt 1L", "Tạ Tay Cao Su"],
+      "Phụ kiện": ["Tai Nghe Bluetooth True Wireless", "Củ Sạc Nhanh GaN 65W", "Pin Sạc Dự Phòng 20000mAh", "Đồng Hồ Thông Minh Watch 9", "Cáp Sạc Đa Năng 3 in 1", "Đế Sạc Không Dây", "Ốp Lưng Magsafe", "Thẻ Nhớ MicroSD 128GB"],
+      "Giày dép": ["Giày Sneaker Trắng Basic", "Sandal Quai Ngang Unisex", "Giày Cao Gót 7cm", "Dép Lê Quai Ngang Mềm", "Giày Loafer Da Nam", "Giày Slip-on Nữ", "Sandal Học Sinh", "Boot Da Lộn Cổ Ngắn"]
+    };
+
+    const colors = ["Trắng", "Đen", "Xanh Dương", "Hồng", "Xám", "Kem", "Đỏ"];
+    const sizes = ["S", "M", "L", "XL", "XXL", "38", "39", "40", "41", "42"];
+    const descriptiveTexts = [
+      "Sản phẩm được nhập khẩu chính hãng với chất lượng tuyệt hảo nhất. Thiết kế thời thượng đón đầu mọi xu hướng hiện đại, đem lại trải nghiệm hoàn hảo cho người dùng.\n\nĐặc điểm nổi bật:\n- Chất liệu cao cấp siêu bền vượt trội\n- Đạt các chứng chỉ kiểm nghiệm an toàn quốc tế\n- Bảo hành chính hãng lên tới 12 tháng tại các trung tâm bảo hành toàn quốc\n- Hỗ trợ đổi trả trong vòng 7 ngày đầu tiên nếu phát hiện lỗi từ NSX.",
+      "Phiên bản nâng cấp mới nhất đem lại chất lượng vượt trội. Được tối ưu hóa tỉ mỉ đến từng chi tiết, đảm bảo sự sang trọng và tiện dụng tối đa trong quá trình sử dụng hằng ngày.\n\nHướng dẫn bảo quản:\n- Tránh va đập mạnh và nhiệt độ quá cao\n- Làm sạch bằng khăn mềm hoặc dung dịch vệ sinh chuyên dụng\n- Bảo quản nơi khô ráo thoáng mát để kéo dài độ bền vật liệu."
+    ];
+
+    const allProducts = [];
+
+    // Tạo nhanh 1000 sản phẩm ngẫu nhiên chuẩn hóa
+    for (let i = 1; i <= 1000; i++) {
+      const cat = categories[i % categories.length];
+      const nameList = productNamesPrefixes[cat];
+      const baseName = nameList[i % nameList.length];
+      const name = `${baseName} (Bản v${1.0 + (i % 5)*0.2}) - Model ${1000 + i}`;
+      const price = (15 + (i * 7) % 85) * 10000 + (i % 3) * 5000 + 19000; // Giá từ 150k đến ~1.1tr
+      const sold = 10 + (i * 13) % 2500;
+      const deliveryDays = 1 + (i % 4);
+      const rating = (4.5 + ((i % 10) * 0.05)).toFixed(1);
+      
+      // Ảnh thay thế chất lượng cao sử dụng Unsplash Source theo ID
+      const imageIndex = (i % 50) + 1;
+      const imageUrl = `https://picsum.photos/400/400?sig=${i}`;
+
+      allProducts.push({
+        id: i,
+        name: name,
+        category: cat,
+        price: price,
+        sold: sold,
+        deliveryDays: deliveryDays,
+        rating: rating,
+        image: imageUrl,
+        description: descriptiveTexts[i % descriptiveTexts.length] + `\n\n[Mã định danh sản phẩm: HISHOP-${20000 + i}]`,
+        classifications: ["Tiêu Chuẩn", "Cao Cấp (Premium)", "Bản Đặc Biệt (Limited)"],
+        sizes: cat === "Thời trang" || cat === "Giày dép" ? sizes.slice(i % 3, 5 + (i % 3)) : [],
+        colors: colors.slice(i % 3, 4 + (i % 2))
+      });
+    }
+
+    // ==================== TRẠNG THÁI ỨNG DỤNG (STATE) ====================
+    let cart = [];
+    let historyStack = ['home'];
+    let currentView = 'home';
+    let searchQuery = '';
+    let currentSort = 'relevant';
+    
+    // Quản lý tải sản phẩm vô hạn (Infinite scroll)
+    let filteredProducts = [];
+    let loadedCount = 0;
+    const ITEMS_PER_PAGE = 20;
+
+    // Chi tiết sản phẩm hiện tại
+    let activeProduct = null;
+    let selectedImageIndex = 0;
+    let detailIsFavorite = false;
+
+    // Trạng thái của popup thêm giỏ hàng hiện tại
+    let selectedClassify = "";
+    let selectedSize = "";
+    let selectedColor = "";
+    let sheetQuantity = 1;
+
+
+    // ==================== HÀM QUẢN LÝ ĐIỀU HƯỚNG MÀN HÌNH ====================
+    function navigateTo(view) {
+      currentView = view;
+      document.getElementById('page-home').classList.add('hidden');
+      document.getElementById('page-search-suggest').classList.add('hidden');
+      document.getElementById('page-search-results').classList.add('hidden');
+      document.getElementById('page-detail').classList.add('hidden');
+
+      // Tắt các tab highlight của menu điều hướng
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.classList.add('text-slate-400');
+        item.classList.remove('text-rose-500');
+      });
+
+      if (view === 'home') {
+        document.getElementById('page-home').classList.remove('hidden');
+        navItems[0].classList.add('text-rose-500');
+        navItems[0].classList.remove('text-slate-400');
+        renderHomeFeatured();
+      } 
+      else if (view === 'search-suggest') {
+        document.getElementById('page-search-suggest').classList.remove('hidden');
+        document.getElementById('search-input-field').focus();
+        navItems[1].classList.add('text-rose-500');
+        navItems[1].classList.remove('text-slate-400');
+        renderSuggestedSearch();
+      } 
+      else if (view === 'search-results') {
+        document.getElementById('page-search-results').classList.remove('hidden');
+        navItems[1].classList.add('text-rose-500');
+        navItems[1].classList.remove('text-slate-400');
+        // Khởi tạo hiển thị kết quả tìm kiếm đầu tiên
+        initSearchResults();
+      }
+      else if (view === 'detail') {
+        document.getElementById('page-detail').classList.remove('hidden');
+      }
+
+      // Đẩy vào lịch sử nếu trang khác trang cuối cùng
+      if (historyStack[historyStack.length - 1] !== view) {
+        historyStack.push(view);
+      }
+    }
+
+    function goBack() {
+      if (historyStack.length > 1) {
+        historyStack.pop(); // Bỏ trang hiện tại
+        const prevPage = historyStack[historyStack.length - 1];
+        navigateTo(prevPage);
+      } else {
+        navigateTo('home');
+      }
+    }
+
+    function goBackFromDetail() {
+      // Logic quay lại tùy chọn đặc biệt từ trang chi tiết sản phẩm
+      goBack();
+    }
+
+
+    // ==================== XỬ LÝ LỖI HÌNH ẢNH (FALLBACK SVG) ====================
+    function handleImgError(imageElement) {
+      // Thay thế link ảnh lỗi bằng một SVG sinh động để giữ nguyên bố cục
+      imageElement.onerror = null; 
+      imageElement.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><rect width='100%' height='100%' fill='%23f1f5f9'/><g fill='%23e2e8f0' transform='translate(150, 150) scale(4)'><path d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/></g><text x='50%' y='60%' font-family='sans-serif' font-weight='bold' font-size='14' fill='%2394a3b8' text-anchor='middle'>Hình ảnh sản phẩm</text></svg>";
+    }
+
+
+    // ==================== RENDERING TRANG CHỦ & PHÂN TRANG ====================
+    function renderHomeFeatured() {
+      const container = document.getElementById('home-featured-products');
+      container.innerHTML = '';
+
+      // Chỉ lấy 30 sản phẩm có lượt bán cao nhất đại diện làm sản phẩm nổi bật
+      const featured = [...allProducts].sort((a, b) => b.sold - a.sold).slice(0, 30);
+
+      featured.forEach(prod => {
+        const itemHtml = `
+          <div onclick="openProductDetail(${prod.id})" class="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-md transition-shadow cursor-pointer flex flex-col active:scale-[0.98] transition-transform">
+            <div class="relative pt-[100%] bg-slate-100">
+              <img class="absolute inset-0 w-full h-full object-cover" src="${prod.image}" alt="${prod.name}" onerror="handleImgError(this)" loading="lazy">
+              <span class="absolute top-2 left-2 bg-rose-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm">Hot</span>
+            </div>
+            <div class="p-2.5 flex-1 flex flex-col justify-between">
+              <h4 class="text-xs font-semibold text-slate-800 line-clamp-2 leading-snug mb-1.5 h-8">${prod.name}</h4>
+              <div class="space-y-1">
+                <div class="text-rose-600 font-extrabold text-sm">${formatPrice(prod.price)}</div>
+                <div class="flex items-center justify-between text-[10px] text-slate-400 font-medium">
+                  <span>Đã bán ${formatSold(prod.sold)}</span>
+                  <span class="text-emerald-600 bg-emerald-50 px-1 py-0.5 rounded-md font-semibold">Giao ${prod.deliveryDays} ngày</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += itemHtml;
+      });
+    }
+
+
+    // ==================== RENDERING TRANG GỢI Ý TÌM KIẾM ====================
+    function renderSuggestedSearch() {
+      const listContainer = document.getElementById('suggested-search-list');
+      listContainer.innerHTML = '';
+
+      // Lấy ngẫu nhiên hoặc tiêu biểu 20 sản phẩm cho gợi ý tìm kiếm
+      const suggestedProds = allProducts.slice(10, 35);
+
+      suggestedProds.forEach((prod, index) => {
+        const rowHtml = `
+          <div onclick="executeInstantSearch('${prod.name}')" class="flex items-center gap-3 p-2 bg-slate-50 hover:bg-rose-50 rounded-xl cursor-pointer transition-colors border border-transparent hover:border-rose-100">
+            <div class="w-5 h-5 bg-rose-100 text-rose-600 font-extrabold text-xs flex items-center justify-center rounded-full flex-shrink-0">
+              ${index + 1}
+            </div>
+            <img class="w-10 h-10 object-cover rounded-lg border bg-white" src="${prod.image}" alt="${prod.name}" onerror="handleImgError(this)">
+            <span class="text-xs text-slate-700 font-semibold truncate flex-1">${prod.name}</span>
+            <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </div>
+        `;
+        listContainer.innerHTML += rowHtml;
+      });
+    }
+
+    // Gõ tìm kiếm ở trang Suggest
+    function handleSearchKeyUp(event) {
+      if (event.key === 'Enter') {
+        const val = event.target.value.trim();
+        if (val) {
+          executeInstantSearch(val);
         }
+      }
+    }
 
-        // KHI TRANG WEB TẢI XONG
-        window.onload = function() {
-            renderHomeScreen();
-            renderSearchSuggestions();
-            renderRecentSearches();
-            updateCartBadge();
-            
-            // Xử lý sự kiện back bằng phím vật lý/trình duyệt
-            window.addEventListener('popstate', function(event) {
-                if (navigationHistory.length > 1) {
-                    navigationHistory.pop();
-                    const prevPage = navigationHistory[navigationHistory.length - 1];
-                    showPageElement(prevPage);
-                }
-            });
+    // Gõ tìm kiếm ngay tại trang kết quả
+    function handleResultsKeyUp(event) {
+      if (event.key === 'Enter') {
+        const val = event.target.value.trim();
+        if (val) {
+          executeInstantSearch(val);
+        }
+      }
+    }
+
+    // Nhấp danh mục nhanh
+    function searchByCategory(catName) {
+      executeInstantSearch(catName);
+    }
+
+
+    // ==================== THỰC THI TÌM KIẾM SẢN PHẨM ====================
+    function executeInstantSearch(keyword) {
+      searchQuery = keyword;
+      
+      // Đồng bộ text trong các thanh tìm kiếm
+      document.getElementById('search-input-field').value = keyword;
+      document.getElementById('results-search-field').value = keyword;
+
+      // Lọc dữ liệu từ 1000 sản phẩm
+      const searchLower = keyword.toLowerCase();
+      filteredProducts = allProducts.filter(p => 
+        p.name.toLowerCase().includes(searchLower) || 
+        p.category.toLowerCase().includes(searchLower)
+      );
+
+      // Reset phân trang kết quả tìm kiếm
+      currentSort = 'relevant';
+      updateSortDropdownUI();
+      navigateTo('search-results');
+    }
+
+    // Khởi tạo trang kết quả tìm kiếm
+    function initSearchResults() {
+      loadedCount = 0;
+      const resultsGrid = document.getElementById('results-grid');
+      resultsGrid.innerHTML = '';
+      
+      // Đặt thông tin số lượng tìm thấy
+      document.getElementById('results-info').innerText = `Tìm thấy ${filteredProducts.length} sản phẩm tương tự "${searchQuery}"`;
+
+      // Sắp xếp dữ liệu ban đầu
+      sortFilteredData();
+
+      // Load trang đầu tiên
+      loadMoreSearchResults();
+
+      // Gắn sự kiện cuộn vô hạn
+      const container = document.getElementById('search-results-container');
+      container.onscroll = function() {
+        if (container.scrollTop + container.clientHeight >= container.scrollHeight - 100) {
+          loadMoreSearchResults();
+        }
+      };
+    }
+
+    // Tải thêm sản phẩm (Infinite Scroll)
+    function loadMoreSearchResults() {
+      if (loadedCount >= filteredProducts.length) {
+        document.getElementById('infinite-scroll-loader').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('infinite-scroll-loader').classList.remove('hidden');
+
+      // Giả lập tải trễ mượt mà 300ms
+      setTimeout(() => {
+        const resultsGrid = document.getElementById('results-grid');
+        const nextBatch = filteredProducts.slice(loadedCount, loadedCount + ITEMS_PER_PAGE);
+        
+        nextBatch.forEach(prod => {
+          const itemHtml = `
+            <div onclick="openProductDetail(${prod.id})" class="bg-white rounded-2xl overflow-hidden border border-slate-100 hover:shadow-md transition-shadow cursor-pointer flex flex-col active:scale-[0.98] transition-transform">
+              <div class="relative pt-[100%] bg-slate-100">
+                <img class="absolute inset-0 w-full h-full object-cover" src="${prod.image}" alt="${prod.name}" onerror="handleImgError(this)" loading="lazy">
+              </div>
+              <div class="p-2.5 flex-1 flex flex-col justify-between">
+                <h4 class="text-xs font-semibold text-slate-800 line-clamp-2 leading-snug mb-1 h-8">${prod.name}</h4>
+                <div class="space-y-1">
+                  <!-- Tiền tệ -->
+                  <div class="text-rose-600 font-extrabold text-sm">${formatPrice(prod.price)}</div>
+                  <!-- Đánh giá sao & lượt bán -->
+                  <div class="flex items-center gap-1 text-[10px] text-slate-500 font-medium">
+                    <span class="text-amber-500 font-bold flex items-center">
+                      <svg class="w-3 h-3 fill-amber-400 inline" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                      ${prod.rating}
+                    </span>
+                    <span class="text-slate-300">|</span>
+                    <span>Đã bán ${formatSold(prod.sold)}</span>
+                  </div>
+                  <!-- Ngày giao -->
+                  <div class="text-[9px] text-emerald-600 font-semibold bg-emerald-50 px-1 py-0.5 rounded inline-block">
+                    Vận chuyển hỏa tốc: Giao hàng ${prod.deliveryDays} ngày
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          resultsGrid.innerHTML += itemHtml;
+        });
+
+        loadedCount += nextBatch.length;
+        document.getElementById('infinite-scroll-loader').classList.add('hidden');
+      }, 300);
+    }
+
+
+    // ==================== BỘ LỌC & SẮP XẾP SẢN PHẨM ====================
+    function toggleSortDropdown() {
+      const dd = document.getElementById('sort-dropdown');
+      dd.classList.toggle('hidden');
+    }
+
+    function applySort(sortType) {
+      currentSort = sortType;
+      document.getElementById('sort-dropdown').classList.add('hidden');
+      updateSortDropdownUI();
+      
+      // Sắp xếp lại dữ liệu & render lại
+      sortFilteredData();
+      initSearchResults();
+    }
+
+    function updateSortDropdownUI() {
+      // Cập nhật label chính
+      let label = "Liên quan";
+      if (currentSort === 'latest') label = "Mới nhất";
+      if (currentSort === 'bestseller') label = "Bán chạy";
+      if (currentSort === 'price-desc') label = "Giá: Cao đến Thấp";
+      if (currentSort === 'price-asc') label = "Giá: Thấp đến Cao";
+      
+      document.getElementById('current-sort-label').innerText = label;
+
+      // Đổi màu đỏ và tick icon cho dropdown
+      const options = document.querySelectorAll('.sort-option');
+      options.forEach(opt => {
+        const tick = opt.querySelector('.tick-icon');
+        const span = opt.querySelector('span');
+
+        // Reset
+        opt.classList.remove('text-rose-600', 'font-semibold');
+        opt.classList.add('text-slate-700');
+        tick.classList.add('hidden');
+
+        // Check active
+        if (
+          (currentSort === 'relevant' && opt.innerText.includes('Liên quan')) ||
+          (currentSort === 'latest' && opt.innerText.includes('Mới nhất')) ||
+          (currentSort === 'bestseller' && opt.innerText.includes('Bán chạy')) ||
+          (currentSort === 'price-desc' && opt.innerText.includes('Cao đến Thấp')) ||
+          (currentSort === 'price-asc' && opt.innerText.includes('Thấp đến Cao'))
+        ) {
+          opt.classList.add('text-rose-600', 'font-semibold');
+          opt.classList.remove('text-slate-700');
+          tick.classList.remove('hidden');
+        }
+      });
+    }
+
+    function sortFilteredData() {
+      if (currentSort === 'relevant') {
+        // Giữ thứ tự ban đầu hoặc đảo nhẹ theo chỉ mục sản phẩm
+        filteredProducts.sort((a, b) => a.id - b.id);
+      } else if (currentSort === 'latest') {
+        // Ngẫu nhiên giả lập sản phẩm mới bằng ID lớn hơn trước
+        filteredProducts.sort((a, b) => b.id - a.id);
+      } else if (currentSort === 'bestseller') {
+        filteredProducts.sort((a, b) => b.sold - a.sold);
+      } else if (currentSort === 'price-desc') {
+        filteredProducts.sort((a, b) => b.price - a.price);
+      } else if (currentSort === 'price-asc') {
+        filteredProducts.sort((a, b) => a.price - b.price);
+      }
+    }
+
+
+    // ==================== TRANG CHI TIẾT SẢN PHẨM ====================
+    function openProductDetail(prodId) {
+      const prod = allProducts.find(p => p.id === prodId);
+      if (!prod) return;
+
+      activeProduct = prod;
+      selectedImageIndex = 0;
+      detailIsFavorite = false;
+
+      // Cập nhật thông tin text cơ bản
+      document.getElementById('detail-title').innerText = prod.name;
+      document.getElementById('detail-price').innerText = formatPrice(prod.price);
+      document.getElementById('detail-sold').innerText = `Đã bán ${formatSold(prod.sold)}`;
+      document.getElementById('detail-delivery').innerText = `Giao siêu tốc trong ${prod.deliveryDays} ngày`;
+      document.getElementById('detail-description').innerText = prod.description;
+      document.getElementById('detail-rating-score').innerText = prod.rating;
+
+      // Reset Thả tim
+      updateFavoriteUI();
+
+      // Render CAROUSEL ảnh lớn (5 slide ảnh giả lập để trượt ngang)
+      const carousel = document.getElementById('detail-image-carousel');
+      carousel.innerHTML = '';
+      
+      for (let i = 0; i < 5; i++) {
+        const slideImgUrl = `https://picsum.photos/500/500?sig=${prodId + i * 10}`;
+        const slideHtml = `
+          <div class="w-full h-full flex-shrink-0 snap-start bg-slate-100 flex items-center justify-center relative">
+            <img class="w-full h-full object-cover" src="${slideImgUrl}" alt="Ảnh ${i + 1}" onerror="handleImgError(this)" loading="lazy">
+          </div>
+        `;
+        carousel.innerHTML += slideHtml;
+      }
+
+      // Cập nhật chỉ số Carousel
+      document.getElementById('carousel-indicator-current').innerText = "1";
+      document.getElementById('carousel-indicator-total').innerText = "5";
+
+      // Render danh sách THUMBNAILS ảnh nhỏ bên dưới
+      const thumbsContainer = document.getElementById('detail-thumbnails');
+      thumbsContainer.innerHTML = '';
+
+      for (let i = 0; i < 5; i++) {
+        const thumbImgUrl = `https://picsum.photos/200/200?sig=${prodId + i * 10}`;
+        const thumbHtml = `
+          <div class="relative flex-shrink-0">
+            <img onclick="selectCarouselIndex(${i})" class="thumbnail-img w-14 h-14 object-cover rounded-lg border-2 cursor-pointer transition-all duration-200 ${i === 0 ? 'border-red-500 scale-95 shadow' : 'border-slate-200'}" src="${thumbImgUrl}" alt="Thumb ${i}" onerror="handleImgError(this)">
+            <button onclick="openLightbox('${thumbImgUrl}')" class="absolute bottom-0.5 right-0.5 bg-black/70 text-white p-0.5 rounded hover:bg-black active:scale-90 transition-all flex items-center justify-center" title="Phóng to ảnh">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+            </button>
+          </div>
+        `;
+        thumbsContainer.innerHTML += thumbHtml;
+      }
+
+      // Cuộn Carousel về đầu
+      carousel.scrollLeft = 0;
+
+      // Chuyển hướng sang màn hình chi tiết
+      navigateTo('detail');
+    }
+
+    // Chọn click vào ảnh nhỏ -> đổi ảnh lớn ngay lập tức
+    function selectCarouselIndex(index) {
+      selectedImageIndex = index;
+      const carousel = document.getElementById('detail-image-carousel');
+      const itemWidth = carousel.clientWidth;
+      carousel.scrollLeft = itemWidth * index;
+      updateThumbnailsUI();
+    }
+
+    // Đồng bộ ảnh nhỏ khi người dùng trượt ngang tay mượt mà ảnh lớn
+    function syncActiveThumbnail() {
+      const carousel = document.getElementById('detail-image-carousel');
+      const itemWidth = carousel.clientWidth;
+      if (itemWidth === 0) return;
+      
+      const newIndex = Math.round(carousel.scrollLeft / itemWidth);
+      if (newIndex !== selectedImageIndex && newIndex >= 0 && newIndex < 5) {
+        selectedImageIndex = newIndex;
+        updateThumbnailsUI();
+      }
+
+      // Cập nhật chỉ số hiển thị
+      document.getElementById('carousel-indicator-current').innerText = selectedImageIndex + 1;
+    }
+
+    // Cập nhật viền đỏ nổi bật cho ảnh nhỏ được chọn
+    function updateThumbnailsUI() {
+      const thumbs = document.querySelectorAll('.thumbnail-img');
+      thumbs.forEach((thumb, i) => {
+        if (i === selectedImageIndex) {
+          thumb.classList.add('border-red-500', 'scale-95', 'shadow');
+          thumb.classList.remove('border-slate-200');
+          // Tự cuộn ảnh nhỏ vào vùng nhìn thấy nếu bị khuất
+          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } else {
+          thumb.classList.remove('border-red-500', 'scale-95', 'shadow');
+          thumb.classList.add('border-slate-200');
+        }
+      });
+    }
+
+    // LIGHTBOX XEM ẢNH PHÓNG TO TOÀN MÀN HÌNH
+    function openLightbox(imgUrl) {
+      const lightbox = document.getElementById('lightbox-modal');
+      const lightboxImg = document.getElementById('lightbox-image');
+      lightboxImg.src = imgUrl;
+      lightbox.classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').classList.add('hidden');
+    }
+
+    // THẢ TIM / YÊU THÍCH SẢN PHẨM
+    function toggleFavorite() {
+      detailIsFavorite = !detailIsFavorite;
+      updateFavoriteUI();
+      showToast(detailIsFavorite ? "Đã thêm vào danh sách yêu thích!" : "Đã bỏ yêu thích!");
+    }
+
+    function updateFavoriteUI() {
+      const btn = document.getElementById('favorite-btn');
+      if (detailIsFavorite) {
+        btn.classList.remove('bg-slate-100', 'text-slate-400');
+        btn.classList.add('bg-rose-100', 'text-rose-500');
+      } else {
+        btn.classList.add('bg-slate-100', 'text-slate-400');
+        btn.classList.remove('bg-rose-100', 'text-rose-500');
+      }
+    }
+
+
+    // ==================== DIALOG THÊM GIỎ HÀNG CHUYÊN NGHIỆP ====================
+    function openAddToCartSheet() {
+      if (!activeProduct) return;
+
+      const p = activeProduct;
+      
+      // Đổ dữ liệu vào Bottom Sheet
+      document.getElementById('sheet-prod-img').src = `https://picsum.photos/200/200?sig=${p.id}`;
+      document.getElementById('sheet-prod-price').innerText = formatPrice(p.price);
+      document.getElementById('sheet-prod-title').innerText = p.name;
+
+      // Thiết lập lựa chọn phân loại
+      const classifyContainer = document.getElementById('sheet-classify-options');
+      classifyContainer.innerHTML = '';
+      selectedClassify = p.classifications[0];
+      p.classifications.forEach((cls, i) => {
+        const isSelected = i === 0;
+        classifyContainer.innerHTML += `
+          <button onclick="selectOption('classify', '${cls}', this)" class="option-btn px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all ${isSelected ? 'bg-red-50 text-red-600 border-red-500 ring-1 ring-red-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">
+            ${cls}
+          </button>
+        `;
+      });
+
+      // Thiết lập lựa chọn size
+      const sizeWrapper = document.getElementById('sheet-size-wrapper');
+      const sizeContainer = document.getElementById('sheet-size-options');
+      if (p.sizes && p.sizes.length > 0) {
+        sizeWrapper.classList.remove('hidden');
+        sizeContainer.innerHTML = '';
+        selectedSize = p.sizes[0];
+        p.sizes.forEach((sz, i) => {
+          const isSelected = i === 0;
+          sizeContainer.innerHTML += `
+            <button onclick="selectOption('size', '${sz}', this)" class="option-btn px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all ${isSelected ? 'bg-red-50 text-red-600 border-red-500 ring-1 ring-red-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">
+              Size ${sz}
+            </button>
+          `;
+        });
+      } else {
+        selectedSize = "";
+        sizeWrapper.classList.add('hidden');
+      }
+
+      // Thiết lập lựa chọn màu sắc
+      const colorWrapper = document.getElementById('sheet-color-wrapper');
+      const colorContainer = document.getElementById('sheet-color-options');
+      if (p.colors && p.colors.length > 0) {
+        colorWrapper.classList.remove('hidden');
+        colorContainer.innerHTML = '';
+        selectedColor = p.colors[0];
+        p.colors.forEach((col, i) => {
+          const isSelected = i === 0;
+          colorContainer.innerHTML += `
+            <button onclick="selectOption('color', '${col}', this)" class="option-btn px-3.5 py-1.5 rounded-xl border text-xs font-semibold transition-all ${isSelected ? 'bg-red-50 text-red-600 border-red-500 ring-1 ring-red-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}">
+              Màu ${col}
+            </button>
+          `;
+        });
+      } else {
+        selectedColor = "";
+        colorWrapper.classList.add('hidden');
+      }
+
+      // Reset số lượng
+      sheetQuantity = 1;
+      document.getElementById('sheet-quantity').innerText = "1";
+
+      // Reset nút Thêm vào giỏ
+      const addBtn = document.getElementById('sheet-add-btn');
+      addBtn.disabled = false;
+      addBtn.innerHTML = `Xác nhận thêm`;
+      addBtn.className = "w-full bg-gradient-to-r from-red-500 to-rose-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-md hover:brightness-105 active:scale-95 transition-all flex items-center justify-center gap-1.5";
+
+      // Hiển thị Bottom Sheet động mượt mà
+      const backdrop = document.getElementById('cart-sheet-backdrop');
+      const sheet = document.getElementById('cart-sheet');
+      backdrop.classList.remove('hidden');
+      sheet.classList.remove('hidden');
+      setTimeout(() => {
+        backdrop.classList.add('opacity-100');
+        sheet.classList.remove('translate-y-full');
+      }, 10);
+    }
+
+    function closeAddToCartSheet() {
+      const backdrop = document.getElementById('cart-sheet-backdrop');
+      const sheet = document.getElementById('cart-sheet');
+      
+      backdrop.classList.remove('opacity-100');
+      sheet.classList.add('translate-y-full');
+      setTimeout(() => {
+        backdrop.classList.add('hidden');
+        sheet.classList.add('hidden');
+      }, 300);
+    }
+
+    // Chọn option phân loại/size/màu
+    function selectOption(type, value, element) {
+      if (type === 'classify') selectedClassify = value;
+      if (type === 'size') selectedSize = value;
+      if (type === 'color') selectedColor = value;
+
+      // Tìm container cha và reset các nút anh em của nó
+      const container = element.parentElement;
+      const buttons = container.querySelectorAll('.option-btn');
+      buttons.forEach(btn => {
+        btn.className = "option-btn px-3.5 py-1.5 rounded-xl border text-xs font-semibold bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 transition-all";
+      });
+
+      // Active nút hiện tại
+      element.className = "option-btn px-3.5 py-1.5 rounded-xl border text-xs font-semibold bg-red-50 text-red-600 border-red-500 ring-1 ring-red-500 transition-all";
+    }
+
+    // Thay đổi số lượng mua
+    function adjustQuantity(amount) {
+      sheetQuantity += amount;
+      if (sheetQuantity < 1) sheetQuantity = 1;
+      document.getElementById('sheet-quantity').innerText = sheetQuantity;
+    }
+
+    // Submit thêm vào giỏ hàng thực tế có hiệu ứng LOADING đẹp mắt
+    function submitAddToCart() {
+      const addBtn = document.getElementById('sheet-add-btn');
+      addBtn.disabled = true;
+
+      // Hiệu ứng Đang tải mượt mà
+      addBtn.innerHTML = `
+        <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Đang thêm sản phẩm...
+      `;
+
+      setTimeout(() => {
+        // Tạo chuỗi mô tả phân loại hoàn chỉnh
+        let optionStr = selectedClassify;
+        if (selectedSize) optionStr += ` / Size ${selectedSize}`;
+        if (selectedColor) optionStr += ` / Màu ${selectedColor}`;
+
+        // Thêm vào dữ liệu Giỏ hàng thực tế
+        const cartItem = {
+          id: Date.now(),
+          productId: activeProduct.id,
+          name: activeProduct.name,
+          price: activeProduct.price,
+          image: activeProduct.image,
+          options: optionStr,
+          quantity: sheetQuantity
         };
 
-        // ĐIỀU HƯỚNG MÀN HÌNH CHUYÊN NGHIỆP
-        function navigateTo(screenName) {
-            currentScreen = screenName;
-            
-            // Nếu có tham chiếu đặc biệt để điều chỉnh giao diện
-            if (screenName === 'search') {
-                setTimeout(() => {
-                    document.getElementById('search-input').focus();
-                }, 100);
-            }
-            
-            navigationHistory.push(screenName);
-            history.pushState({screen: screenName}, '');
-            showPageElement(screenName);
-        }
+        cart.push(cartItem);
+        updateCartBadge();
 
-        function navigateBack() {
-            if (navigationHistory.length > 1) {
-                navigationHistory.pop();
-                const prevPage = navigationHistory[navigationHistory.length - 1];
-                showPageElement(prevPage);
-            } else {
-                navigateTo('home');
-            }
-        }
+        // Hoàn tất hiển thị chữ "Đã thêm vào Giỏ hàng" kèm dấu tích đẹp mắt
+        addBtn.className = "w-full bg-emerald-600 text-white py-3.5 rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-1.5 transition-all";
+        addBtn.innerHTML = `
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+          Đã thêm vào Giỏ hàng thành công
+        `;
 
-        function showPageElement(screenName) {
-            // Ẩn tất cả trang
-            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
-            
-            // Hiện trang được chọn
-            const targetPage = document.getElementById(`page-${screenName}`);
-            if (targetPage) {
-                targetPage.classList.remove('hidden');
-                targetPage.classList.add('flex');
-            }
-            
-            // Cập nhật trạng thái Active trên Navbar
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('text-brand-500');
-                tab.classList.add('text-gray-400');
-            });
-            
-            const activeTab = document.getElementById(`nav-${screenName}`);
-            if (activeTab) {
-                activeTab.classList.remove('text-gray-400');
-                activeTab.classList.add('text-brand-500');
-            }
+        // Đóng sheet sau 1s
+        setTimeout(() => {
+          closeAddToCartSheet();
+        }, 1000);
 
-            // Cuộn trang lên đỉnh đầu
-            window.scrollTo({ top: 0, behavior: 'instant' });
-        }
+      }, 1200); // Đợi tải ảo 1.2 giây
+    }
 
-        // RENDER GIAO DIỆN TRANG CHỦ
-        function renderHomeScreen() {
-            const grid = document.getElementById('home-product-grid');
-            grid.innerHTML = '';
-            
-            PRODUCTS.forEach(prod => {
-                const isLiked = likedProducts.includes(prod.id);
-                const item = document.createElement('div');
-                item.className = "bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col relative";
-                item.innerHTML = `
-                    <div onclick="viewProductDetail(${prod.id})" class="aspect-square relative overflow-hidden bg-gray-50">
-                        <img src="${prod.images[0]}" alt="${prod.name}" class="w-full h-full object-cover transition-transform duration-300 hover:scale-105" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=600'">
-                    </div>
-                    <button onclick="toggleLikeHome(${prod.id}, event)" class="absolute top-2.5 right-2.5 p-1.5 bg-white/80 backdrop-blur-md rounded-full shadow-sm text-gray-400 hover:text-brand-500 transition-colors z-10">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="${isLiked ? '#ee1d23' : 'none'}" stroke="${isLiked ? '#ee1d23' : 'currentColor'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="heart-icon"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-                    </button>
-                    <div class="p-3 flex flex-col flex-1 justify-between gap-1" onclick="viewProductDetail(${prod.id})">
-                        <div>
-                            <h4 class="text-xs font-semibold text-gray-800 line-clamp-2 leading-snug">${prod.name}</h4>
-                            <div class="flex items-center gap-1 mt-1 text-[10px] text-gray-500">
-                                <div class="flex items-center text-amber-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                </div>
-                                <span class="font-bold">${prod.rating}</span>
-                                <span>•</span>
-                                <span>Đã bán ${prod.sales >= 1000 ? (prod.sales/1000).toFixed(1)+'k' : prod.sales}</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center justify-between mt-1 pt-1 border-t border-gray-50">
-                            <span class="text-xs font-extrabold text-brand-500">${formatVND(prod.price)}</span>
-                            <span class="text-[9px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded font-bold">Giao hỏa tốc</span>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(item);
-            });
-        }
 
-        // RENDER SẢN PHẨM GỢI Ý (Đầy đủ 5 sản phẩm ở Trang Tìm Kiếm)
-        function renderSearchSuggestions() {
-            const list = document.getElementById('search-suggestions-list');
-            list.innerHTML = '';
-            
-            // Lấy 5 sản phẩm đầu tiên làm gợi ý đặc biệt
-            const suggestions = PRODUCTS.slice(0, 5);
-            suggestions.forEach((prod, index) => {
-                const item = document.createElement('div');
-                item.className = "flex items-center gap-3 p-2 hover:bg-gray-50 rounded-xl cursor-pointer border border-transparent hover:border-gray-100 transition-all";
-                // Khi nhấp tự động tìm kiếm và chuyển sang trang kết quả
-                item.setAttribute('onclick', `searchByKeyword("${prod.name}")`);
-                item.innerHTML = `
-                    <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-50 border border-gray-100 shrink-0">
-                        <img src="${prod.images[0]}" alt="${prod.name}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex-1 flex flex-col min-w-0">
-                        <span class="text-xs font-semibold text-gray-800 truncate">${prod.name}</span>
-                        <div class="flex items-center gap-2 mt-0.5">
-                            <span class="text-[10px] text-brand-500 font-bold">${formatVND(prod.price)}</span>
-                            <span class="text-[9px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-full font-semibold">Gợi ý #${index+1}</span>
-                        </div>
-                    </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-300"><path d="m9 18 6-6-6-6"/></svg>
-                `;
-                list.appendChild(item);
-            });
-        }
+    // ==================== QUẢN LÝ GIỎ HÀNG VÀ THANH TOÁN KHÁCH HÀNG ====================
+    function updateCartBadge() {
+      const totalCount = cart.reduce((total, item) => total + item.quantity, 0);
+      document.getElementById('cart-badge').innerText = totalCount;
+      document.getElementById('detail-cart-badge').innerText = totalCount;
+    }
 
-        // XỬ LÝ LỊCH SỬ TÌM KIẾM
-        function renderRecentSearches() {
-            const container = document.getElementById('recent-searches');
-            container.innerHTML = '';
-            
-            if (recentSearches.length === 0) {
-                container.innerHTML = `<span class="text-xs text-gray-400">Không có lịch sử tìm kiếm gần đây</span>`;
-                return;
-            }
-            
-            recentSearches.forEach(search => {
-                const chip = document.createElement('button');
-                chip.className = "px-3 py-1.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-600 hover:bg-brand-50 hover:text-brand-500 transition-colors";
-                chip.setAttribute('onclick', `searchByKeyword("${search}")`);
-                chip.innerText = search;
-                container.appendChild(chip);
-            });
-        }
+    function toggleCartModal(show) {
+      const backdrop = document.getElementById('cart-modal-backdrop');
+      const modal = document.getElementById('cart-modal');
+      
+      if (show) {
+        renderCartItems();
+        backdrop.classList.remove('hidden');
+        modal.classList.remove('hidden');
+      } else {
+        backdrop.classList.add('hidden');
+        modal.classList.add('hidden');
+      }
+    }
 
-        function clearRecentSearches() {
-            recentSearches = [];
-            localStorage.setItem('recent_searches', JSON.stringify(recentSearches));
-            renderRecentSearches();
-            showToast("Đã xóa toàn bộ lịch sử tìm kiếm", "info");
-        }
+    function renderCartItems() {
+      const container = document.getElementById('cart-items-list');
+      container.innerHTML = '';
 
-        // THỰC HIỆN TÌM KIẾM SẢN PHẨM
-        function handleSearchInput(event) {
-            if (event.key === 'Enter') {
-                const query = event.target.value.trim();
-                if (query) {
-                    searchByKeyword(query);
-                }
-            }
-        }
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="py-10 text-center text-slate-400 space-y-2">
+            <svg class="w-12 h-12 text-slate-300 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+            <p class="text-xs font-semibold">Giỏ hàng của bạn đang trống</p>
+          </div>
+        `;
+        document.getElementById('cart-total-price').innerText = "0đ";
+        return;
+      }
 
-        function searchByKeyword(keyword) {
-            currentSearchQuery = keyword;
-            
-            // Đồng bộ nội dung thanh tìm kiếm ở cả hai màn hình
-            document.getElementById('search-input').value = keyword;
-            document.getElementById('results-search-input').value = keyword;
+      let total = 0;
+      cart.forEach(item => {
+        const cost = item.price * item.quantity;
+        total += cost;
 
-            // Lưu vào lịch sử tìm kiếm nếu chưa có
-            if (!recentSearches.includes(keyword)) {
-                recentSearches.unshift(keyword);
-                if (recentSearches.length > 8) recentSearches.pop(); // Giới hạn 8 từ gần đây
-                localStorage.setItem('recent_searches', JSON.stringify(recentSearches));
-                renderRecentSearches();
-            }
+        const html = `
+          <div class="flex items-center gap-3 p-2 bg-slate-50 rounded-xl border border-slate-100">
+            <img class="w-12 h-12 object-cover rounded-lg border bg-white flex-shrink-0" src="${item.image}" alt="" onerror="handleImgError(this)">
+            <div class="flex-1 min-w-0">
+              <h5 class="text-xs font-bold text-slate-800 truncate leading-snug">${item.name}</h5>
+              <p class="text-[10px] text-slate-400 truncate mt-0.5">${item.options}</p>
+              <div class="flex items-baseline gap-1.5 mt-0.5">
+                <span class="text-rose-600 font-extrabold text-xs">${formatPrice(item.price)}</span>
+                <span class="text-[10px] text-slate-400">x${item.quantity}</span>
+              </div>
+            </div>
+            <!-- Xóa khỏi giỏ -->
+            <button onclick="removeCartItem(${item.id})" class="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+            </button>
+          </div>
+        `;
+        container.innerHTML += html;
+      });
 
-            // Chuyển sang trang kết quả
-            navigateTo('results');
-            applyFilterAndSort();
-        }
+      document.getElementById('cart-total-price').innerText = formatPrice(total);
+    }
 
-        // PHẦN 2: QUẢN LÝ SẮP XẾP VÀ HIỂN THỊ KẾT QUẢ TÌM KIẾM
-        function changeSort(sortType) {
-            activeSort = sortType;
-            
-            // Đặt tất cả nút về trạng thái ban đầu
-            document.querySelectorAll('.sort-btn').forEach(btn => {
-                btn.className = "sort-btn px-3 py-1 rounded-full text-xs font-semibold bg-gray-50 border border-gray-100 text-gray-600 transition-all duration-200 flex items-center gap-1 shrink-0";
-                // Loại bỏ icon tích đỏ cũ
-                const checkIcon = btn.querySelector('.check-icon');
-                if (checkIcon) checkIcon.remove();
-            });
+    function removeCartItem(itemId) {
+      cart = cart.filter(i => i.id !== itemId);
+      updateCartBadge();
+      renderCartItems();
+      showToast("Đã xóa sản phẩm khỏi giỏ hàng");
+    }
 
-            // Làm nổi bật nút được chọn (chữ chuyển màu đỏ, có dấu tích đỏ)
-            const activeBtn = document.getElementById(`sort-${sortType}`);
-            if (activeBtn) {
-                activeBtn.className = "sort-btn px-3 py-1 rounded-full text-xs font-extrabold bg-brand-50 border border-brand-500/20 text-brand-500 transition-all duration-200 flex items-center gap-1 shrink-0";
-                
-                // Thêm icon tích đỏ siêu tinh tế
-                const iconSpan = document.createElement('span');
-                iconSpan.className = "check-icon text-brand-500 flex items-center";
-                iconSpan.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check"><polyline points="20 6 9 17 4 12"/></svg>
-                `;
-                activeBtn.prepend(iconSpan);
-            }
+    function checkoutCart() {
+      if (cart.length === 0) {
+        showToast("Giỏ hàng rỗng, không thể thanh toán!");
+        return;
+      }
 
-            applyFilterAndSort();
-        }
+      // Giả lập thanh toán ảo
+      showToast("🎉 Chúc mừng! Đơn hàng giả lập đã được gửi thành công!");
+      cart = [];
+      updateCartBadge();
+      toggleCartModal(false);
+    }
 
-        function applyFilterAndSort() {
-            // Lọc sản phẩm theo từ khóa (Không phân biệt hoa thường, tìm tương đối trong tên hoặc mô tả)
-            let filtered = PRODUCTS.filter(prod => {
-                const keyword = currentSearchQuery.toLowerCase();
-                return prod.name.toLowerCase().includes(keyword) || 
-                       prod.category.toLowerCase().includes(keyword) || 
-                       prod.description.some(desc => desc.toLowerCase().includes(keyword));
-            });
 
-            // Nếu không tìm thấy, hiển thị ngẫu nhiên để không bị trống trang
-            if (filtered.length === 0) {
-                filtered = [...PRODUCTS];
-            }
+    // ==================== CHỨC NĂNG PHỤ TRỢ (HELPER & TOASTS) ====================
+    function formatPrice(number) {
+      return number.toLocaleString('vi-VN') + 'đ';
+    }
 
-            // Sắp xếp theo các lựa chọn
-            if (activeSort === 'relevance') {
-                // Giữ nguyên hoặc sắp xếp theo ID
-                filtered.sort((a, b) => a.id - b.id);
-            } else if (activeSort === 'newest') {
-                // Giả lập sản phẩm ID cao hơn là mới hơn
-                filtered.sort((a, b) => b.id - a.id);
-            } else if (activeSort === 'sales') {
-                filtered.sort((a, b) => b.sales - a.sales);
-            } else if (activeSort === 'priceDesc') {
-                filtered.sort((a, b) => b.price - a.price);
-            } else if (activeSort === 'priceAsc') {
-                filtered.sort((a, b) => a.price - b.price);
-            }
+    function formatSold(number) {
+      if (number >= 1000) {
+        return (number / 1000).toFixed(1) + 'k';
+      }
+      return number.toString();
+    }
 
-            // Hiển thị kết quả tìm kiếm
-            const resultsGrid = document.getElementById('results-product-list');
-            resultsGrid.innerHTML = '';
-            
-            document.getElementById('results-count-text').innerText = `Tìm thấy ${filtered.length} sản phẩm phù hợp`;
+    // Hiển thị thông báo Toast nhanh góc dưới màn hình
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = "fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-900/95 text-white text-[11px] font-bold py-2.5 px-4 rounded-full shadow-lg z-50 flex items-center gap-1.5 text-center min-w-[200px] justify-center transition-opacity duration-300 pointer-events-none";
+      toast.innerHTML = `
+        <svg class="w-4 h-4 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        ${message}
+      `;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+          toast.remove();
+        }, 300);
+      }, 2500);
+    }
 
-            filtered.forEach(prod => {
-                const item = document.createElement('div');
-                item.className = "bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer flex flex-col relative";
-                item.setAttribute('onclick', `viewProductDetail(${prod.id})`);
-                item.innerHTML = `
-                    <div class="aspect-square relative overflow-hidden bg-gray-50">
-                        <img src="${prod.images[0]}" alt="${prod.name}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-3 flex flex-col flex-1 justify-between gap-1">
-                        <div>
-                            <h4 class="text-xs font-bold text-gray-800 line-clamp-2 leading-snug">${prod.name}</h4>
-                            <div class="flex items-center gap-1.5 mt-1 text-[10px] text-gray-500">
-                                <div class="flex items-center text-amber-500">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                </div>
-                                <span class="font-extrabold text-gray-700">${prod.rating}</span>
-                                <span>•</span>
-                                <span class="font-semibold text-gray-500">Đã bán ${prod.sales}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="mt-2 pt-2 border-t border-gray-50">
-                            <span class="text-sm font-extrabold text-brand-500">${formatVND(prod.price)}</span>
-                            <div class="flex items-center gap-1 text-[9px] text-emerald-600 font-bold mt-1">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-truck"><rect width="16" height="13" x="2" y="4" rx="2"/><polygon points="22 7 22 11 19 11 19 7 22 7"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-                                <span>Giao trong ${prod.shippingDays} ngày</span>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                resultsGrid.appendChild(item);
-            });
+    // Giả lập tính năng tìm kiếm bằng AI (Camera AI, Giọng nói)
+    function showAIFeature(featureName) {
+      showToast(`Mô phỏng: Tính năng [${featureName}] đang quét...`);
+      setTimeout(() => {
+        // Tự động tìm kiếm ngẫu nhiên sản phẩm thịnh hành
+        const randomCats = ["iPhone", "MacBook", "Son Romand", "Vợt cầu lông", "Áo thun"];
+        const key = randomCats[Math.floor(Math.random() * randomCats.length)];
+        executeInstantSearch(key);
+      }, 1500);
+    }
 
-            // Khởi động mặc định giao diện sắp xếp nếu là lần đầu tiên tìm kiếm
-            if (!document.querySelector('.check-icon')) {
-                changeSort('relevance');
-            }
-        }
 
-        // PHẦN 3: XỬ LÝ CHI TIẾT SẢN PHẨM
-        function viewProductDetail(productId) {
-            const product = PRODUCTS.find(p => p.id === productId);
-            if (!product) return;
+    // ==================== KHỞI CHẠY TRANG WEB LẦN ĐẦU ====================
+    window.onload = function() {
+      // Tải giao diện Trang Chủ đầu tiên
+      navigateTo('home');
+    };
+  </script>
 
-            activeProduct = product;
-            currentVariant = product.variants[0]; // Mặc định chọn loại đầu tiên
-            buyQuantity = 1; // reset số lượng
-
-            // Cập nhật thông tin chi tiết
-            document.getElementById('detail-title').innerText = product.name;
-            document.getElementById('detail-price').innerText = formatVND(product.price);
-            document.getElementById('detail-old-price').innerText = formatVND(product.oldPrice);
-            document.getElementById('detail-rating').innerText = product.rating;
-            document.getElementById('detail-sales').innerText = `Đã bán ${product.sales}`;
-            document.getElementById('detail-shipping').innerText = `Giao nhanh trong ${product.shippingDays} ngày`;
-            document.getElementById('detail-quantity').innerText = buyQuantity;
-
-            // Kiểm tra thả tim
-            const likeBtn = document.getElementById('like-btn');
-            const isLiked = likedProducts.includes(product.id);
-            if (isLiked) {
-                likeBtn.classList.remove('text-gray-400', 'bg-rose-50');
-                likeBtn.classList.add('text-brand-500', 'bg-brand-50');
-                likeBtn.querySelector('.heart-icon').setAttribute('fill', '#ee1d23');
-                likeBtn.querySelector('.heart-icon').setAttribute('stroke', '#ee1d23');
-            } else {
-                likeBtn.classList.remove('text-brand-500', 'bg-brand-50');
-                likeBtn.classList.add('text-gray-400', 'bg-rose-50');
-                likeBtn.querySelector('.heart-icon').setAttribute('fill', 'none');
-                likeBtn.querySelector('.heart-icon').setAttribute('stroke', 'currentColor');
-            }
-
-            // Tạo các slide ảnh lớn
-            const sliderContainer = document.getElementById('detail-slider-container');
-            sliderContainer.innerHTML = '';
-            product.images.forEach((imgUrl, idx) => {
-                const slide = document.createElement('div');
-                slide.className = "w-full aspect-square flex-shrink-0 snap-start relative";
-                slide.innerHTML = `
-                    <img src="${imgUrl}" alt="${product.name} ${idx+1}" class="w-full h-full object-cover">
-                    <!-- Nút Mở rộng ảnh ở góc dưới -->
-                    <button onclick="openZoomModal('${imgUrl}')" class="absolute bottom-4 left-4 p-2.5 bg-black/50 backdrop-blur-md text-white rounded-xl shadow-lg hover:bg-black/75 transition-all flex items-center justify-center" title="Mở rộng">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-maximize-2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" x2="14" y1="3" y2="10"/><line x1="3" x2="10" y1="21" y2="14"/></svg>
-                    </button>
-                `;
-                sliderContainer.appendChild(slide);
-            });
-
-            // Tạo danh sách ảnh nhỏ
-            const thumbsContainer = document.getElementById('detail-thumbnails-container');
-            thumbsContainer.innerHTML = '';
-            product.images.forEach((imgUrl, idx) => {
-                const thumb = document.createElement('div');
-                thumb.className = `thumb-item w-14 h-14 rounded-xl overflow-hidden bg-gray-100 shrink-0 border-2 cursor-pointer transition-all ${idx === 0 ? 'border-brand-500 scale-95' : 'border-transparent opacity-70'}`;
-                thumb.setAttribute('id', `thumb-${idx}`);
-                thumb.setAttribute('onclick', `selectDetailImage(${idx})`);
-                thumb.innerHTML = `<img src="${imgUrl}" alt="thumbnail" class="w-full h-full object-cover">`;
-                thumbsContainer.appendChild(thumb);
-            });
-
-            // Reset chỉ số ảnh lớn
-            document.getElementById('detail-img-indicator').innerText = `1/${product.images.length}`;
-
-            // Tạo mô tả sản phẩm chi tiết
-            const descContainer = document.getElementById('detail-description');
-            descContainer.innerHTML = '';
-            product.description.forEach(desc => {
-                const p = document.createElement('p');
-                p.className = "text-xs text-gray-600";
-                p.innerText = desc;
-                descContainer.appendChild(p);
-            });
-
-            // Hiển thị phân loại màu sắc
-            const variantsContainer = document.getElementById('detail-variants');
-            variantsContainer.innerHTML = '';
-            product.variants.forEach((v, idx) => {
-                const btn = document.createElement('button');
-                btn.className = `variant-btn px-4 py-2 text-xs font-semibold rounded-xl border transition-all ${idx === 0 ? 'border-brand-500 bg-brand-50 text-brand-500 font-extrabold' : 'border-gray-200 text-gray-700 hover:border-gray-300'}`;
-                btn.setAttribute('onclick', `selectVariant('${v}', this)`);
-                btn.innerText = v;
-                variantsContainer.appendChild(btn);
-            });
-
-            navigateTo('detail');
-        }
-
-        // ĐIỀU KHIỂN SLIDER HÌNH ẢNH CHI TIẾT
-        function selectDetailImage(index) {
-            const container = document.getElementById('detail-slider-container');
-            const width = container.clientWidth;
-            
-            // Cuộn container tới ảnh tương ứng
-            container.scrollTo({
-                left: width * index,
-                behavior: 'smooth'
-            });
-
-            // Cập nhật trạng thái hiển thị thumbnail chọn
-            updateThumbnailState(index);
-        }
-
-        function handleDetailImageScroll(element) {
-            const index = Math.round(element.scrollLeft / element.clientWidth);
-            updateThumbnailState(index);
-            document.getElementById('detail-img-indicator').innerText = `${index + 1}/${activeProduct.images.length}`;
-        }
-
-        function updateThumbnailState(activeIndex) {
-            document.querySelectorAll('.thumb-item').forEach((thumb, idx) => {
-                if (idx === activeIndex) {
-                    thumb.classList.add('border-brand-500', 'scale-95');
-                    thumb.classList.remove('border-transparent', 'opacity-70');
-                    
-                    // Cuộn nhẹ thumbnail vào tầm nhìn mượt mà
-                    thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                } else {
-                    thumb.classList.remove('border-brand-500', 'scale-95');
-                    thumb.classList.add('border-transparent', 'opacity-70');
-                }
-            });
-        }
-
-        // LỰA CHỌN PHÂN LOẠI & TĂNG GIẢM SỐ LƯỢNG
-        function selectVariant(v, btnElement) {
-            currentVariant = v;
-            document.querySelectorAll('.variant-btn').forEach(btn => {
-                btn.className = "variant-btn px-4 py-2 text-xs font-semibold rounded-xl border border-gray-200 text-gray-700 hover:border-gray-300 transition-all";
-            });
-            btnElement.className = "variant-btn px-4 py-2 text-xs font-extrabold rounded-xl border border-brand-500 bg-brand-50 text-brand-500 transition-all";
-        }
-
-        function adjustQuantity(amount) {
-            buyQuantity = Math.max(1, buyQuantity + amount);
-            document.getElementById('detail-quantity').innerText = buyQuantity;
-        }
-
-        // THẢ TIM SẢN PHẨM TRÊN CHI TIẾT VÀ TRANG CHỦ
-        function toggleLike() {
-            const likeBtn = document.getElementById('like-btn');
-            const index = likedProducts.indexOf(activeProduct.id);
-            
-            if (index > -1) {
-                likedProducts.splice(index, 1);
-                likeBtn.classList.remove('text-brand-500', 'bg-brand-50');
-                likeBtn.classList.add('text-gray-400', 'bg-rose-50');
-                likeBtn.querySelector('.heart-icon').setAttribute('fill', 'none');
-                likeBtn.querySelector('.heart-icon').setAttribute('stroke', 'currentColor');
-                showToast("Đã bỏ thích sản phẩm", "info");
-            } else {
-                likedProducts.push(activeProduct.id);
-                likeBtn.classList.remove('text-gray-400', 'bg-rose-50');
-                likeBtn.classList.add('text-brand-500', 'bg-brand-50');
-                likeBtn.querySelector('.heart-icon').setAttribute('fill', '#ee1d23');
-                likeBtn.querySelector('.heart-icon').setAttribute('stroke', '#ee1d23');
-                showToast("Đã thích sản phẩm!", "success");
-            }
-            
-            localStorage.setItem('liked_products', JSON.stringify(likedProducts));
-            renderHomeScreen(); // Cập nhật trạng thái tim ngoài trang chủ
-        }
-
-        function toggleLikeHome(id, event) {
-            event.stopPropagation(); // Không kích hoạt click xem chi tiết
-            const index = likedProducts.indexOf(id);
-            
-            if (index > -1) {
-                likedProducts.splice(index, 1);
-                showToast("Đã bỏ thích sản phẩm", "info");
-            } else {
-                likedProducts.push(id);
-                showToast("Đã thêm vào danh sách yêu thích", "success");
-            }
-            
-            localStorage.setItem('liked_products', JSON.stringify(likedProducts));
-            renderHomeScreen();
-        }
-
-        // MODAL MỞ RỘNG ẢNH
-        function openZoomModal(imgUrl) {
-            document.getElementById('zoomed-image').src = imgUrl;
-            document.getElementById('image-zoom-modal').classList.remove('hidden');
-            document.getElementById('image-zoom-modal').classList.add('flex');
-        }
-
-        function closeZoomModal() {
-            document.getElementById('image-zoom-modal').classList.add('hidden');
-            document.getElementById('image-zoom-modal').classList.remove('flex');
-        }
-
-        // PHẦN 3: GIỎ HÀNG & THANH TOÁN
-        function toggleCartModal() {
-            const modal = document.getElementById('cart-modal');
-            const content = document.getElementById('cart-content-container');
-            
-            if (modal.classList.contains('hidden')) {
-                renderCartItems();
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.add('opacity-100');
-                    content.classList.remove('translate-y-full');
-                }, 50);
-            } else {
-                content.classList.add('translate-y-full');
-                modal.classList.remove('opacity-100');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300);
-            }
-        }
-
-        function renderCartItems() {
-            const container = document.getElementById('cart-items');
-            container.innerHTML = '';
-            
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-12 text-gray-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mb-3 text-gray-300"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-                        <span class="text-xs font-bold text-gray-500">Giỏ hàng của bạn đang trống</span>
-                        <button onclick="toggleCartModal()" class="mt-4 px-4 py-2 bg-brand-500 text-white rounded-xl text-xs font-bold shadow-md">Mua sắm ngay</button>
-                    </div>
-                `;
-                document.getElementById('cart-total-price').innerText = "0đ";
-                return;
-            }
-
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                total += item.product.price * item.quantity;
-                const row = document.createElement('div');
-                row.className = "flex gap-3 bg-gray-50 p-3 rounded-2xl border border-gray-100 relative";
-                row.innerHTML = `
-                    <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-100">
-                        <img src="${item.product.images[0]}" alt="${item.product.name}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="flex-1 flex flex-col justify-between min-w-0 pr-6">
-                        <div>
-                            <h5 class="text-xs font-bold text-gray-800 truncate leading-tight">${item.product.name}</h5>
-                            <span class="text-[10px] text-gray-400 font-bold bg-white px-1.5 py-0.5 rounded-md border border-gray-100 inline-block mt-0.5">${item.variant}</span>
-                        </div>
-                        <div class="flex items-center justify-between mt-1.5">
-                            <span class="text-xs font-extrabold text-brand-500">${formatVND(item.product.price)}</span>
-                            <!-- Điều khiển số lượng nhỏ -->
-                            <div class="flex items-center bg-white border border-gray-200 rounded-lg overflow-hidden">
-                                <button onclick="updateCartQty(${index}, -1)" class="w-6 h-6 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-100">-</button>
-                                <span class="w-8 text-center text-xs font-extrabold text-gray-800">${item.quantity}</span>
-                                <button onclick="updateCartQty(${index}, 1)" class="w-6 h-6 flex items-center justify-center font-bold text-gray-600 hover:bg-gray-100">+</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Nút xóa nhanh -->
-                    <button onclick="removeCartItem(${index})" class="absolute top-2 right-2 p-1 text-gray-400 hover:text-brand-500 rounded-full hover:bg-gray-200 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
-                    </button>
-                `;
-                container.appendChild(row);
-            });
-
-            document.getElementById('cart-total-price').innerText = formatVND(total);
-        }
-
-        function updateCartQty(index, change) {
-            cart[index].quantity += change;
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1);
-            }
-            renderCartItems();
-            updateCartBadge();
-        }
-
-        function removeCartItem(index) {
-            cart.splice(index, 1);
-            renderCartItems();
-            updateCartBadge();
-            showToast("Đã xóa sản phẩm khỏi giỏ hàng", "info");
-        }
-
-        function updateCartBadge() {
-            const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.querySelectorAll('.cart-badge').forEach(badge => {
-                badge.innerText = totalQty;
-                if (totalQty === 0) {
-                    badge.classList.add('hidden');
-                } else {
-                    badge.classList.remove('hidden');
-                }
-            });
-        }
-
-        // THÊM VÀO GIỎ HÀNG VỚI HIỆU ỨNG TẢI TRANG CHUYÊN NGHIỆP
-        function addToCartWithLoading() {
-            const btn = document.getElementById('add-to-cart-btn');
-            const originalContent = btn.innerHTML;
-            
-            // Bước 1: Trạng thái đang tải (Loading)
-            btn.disabled = true;
-            btn.className = "flex-1 bg-gray-400 text-white font-extrabold text-sm py-3.5 px-6 rounded-2xl transition-all flex items-center justify-center gap-2 cursor-not-allowed";
-            btn.innerHTML = `
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                <span>Đang thêm vào giỏ...</span>
-            `;
-
-            // Giả lập xử lý máy chủ trong 1.5 giây
-            setTimeout(() => {
-                // Thêm sản phẩm thực tế vào giỏ hàng
-                const existingIdx = cart.findIndex(item => item.product.id === activeProduct.id && item.variant === currentVariant);
-                if (existingIdx > -1) {
-                    cart[existingIdx].quantity += buyQuantity;
-                } else {
-                    cart.push({
-                        product: activeProduct,
-                        variant: currentVariant,
-                        quantity: buyQuantity
-                    });
-                }
-                
-                updateCartBadge();
-
-                // Bước 2: Hiển thị Đã thêm thành công với dấu tích đẹp mắt
-                btn.className = "flex-1 bg-emerald-500 text-white font-extrabold text-sm py-3.5 px-6 rounded-2xl transition-all flex items-center justify-center gap-2";
-                btn.innerHTML = `
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle-2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span>Đã thêm vào Giỏ hàng!</span>
-                `;
-
-                showToast(`Đã thêm ${buyQuantity}x ${activeProduct.name} vào giỏ hàng thành công!`, "success");
-
-                // Trả lại trạng thái nút ban đầu sau 2 giây nữa
-                setTimeout(() => {
-                    btn.disabled = false;
-                    btn.className = "flex-1 bg-brand-500 hover:bg-brand-600 active:scale-[0.98] text-white font-extrabold text-sm py-3.5 px-6 rounded-2xl shadow-md shadow-brand-500/20 transition-all flex items-center justify-center gap-2";
-                    btn.innerHTML = originalContent;
-                }, 2000);
-
-            }, 1200);
-        }
-
-        // GỬI THANH TOÁN MÔ PHỎNG
-        function checkoutCart() {
-            if (cart.length === 0) {
-                showToast("Giỏ hàng của bạn đang trống!", "error");
-                return;
-            }
-            
-            // Hiệu ứng thanh toán thành công
-            toggleCartModal();
-            showToast("🎁 Đơn đặt hàng ảo đã gửi đi! Cảm ơn bạn đã trải nghiệm HiSHOP.", "success");
-            
-            // Xóa sạch giỏ hàng sau thanh toán
-            cart = [];
-            updateCartBadge();
-            navigateTo('home');
-        }
-
-        // HỆ THỐNG HIỂN THỊ THÔNG BÁO TOAST TOÀN TRANG
-        function showToast(message, type = "success") {
-            const toast = document.getElementById('toast-notification');
-            const icon = document.getElementById('toast-icon');
-            const msgSpan = document.getElementById('toast-message');
-
-            msgSpan.innerText = message;
-
-            // Đặt icon đẹp mắt tùy theo trạng thái
-            if (type === "success") {
-                icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-400"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`;
-            } else if (type === "info") {
-                icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-blue-400"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>`;
-            } else {
-                icon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-red-400"><circle cx="12" cy="12" r="10"/><line x1="15" x2="9" y1="9" y2="15"/><line x1="9" x2="15" y1="9" y2="15"/></svg>`;
-            }
-
-            // Kích hoạt animation hiện ra
-            toast.classList.remove('opacity-0', 'pointer-events-none', '-translate-y-4');
-            toast.classList.add('opacity-100', 'translate-y-0');
-
-            // Tự động ẩn đi sau 3 giây
-            setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'pointer-events-none', '-translate-y-4');
-            }, 3000);
-        }
-    </script>
 </body>
 </html>
