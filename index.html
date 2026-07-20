@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoFast - Đặt Xe Công Nghệ Việt Nam 100%</title>
+    <title>GoFast - Đặt Xe Công Nghệ Nội Địa Việt Nam</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -59,12 +59,12 @@
                 </div>
                 <div>
                     <span class="text-xl font-extrabold tracking-tight text-slate-900">Go<span class="text-emerald-600">Fast</span></span>
-                    <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">NỘI ĐỊA VIỆT NAM 100%</span>
+                    <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">QUỐC LỘ 1A NỘI ĐỊA 100%</span>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
                 <span class="text-sm text-slate-500 hidden md:flex items-center font-medium">
-                    <i class="fa-solid fa-shield-halved text-emerald-500 mr-1.5"></i> Đã kích hoạt khóa biên giới Việt Nam
+                    <i class="fa-solid fa-shield-halved text-emerald-500 mr-1.5"></i> Đã kích hoạt bộ lọc ép đường bộ nội địa Việt Nam
                 </span>
                 <button onclick="resetApp()" class="px-3.5 py-1.5 border border-slate-200 hover:border-red-200 text-slate-600 hover:text-red-600 rounded-lg text-sm transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-rotate-left"></i> Làm mới
@@ -202,7 +202,7 @@
                         </div>
                         <div class="text-right">
                             <span class="font-extrabold text-slate-900 text-sm" id="price_bike">0đ</span>
-                            <span class="text-[10px] text-slate-400 block">10k mở cửa, 3.5k/km</span>
+                            <span class="text-[10px] text-slate-400 block">10k cự ly ngắn, 3.5k/km</span>
                         </div>
                     </label>
 
@@ -303,7 +303,7 @@
                         <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                             <i class="fa-solid fa-map-location-dot text-emerald-600"></i> Bản đồ định vị Việt Nam
                         </h2>
-                        <p class="text-xs text-slate-400">Tuyến đường chỉ được phép vẽ trong phạm vi bản đồ Việt Nam</p>
+                        <p class="text-xs text-slate-400">Ép lộ trình dọc dải miền Trung Việt Nam, cấm rẽ sang biên giới lân cận</p>
                     </div>
                     <div class="flex space-x-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold">
                         <button onclick="map.setView(startMarker.getLatLng(), 15)" id="mapBtnStart" class="px-2 py-1 rounded hover:bg-white text-slate-600 transition-all" disabled>Điểm đón</button>
@@ -316,7 +316,7 @@
                     <div id="map"></div>
                     <div id="mapLoader" class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] z-[500] flex items-center justify-center text-white font-semibold flex-col space-y-3 hidden">
                         <div class="animate-spin rounded-full h-10 w-10 border-4 border-emerald-500 border-t-transparent"></div>
-                        <p class="text-sm shadow-md bg-slate-800 px-4 py-2 rounded-lg">Đang kiểm tra ranh giới & định vị...</p>
+                        <p class="text-sm shadow-md bg-slate-800 px-4 py-2 rounded-lg">Đang khóa & tối ưu tuyến đường Việt Nam...</p>
                     </div>
                 </div>
             </div>
@@ -516,7 +516,7 @@
 
     <!-- Sticky footer with general credits -->
     <footer class="bg-white border-t border-slate-100 py-4 text-center text-xs text-slate-400 mt-auto">
-        <p>© 2026 GoFast Việt Nam. Tất cả thông tin vị trí và lộ trình đều thuộc lãnh thổ Việt Nam.</p>
+        <p>© 2026 GoFast Việt Nam. Hệ thống khóa tuyến đường tránh cắt biên giới sang các nước lân cận.</p>
     </footer>
 
     <!-- Interactive Logic & Calculation Scripts -->
@@ -531,6 +531,17 @@
             minLng: 102.1,
             maxLng: 109.5
         };
+
+        // Các trạm trung chuyển huyết mạch dọc Quốc lộ 1A Việt Nam dùng để ép định tuyến đa điểm
+        // Giúp ngăn hệ thống nhảy sang Lào / Campuchia khi quãng đường quá dài
+        const VN_WAYPOINTS = [
+            { lat: 10.9574, lng: 108.1011 }, // Phan Thiết
+            { lat: 12.2450, lng: 109.1948 }, // Nha Trang
+            { lat: 13.7749, lng: 109.2294 }, // Quy Nhơn
+            { lat: 16.0544, lng: 108.2022 }, // Đà Nẵng
+            { lat: 18.3433, lng: 105.9061 }, // Hà Tĩnh
+            { lat: 19.8075, lng: 105.7764 }  // Thanh Hóa
+        ];
 
         let map;
         let startMarker;
@@ -802,7 +813,7 @@
             });
         }
 
-        // Tìm kiếm tuyến đường từ máy chủ định tuyến lái xe OSRM đường bộ
+        // TÍNH TOÁN TUYẾN ĐƯỜNG THÔNG MINH - ÉP LỘ TRÌNH CHỈ TRONG VIỆT NAM
         function fetchRoute() {
             if (!startCoords || !endCoords) return;
 
@@ -815,7 +826,37 @@
             const loader = document.getElementById('mapLoader');
             loader.classList.remove('hidden');
 
-            const url = `https://router.project-osrm.org/route/v1/driving/${startCoords[1]},${startCoords[0]};${endCoords[1]},${endCoords[0]}?overview=full&geometries=geojson`;
+            // --- THUẬT TOÁN ĐỊNH TUYẾN ĐA ĐIỂM (MULTI-POINT WAYPOINTS) ---
+            // Nếu khoảng cách vĩ độ lớn (ví dụ từ miền Nam ra miền Bắc), ta tự động chèn các waypoint dọc Quốc lộ 1A để OSRM không chạy lấn sang Lào/CPC.
+            let coordinateList = [];
+            coordinateList.push(`${startCoords[1]},${startCoords[0]}`); // Bắt đầu
+
+            const startLat = startCoords[0];
+            const endLat = endCoords[0];
+            const minL = Math.min(startLat, endLat);
+            const maxL = Math.max(startLat, endLat);
+
+            // Sắp xếp các điểm trung chuyển bắt buộc dọc miền Trung nếu hành trình đi dọc đất nước
+            const middleWaypoints = VN_WAYPOINTS.filter(wp => wp.lat > minL && wp.lat < maxL);
+            
+            if (startLat > endLat) {
+                // Đi từ Bắc vào Nam -> đảo ngược danh sách waypoint trung gian cho đúng thứ tự hành trình
+                middleWaypoints.sort((a, b) => b.lat - a.lat);
+            } else {
+                // Đi từ Nam ra Bắc
+                middleWaypoints.sort((a, b) => a.lat - b.lat);
+            }
+
+            // Chèn tối đa 3 điểm trung gian cách đều nhau dọc Quốc lộ 1A để tối ưu hóa hiệu suất API của OSRM
+            const step = Math.ceil(middleWaypoints.length / 3);
+            for (let i = 0; i < middleWaypoints.length; i += step) {
+                coordinateList.push(`${middleWaypoints[i].lng},${middleWaypoints[i].lat}`);
+            }
+
+            coordinateList.push(`${endCoords[1]},${endCoords[0]}`); // Kết thúc
+
+            const joinedCoords = coordinateList.join(';');
+            const url = `https://router.project-osrm.org/route/v1/driving/${joinedCoords}?overview=full&geometries=geojson`;
 
             fetch(url)
             .then(res => res.json())
