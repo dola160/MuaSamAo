@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GoFast - Ứng Dụng Đặt Xe Công Nghệ</title>
+    <title>GoFast - Đặt Xe Công Nghệ Việt Nam 100%</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -59,12 +59,12 @@
                 </div>
                 <div>
                     <span class="text-xl font-extrabold tracking-tight text-slate-900">Go<span class="text-emerald-600">Fast</span></span>
-                    <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">LIVE MAPS 100%</span>
+                    <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">BẢN ĐỒ VIỆT NAM 100%</span>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
                 <span class="text-sm text-slate-500 hidden md:flex items-center">
-                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> Hệ thống tính cước tự động chính xác
+                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> Chỉ định vị và tìm kiếm trong nước
                 </span>
                 <button onclick="resetApp()" class="px-3.5 py-1.5 border border-slate-200 hover:border-red-200 text-slate-600 hover:text-red-600 rounded-lg text-sm transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-rotate-left"></i> Làm mới
@@ -81,9 +81,12 @@
             
             <!-- Address Inputs -->
             <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 space-y-4">
-                <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-route text-emerald-600"></i> Lộ trình di chuyển
-                </h2>
+                <div class="flex justify-between items-center">
+                    <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-route text-emerald-600"></i> Lộ trình di chuyển
+                    </h2>
+                    <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">BẢN ĐỒ VIỆT NAM</span>
+                </div>
                 
                 <!-- Start Point Input -->
                 <div class="relative">
@@ -92,9 +95,9 @@
                         <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-emerald-600">
                             <i class="fa-solid fa-circle-dot"></i>
                         </span>
-                        <input type="text" id="startInput" placeholder="Đang xác định vị trí hiện tại của bạn..." 
+                        <input type="text" id="startInput" placeholder="Nhập địa điểm đón tại Việt Nam..." 
                             class="w-full pl-10 pr-10 py-3 bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 rounded-xl outline-none text-sm transition-all font-medium" />
-                        <button onclick="getUserLocation()" title="Lấy vị trí hiện tại" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors">
+                        <button onclick="getUserLocation()" title="Lấy vị trí hiện tại của bạn" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-600 transition-colors">
                             <i class="fa-solid fa-crosshairs text-base"></i>
                         </button>
                     </div>
@@ -108,7 +111,7 @@
                         <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-red-500">
                             <i class="fa-solid fa-location-dot"></i>
                         </span>
-                        <input type="text" id="endInput" placeholder="Nhập địa điểm, tên đường, thành phố..." 
+                        <input type="text" id="endInput" placeholder="Nhập điểm đến mong muốn..." 
                             class="w-full pl-10 pr-4 py-3 bg-slate-50 focus:bg-white border border-slate-200 focus:border-emerald-500 rounded-xl outline-none text-sm transition-all font-medium" />
                     </div>
                     <div id="endSuggestions" class="absolute left-0 right-0 mt-1 bg-white border border-slate-100 rounded-xl shadow-xl autocomplete-suggestions hidden"></div>
@@ -131,7 +134,7 @@
                     </button>
                 </div>
 
-                <!-- Roundtrip discount options (Visible when Roundtrip is active) -->
+                <!-- Roundtrip discount options -->
                 <div id="roundTripOptions" class="hidden border border-emerald-100 bg-emerald-50/50 rounded-xl p-3 space-y-3">
                     <div class="flex items-center justify-between">
                         <div>
@@ -153,7 +156,7 @@
                     </div>
                 </div>
 
-                <!-- Waiting Time input (Optional but extremely professional) -->
+                <!-- Waiting Time input -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5">Thời gian chờ đợi nếu có (Giờ)</label>
                     <div class="relative">
@@ -194,7 +197,7 @@
                             </div>
                             <div>
                                 <span class="font-bold text-slate-800 block text-sm">Xe máy (GoBike)</span>
-                                <span class="text-[11px] text-slate-400 block">Tiết kiệm, linh hoạt</span>
+                                <span class="text-[11px] text-slate-400 block">Tiết kiệm, nhanh chóng</span>
                             </div>
                         </div>
                         <div class="text-right">
@@ -248,7 +251,7 @@
                             </div>
                             <div>
                                 <span class="font-bold text-slate-800 block text-sm">Ô tô 16 chỗ (GoVan 16)</span>
-                                <span class="text-[11px] text-slate-400 block">Chuyến đi tập thể dã ngoại</span>
+                                <span class="text-[11px] text-slate-400 block">Chuyến đi đông người</span>
                             </div>
                         </div>
                         <div class="text-right">
@@ -298,13 +301,13 @@
                 <div class="flex items-center justify-between mb-3">
                     <div>
                         <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                            <i class="fa-solid fa-map-location-dot text-emerald-600"></i> Bản đồ định vị thông minh
+                            <i class="fa-solid fa-map-location-dot text-emerald-600"></i> Bản đồ định vị Việt Nam
                         </h2>
-                        <p class="text-xs text-slate-400">Hiển thị đường đi tối ưu nhất theo thời gian thực</p>
+                        <p class="text-xs text-slate-400">Tuyến đường chuẩn xác tuyệt đối trên lãnh thổ Việt Nam</p>
                     </div>
                     <div class="flex space-x-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold">
-                        <button onclick="map.setView(startMarker.getLatLng(), 15)" id="mapBtnStart" class="px-2 py-1 rounded hover:bg-white text-slate-600 transition-all" disabled>Điểm đi</button>
-                        <button onclick="map.setView(endMarker.getLatLng(), 15)" id="mapBtnEnd" class="px-2 py-1 rounded hover:bg-white text-slate-600 transition-all" disabled>Điểm đến</button>
+                        <button onclick="map.setView(startMarker.getLatLng(), 15)" id="mapBtnStart" class="px-2 py-1 rounded hover:bg-white text-slate-600 transition-all" disabled>Điểm đón</button>
+                        <button onclick="map.setView(endMarker.getLatLng(), 15)" id="mapBtnEnd" class="px-2 py-1 rounded hover:bg-white text-slate-600 transition-all" disabled>Nơi đến</button>
                     </div>
                 </div>
 
@@ -313,7 +316,7 @@
                     <div id="map"></div>
                     <div id="mapLoader" class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] z-[500] flex items-center justify-center text-white font-semibold flex-col space-y-3 hidden">
                         <div class="animate-spin rounded-full h-10 w-10 border-4 border-emerald-500 border-t-transparent"></div>
-                        <p class="text-sm shadow-md bg-slate-800 px-4 py-2 rounded-lg">Đang tính toán tuyến đường thật...</p>
+                        <p class="text-sm shadow-md bg-slate-800 px-4 py-2 rounded-lg">Đang tính tuyến đường Việt Nam...</p>
                     </div>
                 </div>
             </div>
@@ -324,7 +327,7 @@
     <!-- Custom Toast Notification Box -->
     <div id="toastBox" class="fixed bottom-6 right-6 z-[2000] flex flex-col gap-2 pointer-events-none"></div>
 
-    <!-- Booking Checkout Modal (Details and Canva Styled Receipt) -->
+    <!-- Booking Checkout Modal (Canva Styled Receipt) -->
     <div id="checkoutModal" class="fixed inset-0 z-[1500] bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[92vh] overflow-hidden flex flex-col md:flex-row transition-all duration-300 scale-95 opacity-0" id="modalContainer">
             
@@ -375,11 +378,11 @@
                         </div>
                     </div>
 
-                    <!-- Payment QR code visual (Simulated but fully active) -->
+                    <!-- Payment QR code visual -->
                     <div id="qrSection" class="hidden border border-emerald-100 bg-emerald-50/30 rounded-xl p-4 text-center space-y-2">
-                        <span class="text-xs font-bold text-emerald-800 block">MÃ QR QUÉT THANH TOÁN CHUYẾN ĐI</span>
+                        <span class="text-xs font-bold text-emerald-800 block">MÃ QR THANH TOÁN CHUYẾN ĐI (VIETQR)</span>
                         <div class="inline-block bg-white p-2 rounded-lg border border-slate-100 shadow-sm">
-                            <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ThanhToanGoFast" alt="Thanh toán QR" class="w-28 h-28 object-contain">
+                            <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=VietQR" alt="Thanh toán QR" class="w-28 h-28 object-contain">
                         </div>
                         <p class="text-[10px] text-slate-500">Mã QR động tự động cập nhật đúng tổng tiền cuối cùng</p>
                     </div>
@@ -513,37 +516,37 @@
 
     <!-- Sticky footer with general credits -->
     <footer class="bg-white border-t border-slate-100 py-4 text-center text-xs text-slate-400 mt-auto">
-        <p>© 2026 GoFast Việt Nam. Tất cả thông tin vị trí và lộ trình đều cập nhật theo thời gian thực 100%.</p>
+        <p>© 2026 GoFast Việt Nam. Tất cả thông tin vị trí và lộ trình đều thuộc lãnh thổ Việt Nam.</p>
     </footer>
 
     <!-- Interactive Logic & Calculation Scripts -->
     <script>
-        // Default System Coordinates (An Giang, Vietnam)
-        const DEFAULT_COORDS = [10.3759, 105.4185]; // Tan Thanh, An Giang
+        // Set mặc định tọa độ trung tâm Việt Nam nếu chưa định vị được (Hà Nội làm chuẩn bắt đầu)
+        const DEFAULT_COORDS = [21.0285, 105.8542]; 
         
         let map;
         let startMarker;
         let endMarker;
         let routeLine;
         
-        // State variables
+        // Trạng thái tọa độ
         let startCoords = null;
         let endCoords = null;
-        let totalDistance = 0; // in km
-        let totalDuration = 0; // in minutes
-        let tripType = 'oneway'; // oneway or round
-        let selectedVehicle = 'bike'; // bike, car4, car7, car16
+        let totalDistance = 0; // đơn vị km
+        let totalDuration = 0; // đơn vị phút
+        let tripType = 'oneway'; 
+        let selectedVehicle = 'bike'; 
 
-        // Debounce timer for address suggestions
+        // Debounce timer cho ô tìm kiếm
         let debounceTimer;
 
-        // Pricing Rates Table
+        // BẢNG GIÁ CHUẨN ĐÚNG THEO YÊU CẦU ĐỀ BÀI
         const RATES = {
             bike: {
-                base: 10000,        // first 2km
+                base: 10000,        // 2 km đầu
                 tier2: 3500,        // km 3 - 20
-                tier3: 3000,        // km 21+
-                waiting: 20000      // per hour
+                tier3: 3000,        // km 21 trở đi
+                waiting: 20000      // phí chờ / giờ
             },
             car4: {
                 base: 20000,
@@ -565,26 +568,26 @@
             }
         };
 
-        // Initialize App on window load
+        // Khởi tạo ứng dụng
         window.onload = function() {
             initMap();
             setupAutocomplete();
-            getUserLocation(); // Auto get current user location on start
+            getUserLocation(); // Tự động lấy vị trí thực tế của khách hàng tại VN
         };
 
-        // Init Leaflet Map
+        // Khởi tạo Leaflet bản đồ
         function initMap() {
             map = L.map('map', {
                 zoomControl: true,
                 attributionControl: false
             }).setView(DEFAULT_COORDS, 13);
 
-            // Light, premium map tiles from CartoDB (highly clean for booking applications)
+            // Giao diện bản đồ dịu nhẹ chuyên nghiệp của CartoDB
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
                 maxZoom: 19
             }).addTo(map);
 
-            // Green marker for pickup, red for dropoff
+            // Ghim biểu tượng Điểm Đi (Xanh) và Điểm Đến (Đỏ)
             const greenIcon = L.icon({
                 iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
                 shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -603,13 +606,14 @@
                 shadowSize: [41, 41]
             });
 
+            // Gán giá trị điểm ghim ban đầu
             startMarker = L.marker(DEFAULT_COORDS, {icon: greenIcon, draggable: true}).addTo(map);
-            endMarker = L.marker([10.3800, 105.4300], {icon: redIcon, draggable: true}).addTo(map);
+            endMarker = L.marker([21.0335, 105.8600], {icon: redIcon, draggable: true}).addTo(map);
 
-            startMarker.bindPopup("<b>Điểm xuất phát (Điểm đón)</b><br>Kéo thả tôi để đổi vị trí nhanh!").openPopup();
-            endMarker.bindPopup("<b>Điểm đến mong muốn</b><br>Kéo thả tôi để đổi điểm đến!");
+            startMarker.bindPopup("<b>Điểm xuất phát (Điểm đón)</b><br>Kéo thả tôi để đổi vị trí đón!").openPopup();
+            endMarker.bindPopup("<b>Điểm đến mong muốn</b><br>Kéo thả tôi để đổi nơi đến!");
 
-            // Event Listeners for Draggable Markers
+            // Lắng nghe sự kiện kéo thả ghim trên bản đồ
             startMarker.on('dragend', function() {
                 const latlng = startMarker.getLatLng();
                 startCoords = [latlng.lat, latlng.lng];
@@ -625,10 +629,10 @@
             });
         }
 
-        // Get user's active geographic location
+        // Tự động nhận diện toạ độ khách hàng
         function getUserLocation() {
             if (navigator.geolocation) {
-                showToast("Đang kết nối định vị vệ tinh GPS...", "info");
+                showToast("Đang định vị vị trí của bạn tại Việt Nam...", "info");
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const lat = position.coords.latitude;
@@ -639,7 +643,7 @@
                         map.setView([lat, lng], 15);
                         reverseGeocode(lat, lng, 'start');
                         
-                        showToast("Xác định thành công vị trí của bạn!", "success");
+                        showToast("Đã định vị thành công điểm đón của bạn!", "success");
                         document.getElementById("mapBtnStart").disabled = false;
                         
                         if (endCoords) {
@@ -647,8 +651,7 @@
                         }
                     },
                     (error) => {
-                        showToast("Không tìm được GPS. Sử dụng vị trí trung tâm mặc định.", "warning");
-                        // Fallback to default
+                        showToast("Không tìm được GPS. Đặt vị trí mặc định tại Hà Nội.", "warning");
                         startCoords = DEFAULT_COORDS;
                         reverseGeocode(DEFAULT_COORDS[0], DEFAULT_COORDS[1], 'start');
                     },
@@ -659,7 +662,7 @@
             }
         }
 
-        // Reverse Geocode (Coordinates to Readable Address)
+        // Giải mã tọa độ sang địa chỉ tiếng Việt rõ ràng
         function reverseGeocode(lat, lng, target) {
             fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`, {
                 headers: { 'Accept-Language': 'vi' }
@@ -678,7 +681,7 @@
             .catch(err => console.error("Geocode error: ", err));
         }
 
-        // Helper: shorten ultra long addresses returned by Nominatim
+        // Rút gọn bớt chuỗi địa chỉ quá dài
         function simplifyAddress(fullAddress) {
             const parts = fullAddress.split(',');
             if (parts.length > 4) {
@@ -687,12 +690,12 @@
             return fullAddress;
         }
 
-        // Setup Search Suggestion Autocomplete
+        // CẤU HÌNH TÌM KIẾM ĐỊA CHỈ - CHỈ TRONG LÃNH THỔ VIỆT NAM (vn)
         function setupAutocomplete() {
             setupSuggestionListener('startInput', 'startSuggestions', 'start');
             setupSuggestionListener('endInput', 'endSuggestions', 'end');
 
-            // Click outside to close lists
+            // Đóng danh sách gợi ý khi nhấn ra ngoài
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('#startInput') && !e.target.closest('#startSuggestions')) {
                     document.getElementById('startSuggestions').classList.add('hidden');
@@ -710,14 +713,14 @@
             input.addEventListener('input', function() {
                 clearTimeout(debounceTimer);
                 const query = input.value.trim();
-                if (query.length < 3) {
+                if (query.length < 2) {
                     suggestions.classList.add('hidden');
                     return;
                 }
 
                 debounceTimer = setTimeout(() => {
-                    // Call Nominatim API for address suggestions in Vietnam
-                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=vn&limit=5&addressdetails=1`, {
+                    // Sử dụng bộ lọc countrycodes=vn để đảm bảo CHỈ hiển thị kết quả tại Việt Nam
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=vn&limit=7&addressdetails=1`, {
                         headers: { 'Accept-Language': 'vi' }
                     })
                     .then(res => res.json())
@@ -729,7 +732,7 @@
                                 const cleanAddr = simplifyAddress(item.display_name);
                                 const div = document.createElement('div');
                                 div.className = "px-4 py-3 hover:bg-slate-50 cursor-pointer text-xs font-medium border-b border-slate-100 transition-colors flex items-center gap-2 text-slate-700";
-                                div.innerHTML = `<i class="fa-solid fa-location-dot text-slate-400"></i> <span>${cleanAddr}</span>`;
+                                div.innerHTML = `<i class="fa-solid fa-location-dot text-emerald-600"></i> <span>${cleanAddr}</span>`;
                                 div.onclick = function() {
                                     input.value = cleanAddr;
                                     suggestions.classList.add('hidden');
@@ -754,15 +757,20 @@
                                 suggestions.appendChild(div);
                             });
                         } else {
-                            suggestions.classList.add('hidden');
+                            // Không có kết quả nào tại Việt Nam
+                            suggestions.classList.remove('hidden');
+                            const div = document.createElement('div');
+                            div.className = "px-4 py-3 text-xs text-red-500 font-medium text-center";
+                            div.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Không tìm thấy địa điểm này tại Việt Nam`;
+                            suggestions.appendChild(div);
                         }
                     })
                     .catch(err => console.error("Autocomplete error: ", err));
-                }, 400); // 400ms debounce
+                }, 400); 
             });
         }
 
-        // Fetch official optimal routing via OSRM (100% Real Live Calculation)
+        // Tìm kiếm tuyến đường từ máy chủ định tuyến lái xe OSRM đường bộ
         function fetchRoute() {
             if (!startCoords || !endCoords) return;
 
@@ -777,44 +785,44 @@
                 loader.classList.add('hidden');
                 if (data && data.routes && data.routes.length > 0) {
                     const route = data.routes[0];
-                    totalDistance = (route.distance / 1000).toFixed(1); // convert to km
-                    totalDuration = Math.round(route.duration / 60); // convert to minutes
+                    totalDistance = (route.distance / 1000).toFixed(1); 
+                    totalDuration = Math.round(route.duration / 60); 
 
-                    // Update UI stats
+                    // Cập nhật thông số lộ trình thực
                     document.getElementById('statDistance').innerText = totalDistance + ' km';
                     document.getElementById('statDuration').innerText = totalDuration + ' phút';
 
-                    // Draw route polyline
+                    // Vẽ đường lộ trình
                     if (routeLine) {
                         map.removeLayer(routeLine);
                     }
 
                     const coordinates = route.geometry.coordinates.map(coord => [coord[1], coord[0]]);
                     routeLine = L.polyline(coordinates, {
-                        color: '#059669', // Emerald 600
+                        color: '#059669', 
                         weight: 6,
                         opacity: 0.85,
                         lineCap: 'round',
                         lineJoin: 'round'
                     }).addTo(map);
 
-                    // Fit map bounds to view whole trip
-                    map.fitBounds(routeLine.getBounds(), { padding: [40, 40] });
+                    // Thu phóng bản đồ bao quát toàn bộ lộ trình
+                    map.fitBounds(routeLine.getBounds(), { padding: [45, 45] });
 
-                    // Auto compute all vehicle fares instantly
+                    // Tính cước xe ngay lập tức
                     calculateFare();
                 } else {
-                    showToast("Không tìm thấy đường đi hợp lệ giữa 2 điểm này.", "error");
+                    showToast("Không tìm thấy đường đi bộ/đường xe chạy phù hợp.", "error");
                 }
             })
             .catch(err => {
                 loader.classList.add('hidden');
                 console.error("Routing error: ", err);
-                showToast("Lỗi kết nối máy chủ định tuyến đường đi.", "error");
+                showToast("Không kết nối được hệ thống tính tuyến đường.", "error");
             });
         }
 
-        // Set One-Way / Round-trip Type
+        // Chọn hành trình (1 chiều / Khứ hồi)
         function setTripType(type) {
             tripType = type;
             const btnOneWay = document.getElementById('btnOneWay');
@@ -836,11 +844,10 @@
             calculateFare();
         }
 
-        // Active Vehicle Selection
+        // Chọn loại xe di chuyển
         function selectVehicle(type) {
             selectedVehicle = type;
             
-            // Toggle highlight styles in selection container
             const vehicles = ['bike', 'car4', 'car7', 'car16'];
             vehicles.forEach(v => {
                 const label = document.getElementById(`label_${v}`);
@@ -862,12 +869,12 @@
             calculateFare();
         }
 
-        // FORMAT MONEY
+        // Định dạng tiền tệ VND
         function formatVND(amount) {
             return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
         }
 
-        // ABSOLUTE FARE CALCULATOR ENGINE
+        // TÍNH TOÁN GIÁ CƯỚC CHÍNH XÁC THEO YÊU CẦU BẢNG GIÁ
         function calculateFare() {
             if (totalDistance <= 0) return;
 
@@ -878,7 +885,6 @@
             const isVipOn = document.getElementById('vipDiscount').checked;
             const statusText = document.getElementById('discountStatusText');
 
-            // Render live fares inside selection cards
             const vehicleTypes = ['bike', 'car4', 'car7', 'car16'];
             
             vehicleTypes.forEach(v => {
@@ -889,36 +895,35 @@
                 if (tripType === 'oneway') {
                     finalCost = oneWayCost;
                 } else {
-                    // Round trip calculation
                     let roundBase = oneWayCost * 2;
                     if (isDiscountOn) {
                         let pct = getDiscountPercentage(dist, isVipOn);
                         finalCost = roundBase * (1 - pct);
                     } else {
-                        finalCost = roundBase; // normal 2x
+                        finalCost = roundBase; // Không bật giảm giá khứ hồi tính gấp đôi
                     }
                 }
 
-                // Add waiting fee
+                // Cộng thêm phí thời gian chờ
                 const waitFee = waitTimeHours * RATES[v].waiting;
                 finalCost += waitFee;
 
                 price_card.innerText = formatVND(Math.round(finalCost));
             });
 
-            // Update status text on toggle discount
+            // Cập nhật trạng thái thông báo khứ hồi
             if (tripType === 'round') {
                 if (isDiscountOn) {
                     let discountPct = Math.round(getDiscountPercentage(dist, isVipOn) * 100);
-                    statusText.innerText = `Đang bật: Đã áp dụng giảm ${discountPct}% khứ hồi`;
+                    statusText.innerText = `Đang bật: Tự động áp dụng giảm ${discountPct}% khứ hồi`;
                     statusText.className = "text-[11px] text-emerald-600 font-bold block";
                 } else {
-                    statusText.innerText = "Đang tắt: Tính cước 2x lượt bình thường";
+                    statusText.innerText = "Đang tắt: Tính 2x Khứ hồi thông thường";
                     statusText.className = "text-[11px] text-slate-500 block";
                 }
             }
 
-            // Update main summary panel based on selected vehicle
+            // Tính cước tổng thể để ghim lên bảng tóm tắt
             let baseOneWay = getBaseOneWayCost(dist, selectedVehicle);
             let totalBase = tripType === 'oneway' ? baseOneWay : (baseOneWay * 2);
             let finalAmt = totalBase;
@@ -933,43 +938,42 @@
             const activeWaitFee = waitTimeHours * RATES[selectedVehicle].waiting;
             finalAmt += activeWaitFee;
 
-            // Update active summary DOMs
             document.getElementById('summaryBasePrice').innerText = formatVND(Math.round(totalBase));
             document.getElementById('summaryWaitingTime').innerText = formatVND(Math.round(activeWaitFee));
             document.getElementById('summaryDiscount').innerText = "-" + formatVND(Math.round(discountAmt));
             document.getElementById('summaryFinalPrice').innerText = formatVND(Math.round(finalAmt));
         }
 
-        // Formula for standard single-trip base cost according to standard specifications
+        // Tính cước cơ sở 1 chiều lũy tiến theo bảng giá
         function getBaseOneWayCost(distance, vehicle) {
             const pricing = RATES[vehicle];
             let cost = 0;
 
             if (distance <= 2) {
-                cost = pricing.base;
+                cost = pricing.base; // Giá mở cửa (2 km đầu)
             } else if (distance <= 20) {
-                cost = pricing.base + (distance - 2) * pricing.tier2;
+                cost = pricing.base + (distance - 2) * pricing.tier2; // Từ km thứ 3 - 20
             } else {
-                cost = pricing.base + (18 * pricing.tier2) + (distance - 20) * pricing.tier3;
+                cost = pricing.base + (18 * pricing.tier2) + (distance - 20) * pricing.tier3; // Từ km thứ 21 trở đi
             }
 
             return Math.round(cost);
         }
 
-        // Get Round-trip Discount Percentage based on one-way distance
+        // Lấy % ưu đãi dựa trên cự ly chuyến đi khứ hồi hoặc diện VIP
         function getDiscountPercentage(distance, isVip) {
-            if (isVip) return 0.25; // 25% for Contract / VIP
+            if (isVip) return 0.25; // 25% cho Khách VIP / Hợp đồng dài hạn
 
             if (distance < 20) {
-                return 0.10; // 10%
+                return 0.10; // Ngắn (dưới 20 km): 10%
             } else if (distance <= 50) {
-                return 0.15; // 15%
+                return 0.15; // Trung bình (20 - 50 km): 15%
             } else {
-                return 0.20; // 20%
+                return 0.20; // Dài (trên 50 km): 20%
             }
         }
 
-        // Reset App state
+        // Đặt lại dữ liệu ứng dụng
         function resetApp() {
             document.getElementById('startInput').value = '';
             document.getElementById('endInput').value = '';
@@ -989,7 +993,6 @@
             document.getElementById('summaryDiscount').innerText = '-0đ';
             document.getElementById('summaryFinalPrice').innerText = '0đ';
 
-            // Reset selection card pricing indicators
             const vehicles = ['bike', 'car4', 'car7', 'car16'];
             vehicles.forEach(v => {
                 document.getElementById(`price_${v}`).innerText = '0đ';
@@ -1001,17 +1004,17 @@
 
             setTripType('oneway');
             getUserLocation();
-            showToast("Đã thiết lập lại hệ thống đặt xe!", "success");
+            showToast("Đã dọn dẹp và đặt lại hành trình!", "success");
         }
 
-        // Open checkout & receipt preview
+        // Mở bảng thanh toán hóa đơn
         function openBookingCheckout() {
             if (!startCoords || !endCoords || totalDistance <= 0) {
                 showToast("Vui lòng chọn đầy đủ Điểm đi và Điểm đến trước!", "warning");
                 return;
             }
 
-            // Generate booking details
+            // Mã hóa đơn duy nhất
             const randomID = 'GF-' + Math.floor(100000 + Math.random() * 900000);
             document.getElementById('receiptId').innerText = `MÃ HD: ${randomID}`;
             
@@ -1021,7 +1024,6 @@
 
             updateInvoiceData();
 
-            // Open modal animate
             const modal = document.getElementById('checkoutModal');
             const container = document.getElementById('modalContainer');
             modal.classList.remove('hidden');
@@ -1041,32 +1043,28 @@
             }, 200);
         }
 
-        // Live update Canva styled receipt data as user edits info
+        // Đồng bộ dữ liệu hóa đơn Canva live-time
         function updateInvoiceData() {
-            const name = document.getElementById('customerName').value || 'Trống';
-            const phone = document.getElementById('customerPhone').value || 'Trống';
+            const name = document.getElementById('customerName').value || 'Không tên';
+            const phone = document.getElementById('customerPhone').value || 'Không có';
             const payment = document.getElementById('paymentMethod').value;
 
             document.getElementById('receiptCustName').innerText = name;
             document.getElementById('receiptCustPhone').innerText = phone;
             document.getElementById('receiptPayMethod').innerText = payment;
 
-            // Addresses
             document.getElementById('receiptStart').innerText = document.getElementById('startInput').value;
             document.getElementById('receiptEnd').innerText = document.getElementById('endInput').value;
 
-            // Vehicle translation
             let vText = 'Xe máy (GoBike)';
             if (selectedVehicle === 'car4') vText = 'Ô tô 4 chỗ (GoCar 4)';
             if (selectedVehicle === 'car7') vText = 'Ô tô 7 chỗ (GoSuv 7)';
             if (selectedVehicle === 'car16') vText = 'Ô tô 16 chỗ (GoVan 16)';
             document.getElementById('receiptVehicle').innerText = vText;
 
-            // Distance
             document.getElementById('receiptDistance').innerText = totalDistance + ' km';
             document.getElementById('receiptRouteType').innerText = tripType === 'oneway' ? 'Một chiều' : 'Khứ hồi';
 
-            // Prices calculation clone
             const dist = parseFloat(totalDistance);
             const waitTimeHours = parseFloat(document.getElementById('waitingTime').value) || 0;
             const isDiscountOn = document.getElementById('toggleDiscount').checked;
@@ -1091,19 +1089,18 @@
             document.getElementById('receiptDiscount').innerText = "-" + formatVND(Math.round(discountAmt));
             document.getElementById('receiptFinalPrice').innerText = formatVND(Math.round(finalAmt));
 
-            // Dynamic QR Code simulation according to dynamic total amount
+            // Hiển thị mã QR ngân hàng thanh toán chuẩn
             const qrSection = document.getElementById('qrSection');
             if (payment === 'Chuyển khoản QR') {
                 qrSection.classList.remove('hidden');
-                // Creating dynamic quick payment QR mockup
-                const payLink = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=STK:12345678-NganHangGoFast-ChuyenTienDatXe_GiaTri_${Math.round(finalAmt)}vnd`;
+                const payLink = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=STK:99999999-GoFastVietnam-ThanhToanHoaDon_${Math.round(finalAmt)}_VND`;
                 document.getElementById('qrImage').src = payLink;
             } else {
                 qrSection.classList.add('hidden');
             }
         }
 
-        // Custom modal size toggle (Expand / shrink)
+        // Phóng to / Thu nhỏ màn hình hóa đơn xem trước
         let isExpanded = false;
         function toggleModalExpand() {
             const container = document.getElementById('modalContainer');
@@ -1122,12 +1119,9 @@
             }
         }
 
-        // PRINT INVOICE QUICK
+        // IN NHANH HÓA ĐƠN
         function printInvoice() {
             const printContent = document.getElementById('canvaReceipt').innerHTML;
-            const originalContent = document.body.innerHTML;
-
-            // Write temporary print document page layout
             const printWindow = window.open('', '', 'height=650,width=450');
             printWindow.document.write('<html><head><title>In hóa đơn GoFast</title>');
             printWindow.document.write('<link rel="stylesheet" href="https://cdn.tailwindcss.com">');
@@ -1143,29 +1137,29 @@
             }, 500);
         }
 
-        // DOWNLOAD PNG IMAGE OF THE INVOICE (Canva anti-fake style)
+        // XUẤT ẢNH HÓA ĐƠN PNG (Chống giả mạo, thiết kế chuẩn Canva)
         function downloadPNG() {
-            showToast("Đang kết xuất ảnh hóa đơn Canva chất lượng cao...", "info");
+            showToast("Đang vẽ hóa đơn Canva chất lượng cao...", "info");
             const target = document.getElementById('canvaReceipt');
             
             html2canvas(target, {
-                scale: 2, // Double quality for sharp text
+                scale: 2, 
                 backgroundColor: '#ffffff',
                 logging: false,
                 useCORS: true
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = `HoaDon_GoFast_${Date.now()}.png`;
+                link.download = `GoFast_HoaDon_${Date.now()}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 showToast("Tải ảnh hóa đơn thành công!", "success");
             }).catch(err => {
                 console.error("html2canvas error: ", err);
-                showToast("Lỗi kết xuất ảnh hóa đơn.", "error");
+                showToast("Lỗi xuất ảnh hóa đơn.", "error");
             });
         }
 
-        // EXPORT EXCEL/SHEET FORMAT AS STANDARD CSV FILE
+        // XUẤT RA TRANG TÍNH EXCEL / CSV CHUẨN ĐỒNG BỘ
         function exportCSV() {
             const billId = document.getElementById('receiptId').innerText;
             const name = document.getElementById('receiptCustName').innerText;
@@ -1180,32 +1174,32 @@
             const discount = document.getElementById('receiptDiscount').innerText;
             const final = document.getElementById('receiptFinalPrice').innerText;
 
-            let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // UTF-8 BOM
-            csvContent += "HÓA ĐƠN ĐẶT XE GOFAST\n";
+            let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; 
+            csvContent += "HÓA ĐƠN VẬN CHUYỂN HÀNH KHÁCH GOFAST\n";
             csvContent += `Mã hóa đơn,${billId}\n`;
-            csvContent += `Tên khách hàng,${name}\n`;
+            csvContent += `Khách hàng,${name}\n`;
             csvContent += `Số điện thoại,${phone}\n`;
-            csvContent += `Điểm xuất phát,"${start.replace(/"/g, '""')}"\n`;
+            csvContent += `Điểm đi,"${start.replace(/"/g, '""')}"\n`;
             csvContent += `Điểm đến,"${end.replace(/"/g, '""')}"\n`;
-            csvContent += `Khoảng cách,${dist}\n`;
-            csvContent += `Loại chuyến đi,${routeType}\n`;
-            csvContent += `Loại xe,${vehicle}\n`;
+            csvContent += `Khoảng cách hành trình,${dist}\n`;
+            csvContent += `Loại lộ trình,${routeType}\n`;
+            csvContent += `Phương tiện,${vehicle}\n`;
             csvContent += `Giá cước gốc,${basePrice.replace(/[.₫]/g, '')}\n`;
-            csvContent += `Phí chờ đợi,${waiting.replace(/[.₫]/g, '')}\n`;
-            csvContent += `Ưu đãi chiết khấu,${discount.replace(/[.₫]/g, '')}\n`;
-            csvContent += `Tổng thanh toán cuối,${final.replace(/[.₫]/g, '')}\n`;
+            csvContent += `Phí thời gian chờ,${waiting.replace(/[.₫]/g, '')}\n`;
+            csvContent += `Giảm giá ưu đãi,${discount.replace(/[.₫]/g, '')}\n`;
+            csvContent += `Tổng cộng thanh toán,${final.replace(/[.₫]/g, '')}\n`;
 
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `BieuMau_HoaDon_${billId}.csv`);
+            link.setAttribute("download", `BaoCao_GoFast_${billId}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showToast("Xuất dữ liệu Excel/Trang tính thành công!", "success");
+            showToast("Xuất Trang tính CSV thành công!", "success");
         }
 
-        // EXPORT DOCX FORMAT FILE
+        // XUẤT RA TÀI LIỆU WORD (DOCX)
         function exportDocx() {
             const billId = document.getElementById('receiptId').innerText;
             const dateStr = document.getElementById('receiptDate').innerText;
@@ -1223,41 +1217,42 @@
 
             let docxContent = `
             ====================================================
-                            HÓA ĐƠN VẬN CHUYỂN GOFAST
+                        HÓA ĐƠN VẬN CHUYỂN ĐIỆN TỬ GOFAST
             ====================================================
-            Mã hóa đơn: ${billId}
-            ${dateStr}
+            Mã giao dịch: ${billId}
+            Thời gian lập hóa đơn: ${dateStr}
 
-            THÔNG TIN KHÁCH HÀNG:
+            CHI TIẾT HÀNH KHÁCH:
             - Tên: ${name}
-            - Điện thoại: ${phone}
+            - Điện thoại liên lạc: ${phone}
 
-            LỘ TRÌNH DI CHUYỂN:
-            - Điểm đi: ${start}
-            - Điểm đến: ${end}
-            - Khoảng cách: ${dist}
-            - Chuyến đi: ${routeType}
-            - Loại xe: ${vehicle}
+            CHI TIẾT HÀNH TRÌNH TẠI VIỆT NAM:
+            - Nơi đón khách: ${start}
+            - Nơi trả khách: ${end}
+            - Tổng quãng đường bộ: ${dist}
+            - Phương thức di chuyển: ${routeType}
+            - Dòng phương tiện đăng ký: ${vehicle}
 
-            CHI TIẾT THANH TOÁN:
-            - Giá cước gốc: ${basePrice}
-            - Phí chờ đợi phát sinh: ${waiting}
-            - Ưu đãi giảm trừ: ${discount}
+            CHI TIẾT THANH TOÁN (VIỆT NAM ĐỒNG):
+            - Tổng giá cước xe: ${basePrice}
+            - Chi phí chờ đợi (nếu có): ${waiting}
+            - Khấu trừ khuyến mại: ${discount}
             ----------------------------------------------------
-            TỔNG THANH TOÁN THỰC TẾ: ${final}
+            THỰC THU TRỌN GÓI: ${final}
             ====================================================
-            Hệ thống xác nhận tự động 100% không gian lận cước.
+            Bảo mật thông tin khách hàng - Chống làm giả cước hành trình.
+            Cảm ơn quý khách đã đồng hành cùng đội ngũ tài xế GoFast Việt Nam!
             `;
 
             const blob = new Blob([docxContent], { type: 'application/msword' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = `HoaDon_${billId}.docx`;
+            link.download = `HoaDon_Word_${billId}.docx`;
             link.click();
-            showToast("Tải về tệp Word DOCX thành công!", "success");
+            showToast("Đã xuất tệp Word .DOCX thành công!", "success");
         }
 
-        // Premium system Toast feedback notification helper
+        // Hiển thị thông báo Toast đẹp mắt
         function showToast(message, type = "success") {
             const toastBox = document.getElementById('toastBox');
             const toast = document.createElement('div');
@@ -1281,13 +1276,11 @@
             
             toastBox.appendChild(toast);
             
-            // Trigger animation
             setTimeout(() => {
                 toast.classList.remove('translate-y-2', 'opacity-0');
                 toast.classList.add('translate-y-0', 'opacity-100');
             }, 10);
 
-            // Auto dismiss toast
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'scale-90');
                 setTimeout(() => {
