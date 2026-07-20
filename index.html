@@ -14,7 +14,7 @@
     <!-- html2canvas for Image Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -59,12 +59,12 @@
                 </div>
                 <div>
                     <span class="text-xl font-extrabold tracking-tight text-slate-900">Go<span class="text-emerald-600">Fast</span></span>
-                    <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">BẢN ĐỒ VIỆT NAM 100%</span>
+                    <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold bg-emerald-100 text-emerald-800 rounded-full">NỘI ĐỊA VIỆT NAM 100%</span>
                 </div>
             </div>
             <div class="flex items-center space-x-4">
-                <span class="text-sm text-slate-500 hidden md:flex items-center">
-                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> Chỉ định vị và tìm kiếm trong nước
+                <span class="text-sm text-slate-500 hidden md:flex items-center font-medium">
+                    <i class="fa-solid fa-shield-halved text-emerald-500 mr-1.5"></i> Đã kích hoạt khóa biên giới Việt Nam
                 </span>
                 <button onclick="resetApp()" class="px-3.5 py-1.5 border border-slate-200 hover:border-red-200 text-slate-600 hover:text-red-600 rounded-lg text-sm transition-all flex items-center gap-1.5">
                     <i class="fa-solid fa-rotate-left"></i> Làm mới
@@ -251,7 +251,7 @@
                             </div>
                             <div>
                                 <span class="font-bold text-slate-800 block text-sm">Ô tô 16 chỗ (GoVan 16)</span>
-                                <span class="text-[11px] text-slate-400 block">Chuyến đi đông người</span>
+                                <span class="text-[11px] text-slate-400 block">Chuyến đi tập thể</span>
                             </div>
                         </div>
                         <div class="text-right">
@@ -303,7 +303,7 @@
                         <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
                             <i class="fa-solid fa-map-location-dot text-emerald-600"></i> Bản đồ định vị Việt Nam
                         </h2>
-                        <p class="text-xs text-slate-400">Tuyến đường chuẩn xác tuyệt đối trên lãnh thổ Việt Nam</p>
+                        <p class="text-xs text-slate-400">Tuyến đường chỉ được phép vẽ trong phạm vi bản đồ Việt Nam</p>
                     </div>
                     <div class="flex space-x-1 bg-slate-100 p-1 rounded-lg text-xs font-semibold">
                         <button onclick="map.setView(startMarker.getLatLng(), 15)" id="mapBtnStart" class="px-2 py-1 rounded hover:bg-white text-slate-600 transition-all" disabled>Điểm đón</button>
@@ -316,7 +316,7 @@
                     <div id="map"></div>
                     <div id="mapLoader" class="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px] z-[500] flex items-center justify-center text-white font-semibold flex-col space-y-3 hidden">
                         <div class="animate-spin rounded-full h-10 w-10 border-4 border-emerald-500 border-t-transparent"></div>
-                        <p class="text-sm shadow-md bg-slate-800 px-4 py-2 rounded-lg">Đang tính tuyến đường Việt Nam...</p>
+                        <p class="text-sm shadow-md bg-slate-800 px-4 py-2 rounded-lg">Đang kiểm tra ranh giới & định vị...</p>
                     </div>
                 </div>
             </div>
@@ -521,9 +521,17 @@
 
     <!-- Interactive Logic & Calculation Scripts -->
     <script>
-        // Set mặc định tọa độ trung tâm Việt Nam nếu chưa định vị được (Hà Nội làm chuẩn bắt đầu)
-        const DEFAULT_COORDS = [21.0285, 105.8542]; 
+        // Set mặc định tọa độ tại Chợ Mới, An Giang, Việt Nam
+        const DEFAULT_COORDS = [10.3759, 105.4185]; 
         
+        // Định nghĩa ranh giới địa lý hộp của Việt Nam (Bao gồm vĩ độ từ 8.1°N đến 23.4°N, Kinh độ từ 102.1°E đến 109.5°E)
+        const VN_BOUNDS = {
+            minLat: 8.1,
+            maxLat: 23.4,
+            minLng: 102.1,
+            maxLng: 109.5
+        };
+
         let map;
         let startMarker;
         let endMarker;
@@ -568,6 +576,12 @@
             }
         };
 
+        // Hàm kiểm tra một toạ độ có nằm hoàn toàn trong lãnh thổ Việt Nam hay không
+        function isWithinVietnam(lat, lng) {
+            return (lat >= VN_BOUNDS.minLat && lat <= VN_BOUNDS.maxLat && 
+                    lng >= VN_BOUNDS.minLng && lng <= VN_BOUNDS.maxLng);
+        }
+
         // Khởi tạo ứng dụng
         window.onload = function() {
             initMap();
@@ -608,14 +622,19 @@
 
             // Gán giá trị điểm ghim ban đầu
             startMarker = L.marker(DEFAULT_COORDS, {icon: greenIcon, draggable: true}).addTo(map);
-            endMarker = L.marker([21.0335, 105.8600], {icon: redIcon, draggable: true}).addTo(map);
+            endMarker = L.marker([10.3850, 105.4250], {icon: redIcon, draggable: true}).addTo(map);
 
             startMarker.bindPopup("<b>Điểm xuất phát (Điểm đón)</b><br>Kéo thả tôi để đổi vị trí đón!").openPopup();
             endMarker.bindPopup("<b>Điểm đến mong muốn</b><br>Kéo thả tôi để đổi nơi đến!");
 
-            // Lắng nghe sự kiện kéo thả ghim trên bản đồ
+            // Lắng nghe sự kiện kéo thả ghim trên bản đồ có tích hợp ranh giới Việt Nam
             startMarker.on('dragend', function() {
                 const latlng = startMarker.getLatLng();
+                if (!isWithinVietnam(latlng.lat, latlng.lng)) {
+                    showToast("Vị trí đón phải nằm trong lãnh thổ Việt Nam!", "warning");
+                    startMarker.setLatLng(startCoords || DEFAULT_COORDS);
+                    return;
+                }
                 startCoords = [latlng.lat, latlng.lng];
                 reverseGeocode(latlng.lat, latlng.lng, 'start');
                 fetchRoute();
@@ -623,27 +642,40 @@
 
             endMarker.on('dragend', function() {
                 const latlng = endMarker.getLatLng();
+                if (!isWithinVietnam(latlng.lat, latlng.lng)) {
+                    showToast("Vị trí đến phải nằm trong lãnh thổ Việt Nam!", "warning");
+                    endMarker.setLatLng(endCoords || [10.3850, 105.4250]);
+                    return;
+                }
                 endCoords = [latlng.lat, latlng.lng];
                 reverseGeocode(latlng.lat, latlng.lng, 'end');
                 fetchRoute();
             });
         }
 
-        // Tự động nhận diện toạ độ khách hàng
+        // Tự động nhận diện toạ độ khách hàng tại Việt Nam
         function getUserLocation() {
             if (navigator.geolocation) {
-                showToast("Đang định vị vị trí của bạn tại Việt Nam...", "info");
+                showToast("Đang định vị tọa độ vệ tinh...", "info");
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
                         const lat = position.coords.latitude;
                         const lng = position.coords.longitude;
-                        startCoords = [lat, lng];
                         
-                        startMarker.setLatLng([lat, lng]);
-                        map.setView([lat, lng], 15);
-                        reverseGeocode(lat, lng, 'start');
-                        
-                        showToast("Đã định vị thành công điểm đón của bạn!", "success");
+                        // Kiểm tra nếu vị trí định vị GPS thực tế nằm ngoài lãnh thổ VN (ví dụ người dùng đang dùng VPN/ở nước ngoài)
+                        if (!isWithinVietnam(lat, lng)) {
+                            showToast("Định vị ngoài biên giới. Đang đặt vị trí mặc định tại An Giang, Việt Nam.", "warning");
+                            startCoords = DEFAULT_COORDS;
+                            startMarker.setLatLng(DEFAULT_COORDS);
+                            map.setView(DEFAULT_COORDS, 14);
+                            reverseGeocode(DEFAULT_COORDS[0], DEFAULT_COORDS[1], 'start');
+                        } else {
+                            startCoords = [lat, lng];
+                            startMarker.setLatLng([lat, lng]);
+                            map.setView([lat, lng], 15);
+                            reverseGeocode(lat, lng, 'start');
+                            showToast("Đã định vị thành công vị trí đón của bạn!", "success");
+                        }
                         document.getElementById("mapBtnStart").disabled = false;
                         
                         if (endCoords) {
@@ -651,7 +683,7 @@
                         }
                     },
                     (error) => {
-                        showToast("Không tìm được GPS. Đặt vị trí mặc định tại Hà Nội.", "warning");
+                        showToast("Không truy cập được GPS. Đặt vị trí tại An Giang, Việt Nam.", "warning");
                         startCoords = DEFAULT_COORDS;
                         reverseGeocode(DEFAULT_COORDS[0], DEFAULT_COORDS[1], 'start');
                     },
@@ -774,6 +806,12 @@
         function fetchRoute() {
             if (!startCoords || !endCoords) return;
 
+            // Kiểm tra bảo mật bổ sung trước khi vẽ tuyến đường
+            if (!isWithinVietnam(startCoords[0], startCoords[1]) || !isWithinVietnam(endCoords[0], endCoords[1])) {
+                showToast("Lộ trình di chuyển bắt buộc phải nằm trong Việt Nam!", "error");
+                return;
+            }
+
             const loader = document.getElementById('mapLoader');
             loader.classList.remove('hidden');
 
@@ -812,7 +850,7 @@
                     // Tính cước xe ngay lập tức
                     calculateFare();
                 } else {
-                    showToast("Không tìm thấy đường đi bộ/đường xe chạy phù hợp.", "error");
+                    showToast("Không tìm thấy tuyến đường xe chạy hợp lệ trong lãnh thổ Việt Nam.", "error");
                 }
             })
             .catch(err => {
